@@ -6,6 +6,9 @@ public class TreatmentMapper {
 
     // Converts Treatment entity to TreatmentDTO
     public TreatmentDTO toDto(Treatment treatment) {
+        if (treatment == null) {
+            return null;
+        }
         return new TreatmentDTO(
                 treatment.getId(),
                 treatment.getName(),
@@ -18,6 +21,9 @@ public class TreatmentMapper {
 
     // Converts TreatmentDTO to Treatment entity
     public Treatment toEntity(TreatmentDTO dto) {
+        if (dto == null) {
+            return null;
+        }
         return Treatment.builder()
                 .name(dto.name())
                 .description(dto.description())
