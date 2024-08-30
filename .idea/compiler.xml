@@ -10,14 +10,16 @@
         <module name="doctor" />
         <module name="config-server" />
         <module name="treatment" />
-        <module name="payment" />
         <module name="discovery" />
         <module name="patient" />
+        <module name="payment" />
+        <module name="clinic" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="clinic" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />
       <module name="doctor" options="-parameters" />
