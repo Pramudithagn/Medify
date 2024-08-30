@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: ms_pg_sql
+    container_name: ms_postgres
     image: postgres
     environment:
       POSTGRES_USER: postgres
