@@ -21,13 +21,15 @@ public class Patient {
     private String photo;
     private String gender;
     private String dob;
-    private String address;
     private String assignedDate;
     private String bloodGroup;
     private Integer age;
     private Double weight;
     private Double height;
     private String allergies;
+
+    @Embedded
+    private Address address;
 
     @ElementCollection
     @CollectionTable(name = "patient_doctors", joinColumns = @JoinColumn(name = "patient_id"))

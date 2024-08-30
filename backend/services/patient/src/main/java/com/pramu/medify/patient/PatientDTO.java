@@ -10,7 +10,7 @@ public record PatientDTO(
         String photo,
         String gender,
         String dob,
-        String address,
+        Address address,
         String assignedDate,
         String bloodGroup,
         Integer age,
