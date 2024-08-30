@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/backend/services/discovery/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/backend/services/doctor/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/backend/services/patient/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/backend/services/payment/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/backend/services/treatment/src/main/java" charset="UTF-8" />
   </component>
 </project>

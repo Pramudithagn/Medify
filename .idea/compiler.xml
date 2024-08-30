@@ -10,6 +10,7 @@
         <module name="doctor" />
         <module name="config-server" />
         <module name="treatment" />
+        <module name="payment" />
         <module name="discovery" />
         <module name="patient" />
       </profile>
@@ -21,6 +22,7 @@
       <module name="discovery" options="-parameters" />
       <module name="doctor" options="-parameters" />
       <module name="patient" options="-parameters" />
+      <module name="payment" options="-parameters" />
       <module name="treatment" options="-parameters" />
     </option>
   </component>
