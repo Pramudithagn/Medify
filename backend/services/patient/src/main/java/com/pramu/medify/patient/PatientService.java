@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +92,26 @@ public class PatientService {
             return updatedPatient;
         }
         return null;
+    }
+
+    public PatientDTO assignDoctorToPatient(Long patientId, Long doctorId) {
+        Optional<Patient> patientOptional = patientRepository.findById(patientId);
+        if (patientOptional.isEmpty()) {
+            throw new IllegalArgumentException("Patient not found");
+        }
+
+        Patient patient = patientOptional.get();
+
+//        if (patient.getDoctorId() != null) {
+//            throw new IllegalStateException("Patient already has a doctor assigned");
+//        }
+
+        Set<Long> newDoctorIds = patient.getDoctorIds();
+        newDoctorIds.add(doctorId);
+        patient.setDoctorIds(newDoctorIds);
+        Patient updatedPatient = patientRepository.save(patient);
+
+        return patientMapper.toDto(updatedPatient);
     }
 
     public void deletePatient(Long id) {
