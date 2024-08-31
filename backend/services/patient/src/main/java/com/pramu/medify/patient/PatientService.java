@@ -28,14 +28,14 @@ public class PatientService {
 
     public Patient createPatient(PatientDTO patientDTO) {
         Patient patient = patientMapper.toEntity(patientDTO);
-        Patient savedPatient = patientRepository.save(patient);
-        return savedPatient;
+        return patientRepository.save(patient);
     }
 
     public Patient updatePatient(PatientDTO patientDTO) {
         Optional<Patient> optionalPatient = patientRepository.findById(patientDTO.id());
         if (optionalPatient.isPresent()) {
             Patient patient = optionalPatient.get();
+
             if (patientDTO.name() != null) {
                 patient.setName(patientDTO.name());
             }
@@ -76,20 +76,23 @@ public class PatientService {
                 patient.setAllergies(patientDTO.allergies());
             }
             if (patientDTO.doctorIds() != null) {
-                patient.setDoctorIds(patientDTO.doctorIds());
+//                patient.setDoctorIds(patientDTO.doctorIds());
+                patient.getDoctorIds().addAll(patientDTO.doctorIds());
             }
             if (patientDTO.medicalRecordIds() != null) {
-                patient.setMedicalRecordIds(patientDTO.medicalRecordIds());
+//                patient.setMedicalRecordIds(patientDTO.medicalRecordIds());
+                patient.getMedicalRecordIds().addAll(patientDTO.medicalRecordIds());
             }
             if (patientDTO.appointmentIds() != null) {
-                patient.setAppointmentIds(patientDTO.appointmentIds());
+//                patient.setAppointmentIds(patientDTO.appointmentIds());
+                patient.getAppointmentIds().addAll(patientDTO.appointmentIds());
             }
             if (patientDTO.paymentIds() != null) {
-                patient.setPaymentIds(patientDTO.paymentIds());
+//                patient.setPaymentIds(patientDTO.paymentIds());
+                patient.getPaymentIds().addAll(patientDTO.paymentIds());
             }
 
-            Patient updatedPatient = patientRepository.save(patient);
-            return updatedPatient;
+            return patientRepository.save(patient);
         }
         return null;
     }

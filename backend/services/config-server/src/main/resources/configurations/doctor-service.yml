@@ -12,3 +12,13 @@ spring:
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: clinic-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: MedicalRecordCreatedEvent:com.pramu.medify.kafka.MedicalRecordCreatedEvent,AppointmentCreatedEvent:com.pramu.medify.kafka.AppointmentCreatedEvent,AppointmentCancelledEvent:com.pramu.medify.kafka.AppointmentCancelledEvent

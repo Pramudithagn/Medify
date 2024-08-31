@@ -1,5 +1,6 @@
 package com.pramu.medify.doctor;
 
+import com.pramu.medify.kafka.AppointmentCancelledEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -54,22 +55,34 @@ public class DoctorService {
                 doctor.setSpecialization(doctorDTO.specialization());
             }
             if (doctorDTO.patientIds() != null) {
-                doctor.setPatientIds(doctorDTO.patientIds());
+                doctor.getPatientIds().addAll(doctorDTO.patientIds());
             }
             if (doctorDTO.medicalRecordIds() != null) {
-                doctor.setMedicalRecordIds(doctorDTO.medicalRecordIds());
+                doctor.getMedicalRecordIds().addAll(doctorDTO.medicalRecordIds());
             }
             if (doctorDTO.appointmentIds() != null) {
-                doctor.setAppointmentIds(doctorDTO.appointmentIds());
+                doctor.getAppointmentIds().addAll(doctorDTO.appointmentIds());
             }
             if (doctorDTO.treatmentIds() != null) {
-                doctor.setTreatmentIds(doctorDTO.treatmentIds());
+                doctor.getTreatmentIds().addAll(doctorDTO.treatmentIds());
             }
 
-            Doctor updatedDoctor = doctorRepository.save(doctor);
-            return updatedDoctor;
+            return doctorRepository.save(doctor);
         }
         return null;
+    }
+
+    public void removeAppointment(AppointmentCancelledEvent event) {
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(event.doctorId());
+        if (optionalDoctor.isPresent()) {
+            Doctor doctor = optionalDoctor.get();
+
+            if (event.id() != null) {
+                doctor.getAppointmentIds().remove(event.id());
+            }
+
+            doctorRepository.save(doctor);
+        }
     }
 
     public void deleteDoctor(Long id) {

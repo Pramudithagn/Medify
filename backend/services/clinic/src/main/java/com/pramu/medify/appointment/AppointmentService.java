@@ -1,5 +1,8 @@
 package com.pramu.medify.appointment;
 
+import com.pramu.medify.kafka.AppointmentCancelledEvent;
+import com.pramu.medify.kafka.AppointmentCreatedEvent;
+import com.pramu.medify.kafka.ClinicKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper appointmentMapper;
+    private final ClinicKafkaProducer clinicKafkaProducer;
 
     public List<AppointmentDTO> getAllAppointments() {
         return appointmentRepository.findAll().stream()
@@ -38,7 +42,19 @@ public class AppointmentService {
         }
 
         Appointment appointment = appointmentMapper.toEntity(appointmentDTO);
-        return appointmentRepository.save(appointment);
+        appointmentRepository.save(appointment);
+
+        System.out.println("starting produce");
+        clinicKafkaProducer.publishAppointmentCreatedEvent(new AppointmentCreatedEvent(
+                appointment.getId(),
+                appointment.getPatientId(),
+                appointment.getDoctorId(),
+                appointment.getDateTime(),
+                appointment.getDuration()
+        ));
+        System.out.println("end produce");
+
+        return appointment;
     }
 
     public Appointment updateAppointment(AppointmentDTO appointmentDTO) {
@@ -66,6 +82,17 @@ public class AppointmentService {
     }
 
     public void deleteAppointment(Long id) {
-        appointmentRepository.deleteById(id);
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
+        if (optionalAppointment.isPresent()) {
+            Appointment appointment = optionalAppointment.get();
+
+            appointmentRepository.deleteById(id);
+
+            clinicKafkaProducer.publishAppointmentCancelledEvent(new AppointmentCancelledEvent(
+                    id,
+                    appointment.getPatientId(),
+                    appointment.getDoctorId()
+            ));
+        }
     }
 }
