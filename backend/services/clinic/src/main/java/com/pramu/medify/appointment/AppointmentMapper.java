@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppointmentMapper {
 
-    // Converts Appointment entity to AppointmentDTO
     public AppointmentDTO toDto(Appointment appointment) {
         return new AppointmentDTO(
                 appointment.getId(),
@@ -16,7 +15,6 @@ public class AppointmentMapper {
         );
     }
 
-    // Converts AppointmentDTO to Appointment entity
     public Appointment toEntity(AppointmentDTO dto) {
         return Appointment.builder()
                 .dateTime(dto.dateTime())

@@ -1,8 +1,8 @@
 package com.pramu.medify.kafka;
 
 public record MedicalRecordCreatedEvent(
-        Long patientId,
+        Long id,
         Long doctorId,
-        Long id
+        Long patientId
 ) {
 }

@@ -44,7 +44,6 @@ public class AppointmentService {
         Appointment appointment = appointmentMapper.toEntity(appointmentDTO);
         appointmentRepository.save(appointment);
 
-        System.out.println("starting produce");
         clinicKafkaProducer.publishAppointmentCreatedEvent(new AppointmentCreatedEvent(
                 appointment.getId(),
                 appointment.getPatientId(),
@@ -52,7 +51,6 @@ public class AppointmentService {
                 appointment.getDateTime(),
                 appointment.getDuration()
         ));
-        System.out.println("end produce");
 
         return appointment;
     }

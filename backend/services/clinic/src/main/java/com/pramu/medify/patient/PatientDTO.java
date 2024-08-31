@@ -1,5 +1,7 @@
 package com.pramu.medify.patient;
 
+import com.pramu.medify.doctor.Address;
+
 public record PatientDTO(
         Long id,
         String name,
@@ -8,7 +10,7 @@ public record PatientDTO(
         String photo,
         String gender,
         String dob,
-        String address,
+        Address address,
         String bloodGroup,
         Integer age,
         Double weight,

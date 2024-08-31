@@ -1,6 +1,9 @@
 package com.pramu.medify.record;
 
 import com.pramu.medify.doctor.DoctorClient;
+import com.pramu.medify.kafka.AppointmentCreatedEvent;
+import com.pramu.medify.kafka.ClinicKafkaProducer;
+import com.pramu.medify.kafka.MedicalRecordCreatedEvent;
 import com.pramu.medify.patient.PatientClient;
 import com.pramu.medify.treatment.TreatmentClient;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ public class MedicalRecordService {
     private final DoctorClient doctorClient;
     private final PatientClient patientClient;
     private final TreatmentClient treatmentClient;
+    private final ClinicKafkaProducer clinicKafkaProducer;
 
     public List<MedicalRecordDTO> getAllMedicalRecords() {
         return medicalRecordRepository.findAll().stream()
@@ -41,7 +45,19 @@ public class MedicalRecordService {
         treatmentIds.forEach(treatmentId -> treatmentClient.getTreatmentById(treatmentId));
 
         MedicalRecord medicalRecord = medicalRecordMapper.toEntity(medicalRecordDTO);
-        return medicalRecordRepository.save(medicalRecord);
+        MedicalRecord savedMedicalRecord = medicalRecordRepository.save(medicalRecord);
+
+        System.out.println("starting produce");
+        System.out.println("savedMedicalRecord "+ savedMedicalRecord);
+        clinicKafkaProducer.publishMedicalRecordCreatedEvent(new MedicalRecordCreatedEvent(
+                savedMedicalRecord.getId(),
+                savedMedicalRecord.getPatientId(),
+                savedMedicalRecord.getDoctorId()
+        ));
+        System.out.println("end produce");
+
+        return savedMedicalRecord;
+
     }
 
     public MedicalRecord updateMedicalRecord(MedicalRecordDTO medicalRecordDTO) {
