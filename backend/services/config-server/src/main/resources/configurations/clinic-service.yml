@@ -12,3 +12,9 @@ spring:
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+application:
+  config:
+    treatment-url: http://localhost:8010/api/v1/treatments
+    patient-url: http://localhost:8030/api/v1/patiients
+    doctor-url: http://localhost:8020/api/v1/doctors

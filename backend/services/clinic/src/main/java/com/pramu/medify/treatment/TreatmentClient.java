@@ -6,8 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@FeignClient(name = "treatment-service")
-@RequestMapping("/api/v1/treatments")
+@FeignClient(
+        name = "treatment-service",
+        url = "${application.config.treatment-url}"
+)
+//@RequestMapping("/api/v1/treatments")
 public interface TreatmentClient {
 
     @GetMapping("/{id}")
