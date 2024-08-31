@@ -2,6 +2,7 @@ package com.pramu.medify.kafka;
 
 import com.pramu.medify.patient.PatientDTO;
 import com.pramu.medify.patient.PatientService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -43,14 +44,16 @@ public class PatientKafkaConsumer {
         ));
     }
 
-    @KafkaListener(topics = "appointment-created", groupId = "clinic-group")
+    @Transactional
+    @KafkaListener(topics = "appointment-created")
     public void consumeAppointmentCreatedEvent(AppointmentCreatedEvent event) {
+
+        System.out.println("consume start from patient "+ event);
         Set<Long> appointmentIds = new HashSet<>();
         appointmentIds.add(event.id());
 
-//        doctorService.addAppointment(event.getPatientId(), event.getAppointmentId());
         patientService.updatePatient(new PatientDTO(
-                null,
+                event.patientId(),
                 null,
                 null,
                 null,
@@ -69,34 +72,43 @@ public class PatientKafkaConsumer {
                 appointmentIds,
                 null
         ));
+        System.out.println("consume end from patient "+ event);
+
     }
 
-    @KafkaListener(topics = "appointment-cancelled", groupId = "clinic-group")
+//    @KafkaListener(topics = "appointment-cancelled", groupId = "clinic-group")
+//    public void consumeAppointmentCancelledEvent(AppointmentCancelledEvent event) {
+//        Set<Long> treatmentIds = new HashSet<>();
+//        treatmentIds.add(event.id());
+//
+////        doctorService.removeAppointment(event.getPatientId(), event.getAppointmentId());
+//        patientService.updatePatient(new PatientDTO(
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                null,
+//                treatmentIds
+//        ));
+//    }
+
+    @Transactional
+    @KafkaListener(topics = "appointment-cancelled")
     public void consumeAppointmentCancelledEvent(AppointmentCancelledEvent event) {
-        Set<Long> treatmentIds = new HashSet<>();
-        treatmentIds.add(event.id());
-
-//        doctorService.removeAppointment(event.getPatientId(), event.getAppointmentId());
-        patientService.updatePatient(new PatientDTO(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                treatmentIds
-        ));
+        patientService.removeAppointment(event);
     }
+
 
 }

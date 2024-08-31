@@ -81,7 +81,7 @@ public class AppointmentService {
         return null;
     }
 
-    public void deleteAppointment(Long id) {
+    public Long deleteAppointment(Long id) {
         Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
         if (optionalAppointment.isPresent()) {
             Appointment appointment = optionalAppointment.get();
@@ -93,6 +93,8 @@ public class AppointmentService {
                     appointment.getPatientId(),
                     appointment.getDoctorId()
             ));
+            return id;
         }
+        return null;
     }
 }

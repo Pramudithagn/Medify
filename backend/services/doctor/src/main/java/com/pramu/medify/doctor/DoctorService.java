@@ -36,6 +36,7 @@ public class DoctorService {
         Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorDTO.id());
         if (optionalDoctor.isPresent()) {
             Doctor doctor = optionalDoctor.get();
+
             if (doctorDTO.name() != null) {
                 doctor.setName(doctorDTO.name());
             }

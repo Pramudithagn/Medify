@@ -1,5 +1,6 @@
 package com.pramu.medify.patient;
 
+import com.pramu.medify.kafka.AppointmentCancelledEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -76,25 +77,34 @@ public class PatientService {
                 patient.setAllergies(patientDTO.allergies());
             }
             if (patientDTO.doctorIds() != null) {
-//                patient.setDoctorIds(patientDTO.doctorIds());
                 patient.getDoctorIds().addAll(patientDTO.doctorIds());
             }
             if (patientDTO.medicalRecordIds() != null) {
-//                patient.setMedicalRecordIds(patientDTO.medicalRecordIds());
                 patient.getMedicalRecordIds().addAll(patientDTO.medicalRecordIds());
             }
             if (patientDTO.appointmentIds() != null) {
-//                patient.setAppointmentIds(patientDTO.appointmentIds());
                 patient.getAppointmentIds().addAll(patientDTO.appointmentIds());
             }
             if (patientDTO.paymentIds() != null) {
-//                patient.setPaymentIds(patientDTO.paymentIds());
                 patient.getPaymentIds().addAll(patientDTO.paymentIds());
             }
 
             return patientRepository.save(patient);
         }
         return null;
+    }
+
+    public void removeAppointment(AppointmentCancelledEvent event) {
+        Optional<Patient> optionalPatient = patientRepository.findById(event.patientId());
+        if (optionalPatient.isPresent()) {
+            Patient patient = optionalPatient.get();
+
+            if (event.id() != null) {
+                patient.getAppointmentIds().remove(event.id());
+            }
+
+            patientRepository.save(patient);
+        }
     }
 
     public PatientDTO assignDoctorToPatient(Long patientId, Long doctorId) {
@@ -117,7 +127,8 @@ public class PatientService {
         return patientMapper.toDto(updatedPatient);
     }
 
-    public void deletePatient(Long id) {
+    public Long deletePatient(Long id) {
         patientRepository.deleteById(id);
+        return id;
     }
 }

@@ -51,8 +51,8 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
-        appointmentService.deleteAppointment(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Long> deleteAppointment(@PathVariable Long id) {
+        Long delId = appointmentService.deleteAppointment(id);
+        return new ResponseEntity<>(delId, HttpStatus.OK);
     }
 }

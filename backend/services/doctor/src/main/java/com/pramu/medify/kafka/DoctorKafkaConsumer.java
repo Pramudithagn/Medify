@@ -60,7 +60,7 @@ public class DoctorKafkaConsumer {
     }
 
     @Transactional
-    @KafkaListener(topics = "appointment-cancelled", groupId = "clinic-group")
+    @KafkaListener(topics = "appointment-cancelled")
     public void consumeAppointmentCancelledEvent(AppointmentCancelledEvent event) {
         doctorService.removeAppointment(event);
     }
