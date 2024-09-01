@@ -73,6 +73,19 @@ public class DoctorService {
         return null;
     }
 
+    public void doctorPatientAssignUpdate(DoctorDTO doctorDTO) {
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorDTO.id());
+        if (optionalDoctor.isPresent()) {
+            Doctor doctor = optionalDoctor.get();
+
+            if (doctorDTO.patientIds() != null) {
+                doctor.getPatientIds().addAll(doctorDTO.patientIds());
+            }
+
+            doctorRepository.save(doctor);
+        }
+    }
+
     public void removeAppointment(AppointmentCancelledEvent event) {
         Optional<Doctor> optionalDoctor = doctorRepository.findById(event.doctorId());
         if (optionalDoctor.isPresent()) {
@@ -89,4 +102,5 @@ public class DoctorService {
     public void deleteDoctor(Long id) {
         doctorRepository.deleteById(id);
     }
+
 }

@@ -42,7 +42,7 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/{patientId}/assign-doctor/{doctorId}")
+    @PutMapping("/{patientId}/assign-doctor/{doctorId}")
     public ResponseEntity<PatientDTO> assignDoctorToPatient(@PathVariable Long patientId, @PathVariable Long doctorId) {
         try {
             return new ResponseEntity<>(patientService.assignDoctorToPatient(patientId, doctorId), HttpStatus.OK);

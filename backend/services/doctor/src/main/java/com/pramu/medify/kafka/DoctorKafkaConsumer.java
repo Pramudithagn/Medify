@@ -17,6 +17,27 @@ public class DoctorKafkaConsumer {
     private final DoctorService doctorService;
 
     @Transactional
+    @KafkaListener(topics = "doctor-assigned")
+    public void consumeDoctorPatientAssignedEvent(DoctorPatientAssignedEvent event) {
+        Set<Long> patientIds = new HashSet<>();
+        patientIds.add(event.patientId());
+
+        doctorService.doctorPatientAssignUpdate(new DoctorDTO(
+                event.doctorId(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                patientIds,
+                null,
+                null,
+                null
+        ));
+    }
+
+    @Transactional
     @KafkaListener(topics = "medical-record-created")
     public void consumeMedicalRecordCreatedEvent(MedicalRecordCreatedEvent event) {
         Set<Long> medicalRecordIds = new HashSet<>();

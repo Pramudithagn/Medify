@@ -1,6 +1,9 @@
 package com.pramu.medify.patient;
 
+import com.pramu.medify.doctor.DoctorKafkaProducer;
 import com.pramu.medify.kafka.AppointmentCancelledEvent;
+import com.pramu.medify.kafka.AppointmentCreatedEvent;
+import com.pramu.medify.kafka.DoctorPatientAssignedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final DoctorKafkaProducer doctorKafkaProducer;
 
     public List<PatientDTO> getAllPatients() {
         return patientRepository.findAll().stream()
@@ -123,6 +127,11 @@ public class PatientService {
         newDoctorIds.add(doctorId);
         patient.setDoctorIds(newDoctorIds);
         Patient updatedPatient = patientRepository.save(patient);
+
+        doctorKafkaProducer.publishDoctorPatientAssignedEvent(new DoctorPatientAssignedEvent(
+                patientId,
+                doctorId
+        ));
 
         return patientMapper.toDto(updatedPatient);
     }
