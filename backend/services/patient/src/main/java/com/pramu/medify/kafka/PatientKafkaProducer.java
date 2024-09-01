@@ -1,4 +1,4 @@
-package com.pramu.medify.doctor;
+package com.pramu.medify.kafka;
 
 import com.pramu.medify.kafka.DoctorPatientAssignedEvent;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DoctorKafkaProducer {
+public class PatientKafkaProducer {
 
     private final KafkaTemplate<String, DoctorPatientAssignedEvent> kafkaTemplate;
 
