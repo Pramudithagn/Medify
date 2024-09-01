@@ -1,0 +1,34 @@
+server:
+  port: 9000
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: treatment-service
+          uri: lb://TREATMENT-SERVICE
+          predicates:
+            - Path=/api/v1/treatments/**
+        - id: doctor-service
+          uri: lb://DOCTOR-SERVICE
+          predicates:
+            - Path=/api/v1/doctors/**
+        - id: patient-service
+          uri: lb://PATIENT-SERVICE
+          predicates:
+            - Path=/api/v1/patients/**
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/v1/payments/**
+        - id: clinic-service
+          uri: lb://CLINIC-SERVICE
+          predicates:
+            - Path=/api/v1/medical-records/**
+            - Path=/api/v1/appointments/**
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/v1/notifications/**

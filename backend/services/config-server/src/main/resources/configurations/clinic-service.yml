@@ -23,6 +23,6 @@ spring:
 
 application:
   config:
-    treatment-url: http://localhost:8010/api/v1/treatments
-    patient-url: http://localhost:8030/api/v1/patients
-    doctor-url: http://localhost:8020/api/v1/doctors
+    treatment-url: http://localhost:9000/api/v1/treatments
+    patient-url: http://localhost:9000/api/v1/patients
+    doctor-url: http://localhost:9000/api/v1/doctors
