@@ -12,9 +12,7 @@ import java.util.stream.Collectors;
 public class TreatmentService {
 
     private final TreatmentRepository treatmentRepository;
-
     private final TreatmentMapper treatmentMapper;
-
 
     public List<TreatmentDTO> getAllTreatments() {
         return treatmentRepository.findAll().stream()
@@ -29,8 +27,7 @@ public class TreatmentService {
 
     public Treatment createTreatment(TreatmentDTO treatmentDTO) {
         Treatment treatment = treatmentMapper.toEntity(treatmentDTO);
-        Treatment savedTreatment = treatmentRepository.save(treatment);
-        return savedTreatment;
+        return treatmentRepository.save(treatment);
     }
 
     public Treatment updateTreatment(TreatmentDTO treatmentDTO) {
@@ -59,8 +56,7 @@ public class TreatmentService {
                 treatment.setDoctorIds(treatmentDTO.doctorIds());
             }
 
-            Treatment updatedTreatment = treatmentRepository.save(treatment);
-            return updatedTreatment;
+            return treatmentRepository.save(treatment);
         }
         return null;
     }
@@ -68,26 +64,5 @@ public class TreatmentService {
     public void deleteTreatment(Long id) {
         treatmentRepository.deleteById(id);
     }
-
-//    private TreatmentDTO convertToDTO(Treatment treatment) {
-//        TreatmentDTO dto = new TreatmentDTO();
-//        dto.setId(treatment.getId());
-//        dto.setName(treatment.getName());
-//        dto.setPrice(treatment.getPrice());
-//        dto.setStatus(treatment.getStatus());
-//        dto.setDoctorIds(treatment.getDoctorIds());
-//        return dto;
-//    }
-//
-//    private Treatment convertToEntity(TreatmentDTO dto) {
-//        Treatment treatment = new Treatment();
-//        treatment.setId(dto.getId());
-//        treatment.setName(dto.getName());
-//        treatment.setPrice(dto.getPrice());
-//        treatment.setStatus(dto.getStatus());
-//        treatment.setDoctorIds(dto.getDoctorIds());
-//        return treatment;
-//    }
-
 
 }

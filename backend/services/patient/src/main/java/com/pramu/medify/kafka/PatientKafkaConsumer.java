@@ -48,7 +48,6 @@ public class PatientKafkaConsumer {
     @KafkaListener(topics = "appointment-created")
     public void consumeAppointmentCreatedEvent(AppointmentCreatedEvent event) {
 
-        System.out.println("consume start from patient "+ event);
         Set<Long> appointmentIds = new HashSet<>();
         appointmentIds.add(event.id());
 
@@ -72,7 +71,6 @@ public class PatientKafkaConsumer {
                 appointmentIds,
                 null
         ));
-        System.out.println("consume end from patient "+ event);
 
     }
 
@@ -82,5 +80,33 @@ public class PatientKafkaConsumer {
         patientService.removeAppointment(event);
     }
 
+    @Transactional
+    @KafkaListener(topics = "payment-created")
+    public void consumePaymentCreatedEvent(PaymentCreatedEvent event) {
+
+        Set<Long> paymentIds = new HashSet<>();
+        paymentIds.add(event.id());
+
+        patientService.updatePatient(new PatientDTO(
+                event.patientId(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                paymentIds
+        ));
+    }
 
 }

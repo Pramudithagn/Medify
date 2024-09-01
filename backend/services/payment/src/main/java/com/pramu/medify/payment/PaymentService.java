@@ -1,5 +1,7 @@
 package com.pramu.medify.payment;
 
+import com.pramu.medify.kafka.PaymentCreatedEvent;
+import com.pramu.medify.kafka.PaymentKafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
+    private final PaymentKafkaProducer paymentKafkaProducer;
 
     public List<PaymentDTO> getAllPayments() {
         return paymentRepository.findAll().stream()
@@ -28,6 +31,12 @@ public class PaymentService {
     public Payment createPayment(PaymentDTO paymentDTO) {
         Payment payment = paymentMapper.toEntity(paymentDTO);
         Payment savedPayment = paymentRepository.save(payment);
+
+        paymentKafkaProducer.publishPaymentCreatedEvent(new PaymentCreatedEvent(
+                payment.getId(),
+                payment.getPatientId(),
+                payment.getAmount()
+        ));
         return savedPayment;
     }
 
