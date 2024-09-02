@@ -1,8 +1,10 @@
 package com.pramu.medify.appointment;
 
+import com.pramu.medify.exception.BusinessException;
 import com.pramu.medify.kafka.AppointmentCancelledEvent;
 import com.pramu.medify.kafka.AppointmentCreatedEvent;
 import com.pramu.medify.kafka.ClinicKafkaProducer;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,8 @@ public class AppointmentService {
 
     public AppointmentDTO getAppointmentById(Long id) {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
-        return appointment.map(appointmentMapper::toDto).orElse(null);
+        return appointment.map(appointmentMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Appointment not found with ID:: " + id));
     }
 
     public Appointment createAppointment(AppointmentDTO appointmentDTO) {
@@ -38,7 +41,7 @@ public class AppointmentService {
                 appointmentDTO.doctorId(), startTime, endTime);
 
         if (!conflictingAppointments.isEmpty()) {
-            throw new IllegalArgumentException("Appointment time conflicts with another appointment.");
+            throw new BusinessException("Appointment time conflicts with another appointment.");
         }
 
         Appointment appointment = appointmentMapper.toEntity(appointmentDTO);
@@ -57,7 +60,10 @@ public class AppointmentService {
 
     public Appointment updateAppointment(AppointmentDTO appointmentDTO) {
         Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointmentDTO.id());
-        if (optionalAppointment.isPresent()) {
+        if (optionalAppointment.isEmpty()) {
+            throw new EntityNotFoundException("Appointment with ID " + appointmentDTO.id() + " not found.");
+        }
+//        if (optionalAppointment.isPresent()) {
             Appointment appointment = optionalAppointment.get();
             LocalDateTime startTime = appointmentDTO.dateTime();
             LocalDateTime endTime = startTime.plusMinutes(appointmentDTO.duration());
@@ -66,7 +72,7 @@ public class AppointmentService {
                     appointmentDTO.doctorId(), startTime, endTime);
 
             if (!conflictingAppointments.isEmpty()) {
-                throw new IllegalArgumentException("Appointment time conflicts with another appointment.");
+                throw new BusinessException("Appointment time conflicts with another appointment.");
             }
 
             appointment.setDateTime(appointmentDTO.dateTime());
@@ -75,13 +81,16 @@ public class AppointmentService {
             appointment.setPatientId(appointmentDTO.patientId());
 
             return appointmentRepository.save(appointment);
-        }
-        return null;
+//        }
+//        return null;
     }
 
     public Long deleteAppointment(Long id) {
         Optional<Appointment> optionalAppointment = appointmentRepository.findById(id);
-        if (optionalAppointment.isPresent()) {
+        if (optionalAppointment.isEmpty()) {
+            throw new EntityNotFoundException("Appointment with ID " + id + " not found.");
+        }
+//        if (optionalAppointment.isPresent()) {
             Appointment appointment = optionalAppointment.get();
 
             appointmentRepository.deleteById(id);
@@ -92,7 +101,7 @@ public class AppointmentService {
                     appointment.getDoctorId()
             ));
             return id;
-        }
-        return null;
+//        }
+//        return null;
     }
 }

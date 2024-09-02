@@ -1,6 +1,7 @@
 package com.pramu.medify.doctor;
 
 import com.pramu.medify.kafka.AppointmentCancelledEvent;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,49 +29,50 @@ public class DoctorService {
 
     public Doctor createDoctor(DoctorDTO doctorDTO) {
         Doctor doctor = doctorMapper.toEntity(doctorDTO);
-        Doctor savedDoctor = doctorRepository.save(doctor);
-        return savedDoctor;
+        return doctorRepository.save(doctor);
     }
 
     public Doctor updateDoctor(DoctorDTO doctorDTO) {
         Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorDTO.id());
-        if (optionalDoctor.isPresent()) {
-            Doctor doctor = optionalDoctor.get();
 
-            if (doctorDTO.name() != null) {
-                doctor.setName(doctorDTO.name());
-            }
-            if (doctorDTO.mail() != null) {
-                doctor.setMail(doctorDTO.mail());
-            }
-            if (doctorDTO.phone() != null) {
-                doctor.setPhone(doctorDTO.phone());
-            }
-            if (doctorDTO.photo() != null) {
-                doctor.setPhoto(doctorDTO.photo());
-            }
-            if (doctorDTO.address() != null) {
-                doctor.setAddress(doctorDTO.address());
-            }
-            if (doctorDTO.specialization() != null) {
-                doctor.setSpecialization(doctorDTO.specialization());
-            }
-            if (doctorDTO.patientIds() != null) {
-                doctor.getPatientIds().addAll(doctorDTO.patientIds());
-            }
-            if (doctorDTO.medicalRecordIds() != null) {
-                doctor.getMedicalRecordIds().addAll(doctorDTO.medicalRecordIds());
-            }
-            if (doctorDTO.appointmentIds() != null) {
-                doctor.getAppointmentIds().addAll(doctorDTO.appointmentIds());
-            }
-            if (doctorDTO.treatmentIds() != null) {
-                doctor.getTreatmentIds().addAll(doctorDTO.treatmentIds());
-            }
-
-            return doctorRepository.save(doctor);
+        if (optionalDoctor.isEmpty()) {
+            throw new EntityNotFoundException("Doctor with ID " + doctorDTO.id() + " not found.");
         }
-        return null;
+        Doctor doctor = optionalDoctor.get();
+
+        if (doctorDTO.name() != null) {
+            doctor.setName(doctorDTO.name());
+        }
+        if (doctorDTO.mail() != null) {
+            doctor.setMail(doctorDTO.mail());
+        }
+        if (doctorDTO.phone() != null) {
+            doctor.setPhone(doctorDTO.phone());
+        }
+        if (doctorDTO.photo() != null) {
+            doctor.setPhoto(doctorDTO.photo());
+        }
+        if (doctorDTO.address() != null) {
+            doctor.setAddress(doctorDTO.address());
+        }
+        if (doctorDTO.specialization() != null) {
+            doctor.setSpecialization(doctorDTO.specialization());
+        }
+        if (doctorDTO.patientIds() != null) {
+            doctor.getPatientIds().addAll(doctorDTO.patientIds());
+        }
+        if (doctorDTO.medicalRecordIds() != null) {
+            doctor.getMedicalRecordIds().addAll(doctorDTO.medicalRecordIds());
+        }
+        if (doctorDTO.appointmentIds() != null) {
+            doctor.getAppointmentIds().addAll(doctorDTO.appointmentIds());
+        }
+        if (doctorDTO.treatmentIds() != null) {
+            doctor.getTreatmentIds().addAll(doctorDTO.treatmentIds());
+        }
+
+        return doctorRepository.save(doctor);
+
     }
 
     public void doctorPatientAssignUpdate(DoctorDTO doctorDTO) {

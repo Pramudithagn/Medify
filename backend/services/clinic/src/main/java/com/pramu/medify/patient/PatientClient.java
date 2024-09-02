@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @FeignClient(
         name = "patient-service",
         url = "${application.config.patient-url}"
@@ -14,5 +16,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface PatientClient {
 
     @GetMapping("/{id}")
-    PatientDTO getPatientById(@PathVariable("id") Long id);
+    Optional<PatientDTO> getPatientById(@PathVariable("id") Long id);
 }
