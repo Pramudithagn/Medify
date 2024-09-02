@@ -24,7 +24,8 @@ public class DoctorService {
 
     public DoctorDTO getDoctorById(Long id) {
         Optional<Doctor> doctor = doctorRepository.findById(id);
-        return doctor.map(doctorMapper::toDto).orElse(null);
+        return doctor.map(doctorMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found with ID:: " + id));
     }
 
     public Doctor createDoctor(DoctorDTO doctorDTO) {
@@ -77,15 +78,17 @@ public class DoctorService {
 
     public void doctorPatientAssignUpdate(DoctorDTO doctorDTO) {
         Optional<Doctor> optionalDoctor = doctorRepository.findById(doctorDTO.id());
-        if (optionalDoctor.isPresent()) {
-            Doctor doctor = optionalDoctor.get();
-
-            if (doctorDTO.patientIds() != null) {
-                doctor.getPatientIds().addAll(doctorDTO.patientIds());
-            }
-
-            doctorRepository.save(doctor);
+        if (optionalDoctor.isEmpty()) {
+            throw new EntityNotFoundException("Doctor tried to assign has not found. ID :" + doctorDTO.id());
         }
+        Doctor doctor = optionalDoctor.get();
+
+        if (doctorDTO.patientIds() != null) {
+            doctor.getPatientIds().addAll(doctorDTO.patientIds());
+        }
+
+        doctorRepository.save(doctor);
+
     }
 
     public void removeAppointment(AppointmentCancelledEvent event) {

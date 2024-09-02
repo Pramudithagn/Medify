@@ -2,6 +2,7 @@ package com.pramu.medify.record;
 
 import com.pramu.medify.doctor.DoctorClient;
 import com.pramu.medify.exception.BusinessException;
+import com.pramu.medify.exception.ResourceNotFoundException;
 import com.pramu.medify.kafka.AppointmentCreatedEvent;
 import com.pramu.medify.kafka.ClinicKafkaProducer;
 import com.pramu.medify.kafka.MedicalRecordCreatedEvent;
@@ -61,46 +62,51 @@ public class MedicalRecordService {
         ));
 
         return savedMedicalRecord;
-
     }
 
     public MedicalRecord updateMedicalRecord(MedicalRecordDTO medicalRecordDTO) {
         Optional<MedicalRecord> optionalMedicalRecord = medicalRecordRepository.findById(medicalRecordDTO.id());
-        if (optionalMedicalRecord.isPresent()) {
-            MedicalRecord medicalRecord = optionalMedicalRecord.get();
-            if (medicalRecordDTO.diagnosis() != null) {
-                medicalRecord.setDiagnosis(medicalRecordDTO.diagnosis());
-            }
-            if (medicalRecordDTO.prescription() != null) {
-                medicalRecord.setPrescription(medicalRecordDTO.prescription());
-            }
-            if (medicalRecordDTO.treatmentIds() != null) {
-                // Validate Treatments exist
-                List<Long> treatmentIds = medicalRecordDTO.treatmentIds();
-                treatmentIds.forEach(treatmentId -> treatmentClient.getTreatmentById(treatmentId)
-                        .orElseThrow(() -> new BusinessException("Can't create medical record:: Treatment with ID: " + treatmentId + "isn't available!"))
-                );
-                medicalRecord.setTreatmentIds(treatmentIds);
-            }
-            if (medicalRecordDTO.doctorId() != null) {
-                // Validate Doctor exists
-                doctorClient.getDoctorById(medicalRecordDTO.doctorId())
-                        .orElseThrow(() -> new BusinessException("Can't update medical record:: No doctor exists with the provided ID!"));;;
-                medicalRecord.setDoctorId(medicalRecordDTO.doctorId());
-            }
-            if (medicalRecordDTO.patientId() != null) {
-                // Validate Patient exists
-                patientClient.getPatientById(medicalRecordDTO.patientId())
-                        .orElseThrow(() -> new BusinessException("Can't update medical record:: No patient exists with the provided ID!"));
-                medicalRecord.setPatientId(medicalRecordDTO.patientId());
-            }
 
-            return medicalRecordRepository.save(medicalRecord);
+        if (optionalMedicalRecord.isEmpty()) {
+            throw new ResourceNotFoundException("Medical record with ID " + medicalRecordDTO.id() + " not found.");
         }
-        return null;
+
+        MedicalRecord medicalRecord = optionalMedicalRecord.get();
+
+        if (medicalRecordDTO.diagnosis() != null) {
+            medicalRecord.setDiagnosis(medicalRecordDTO.diagnosis());
+        }
+        if (medicalRecordDTO.prescription() != null) {
+            medicalRecord.setPrescription(medicalRecordDTO.prescription());
+        }
+        if (medicalRecordDTO.treatmentIds() != null) {
+            // Validate Treatments exist
+            List<Long> treatmentIds = medicalRecordDTO.treatmentIds();
+            treatmentIds.forEach(treatmentId -> treatmentClient.getTreatmentById(treatmentId)
+                    .orElseThrow(() -> new BusinessException("Can't create medical record:: Treatment with ID: " + treatmentId + "isn't available!"))
+            );
+            medicalRecord.setTreatmentIds(treatmentIds);
+        }
+        if (medicalRecordDTO.doctorId() != null) {
+            // Validate Doctor exists
+            doctorClient.getDoctorById(medicalRecordDTO.doctorId())
+                    .orElseThrow(() -> new BusinessException("Can't update medical record:: No doctor exists with the provided ID!"));;;
+            medicalRecord.setDoctorId(medicalRecordDTO.doctorId());
+        }
+        if (medicalRecordDTO.patientId() != null) {
+            // Validate Patient exists
+            patientClient.getPatientById(medicalRecordDTO.patientId())
+                    .orElseThrow(() -> new BusinessException("Can't update medical record:: No patient exists with the provided ID!"));
+            medicalRecord.setPatientId(medicalRecordDTO.patientId());
+        }
+
+        return medicalRecordRepository.save(medicalRecord);
     }
 
     public void deleteMedicalRecord(Long id) {
-        medicalRecordRepository.deleteById(id);
+//        medicalRecordRepository.deleteById(id);
+        MedicalRecord medicalRecord = medicalRecordRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("MedicalRecord not found with id " + id));
+        medicalRecordRepository.delete(medicalRecord);
     }
 }

@@ -1,9 +1,11 @@
 package com.pramu.medify.appointment;
 
+import com.pramu.medify.doctor.DoctorClient;
 import com.pramu.medify.exception.BusinessException;
 import com.pramu.medify.kafka.AppointmentCancelledEvent;
 import com.pramu.medify.kafka.AppointmentCreatedEvent;
 import com.pramu.medify.kafka.ClinicKafkaProducer;
+import com.pramu.medify.patient.PatientClient;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper appointmentMapper;
     private final ClinicKafkaProducer clinicKafkaProducer;
+    private final DoctorClient doctorClient;
+    private final PatientClient patientClient;
 
     public List<AppointmentDTO> getAllAppointments() {
         return appointmentRepository.findAll().stream()
@@ -34,6 +38,13 @@ public class AppointmentService {
     }
 
     public Appointment createAppointment(AppointmentDTO appointmentDTO) {
+
+        // Validate if Doctor and Patient exist
+        doctorClient.getDoctorById(appointmentDTO.doctorId())
+                .orElseThrow(() -> new BusinessException("Can't create appointment:: Assigned doctor doesn't exist!"));;
+        patientClient.getPatientById(appointmentDTO.patientId())
+                .orElseThrow(() -> new BusinessException("Can't create appointment:: Assigned patient doesn't exist!"));;
+
         // Check for conflicting appointments
         LocalDateTime startTime = appointmentDTO.dateTime();
         LocalDateTime endTime = startTime.plusMinutes(appointmentDTO.duration());
@@ -77,8 +88,8 @@ public class AppointmentService {
 
             appointment.setDateTime(appointmentDTO.dateTime());
             appointment.setDuration(appointmentDTO.duration());
-            appointment.setDoctorId(appointmentDTO.doctorId());
-            appointment.setPatientId(appointmentDTO.patientId());
+//            appointment.setDoctorId(appointmentDTO.doctorId());
+//            appointment.setPatientId(appointmentDTO.patientId());
 
             return appointmentRepository.save(appointment);
 //        }
