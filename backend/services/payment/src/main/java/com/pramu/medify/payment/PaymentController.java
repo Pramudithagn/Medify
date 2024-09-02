@@ -22,10 +22,10 @@ public class PaymentController {
     @GetMapping("/{id}")
     public ResponseEntity<PaymentDTO> getPaymentById(@PathVariable Long id) {
         PaymentDTO paymentDTO = paymentService.getPaymentById(id);
-        if (paymentDTO != null) {
+//        if (paymentDTO != null) {
             return new ResponseEntity<>(paymentDTO, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
@@ -36,15 +36,14 @@ public class PaymentController {
     @PutMapping
     public ResponseEntity<Payment> updatePayment(@RequestBody PaymentDTO paymentDTO) {
         Payment updatedPayment = paymentService.updatePayment(paymentDTO);
-        if (updatedPayment != null) {
+//        if (updatedPayment != null) {
             return new ResponseEntity<>(updatedPayment, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
-        paymentService.deletePayment(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Long> deletePayment(@PathVariable Long id) {
+        return new ResponseEntity<>(paymentService.deletePayment(id), HttpStatus.OK);
     }
 }

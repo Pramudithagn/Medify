@@ -22,37 +22,36 @@ public class AppointmentController {
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentDTO> getAppointmentById(@PathVariable Long id) {
         AppointmentDTO appointmentDTO = appointmentService.getAppointmentById(id);
-        if (appointmentDTO != null) {
+//        if (appointmentDTO != null) {
             return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
     public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-        try {
+//        try {
             return new ResponseEntity<>(appointmentService.createAppointment(appointmentDTO), HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>(HttpStatus.CONFLICT);
+//        }
     }
 
     @PutMapping
     public ResponseEntity<Appointment> updateAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-        try {
+//        try {
             Appointment updatedAppointment = appointmentService.updateAppointment(appointmentDTO);
-            if (updatedAppointment != null) {
+//            if (updatedAppointment != null) {
                 return new ResponseEntity<>(updatedAppointment, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+//            }
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>(HttpStatus.CONFLICT);
+//        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Long> deleteAppointment(@PathVariable Long id) {
-        Long delId = appointmentService.deleteAppointment(id);
-        return new ResponseEntity<>(delId, HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.deleteAppointment(id), HttpStatus.OK);
     }
 }

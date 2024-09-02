@@ -22,10 +22,10 @@ public class MedicalRecordController {
     @GetMapping("/{id}")
     public ResponseEntity<MedicalRecordDTO> getMedicalRecordById(@PathVariable Long id) {
         MedicalRecordDTO medicalRecordDTO = medicalRecordService.getMedicalRecordById(id);
-        if (medicalRecordDTO != null) {
+//        if (medicalRecordDTO != null) {
             return new ResponseEntity<>(medicalRecordDTO, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
@@ -36,15 +36,15 @@ public class MedicalRecordController {
     @PutMapping
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO) {
         MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(medicalRecordDTO);
-        if (updatedMedicalRecord != null) {
+//        if (updatedMedicalRecord != null) {
             return new ResponseEntity<>(updatedMedicalRecord, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedicalRecord(@PathVariable Long id) {
-        medicalRecordService.deleteMedicalRecord(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Long> deleteMedicalRecord(@PathVariable Long id) {
+
+        return new ResponseEntity<>(medicalRecordService.deleteMedicalRecord(id), HttpStatus.OK);
     }
 }

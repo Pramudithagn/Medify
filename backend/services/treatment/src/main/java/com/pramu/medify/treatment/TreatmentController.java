@@ -22,10 +22,10 @@ public class TreatmentController {
     @GetMapping("/{id}")
     public ResponseEntity<TreatmentDTO> getTreatmentById(@PathVariable Long id) {
         TreatmentDTO treatmentDTO = treatmentService.getTreatmentById(id);
-        if (treatmentDTO != null) {
+//        if (treatmentDTO != null) {
             return new ResponseEntity<>(treatmentDTO, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
@@ -36,15 +36,19 @@ public class TreatmentController {
     @PutMapping
     public ResponseEntity<Treatment> updateTreatment(@RequestBody TreatmentDTO treatmentDTO) {
         Treatment updatedTreatment = treatmentService.updateTreatment(treatmentDTO);
-        if (updatedTreatment != null) {
+//        if (updatedTreatment != null) {
             return new ResponseEntity<>(updatedTreatment, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/change-status/{id}")
+    public Treatment changeStatus(@PathVariable Long id) {
+        return treatmentService.changeStatus(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTreatment(@PathVariable Long id) {
-        treatmentService.deleteTreatment(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Long> deleteTreatment(@PathVariable Long id) {
+        return new ResponseEntity<>(treatmentService.deleteTreatment(id), HttpStatus.OK);
     }
 }

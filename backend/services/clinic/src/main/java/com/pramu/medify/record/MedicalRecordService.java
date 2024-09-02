@@ -103,10 +103,11 @@ public class MedicalRecordService {
         return medicalRecordRepository.save(medicalRecord);
     }
 
-    public void deleteMedicalRecord(Long id) {
+    public Long deleteMedicalRecord(Long id) {
 //        medicalRecordRepository.deleteById(id);
         MedicalRecord medicalRecord = medicalRecordRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("MedicalRecord not found with id " + id));
         medicalRecordRepository.delete(medicalRecord);
+        return id;
     }
 }
