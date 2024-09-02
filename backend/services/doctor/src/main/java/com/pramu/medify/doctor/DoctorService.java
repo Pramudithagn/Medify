@@ -73,7 +73,6 @@ public class DoctorService {
         }
 
         return doctorRepository.save(doctor);
-
     }
 
     public void doctorPatientAssignUpdate(DoctorDTO doctorDTO) {
@@ -88,24 +87,31 @@ public class DoctorService {
         }
 
         doctorRepository.save(doctor);
-
     }
 
     public void removeAppointment(AppointmentCancelledEvent event) {
         Optional<Doctor> optionalDoctor = doctorRepository.findById(event.doctorId());
-        if (optionalDoctor.isPresent()) {
-            Doctor doctor = optionalDoctor.get();
-
-            if (event.id() != null) {
-                doctor.getAppointmentIds().remove(event.id());
-            }
-
-            doctorRepository.save(doctor);
+        if (optionalDoctor.isEmpty()) {
+            throw new EntityNotFoundException("Doctor not found :" + event.doctorId());
         }
+        Doctor doctor = optionalDoctor.get();
+
+        if (event.id() != null) {
+            doctor.getAppointmentIds().remove(event.id());
+        }
+
+        doctorRepository.save(doctor);
     }
 
-    public void deleteDoctor(Long id) {
-        doctorRepository.deleteById(id);
-    }
+    public Long deleteDoctor(Long id) {
+        //        doctorRepository.deleteById(id);
+        Optional<Doctor> optionalDoctor = doctorRepository.findById(id);
+        if (optionalDoctor.isEmpty()) {
+            throw new EntityNotFoundException("Doctor with ID " + id + " not found.");
+        }
+        Doctor doctor = optionalDoctor.get();
 
+        doctorRepository.delete(doctor);
+        return id;
+    }
 }
