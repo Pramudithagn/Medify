@@ -1,10 +1,11 @@
+import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Topbar from "./scenes/global/Topbar";
 import Dashboard from "./scenes/dashboard/Dashboard";
-import { Route, Routes } from "react-router-dom";
 import Sidebar from "./scenes/global/Sidebar";
-import { useState } from "react";
+import { Treatments } from "./scenes/treatments/Treatments";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -21,6 +22,8 @@ function App() {
             {/* <Dashboard/> */}
             <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/treatments" element={<Treatments />} />
+
               
             </Routes>
           </main>

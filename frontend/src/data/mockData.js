@@ -1,5 +1,101 @@
 import { tokens } from "../theme";
 
+export const mockDoctorIds = [
+  "D001",
+  "D002",
+  "D003",
+  "D004",
+  "D005",
+  "D006",
+  "D007",
+  "D008",
+  "D009",
+  "D010",
+];
+
+export const mockDataTreatments = [
+  {
+    "id": 1,
+    "name": "Physical Therapy",
+    "description": "A treatment to help improve movement and reduce pain.",
+    "price": 100.00,
+    "status": true,
+    "doctorIds": [101, 102, 103]
+  },
+  {
+    "id": 2,
+    "name": "Chemotherapy",
+    "description": "A treatment that uses drugs to kill cancer cells.",
+    "price": 1500.00,
+    "status": true,
+    "doctorIds": [104, 105]
+  },
+  {
+    "id": 3,
+    "name": "Radiation Therapy",
+    "description": "A treatment that uses high-energy rays to kill cancer cells.",
+    "price": 2000.00,
+    "status": false,
+    "doctorIds": [106]
+  },
+  {
+    "id": 4,
+    "name": "Cardiac Rehabilitation",
+    "description": "A treatment program designed to improve cardiovascular health.",
+    "price": 750.00,
+    "status": true,
+    "doctorIds": [107, 108]
+  },
+  {
+    "id": 5,
+    "name": "Dialysis",
+    "description": "A procedure to remove waste products and excess fluid from the blood.",
+    "price": 500.00,
+    "status": true,
+    "doctorIds": [109, 110]
+  },
+  {
+    "id": 6,
+    "name": "Occupational Therapy",
+    "description": "A treatment to help people participate in the things they want and need to do through therapeutic use of everyday activities.",
+    "price": 120.00,
+    "status": true,
+    "doctorIds": [111]
+  },
+  {
+    "id": 7,
+    "name": "Speech Therapy",
+    "description": "A treatment that helps with speech, language, and swallowing disorders.",
+    "price": 80.00,
+    "status": true,
+    "doctorIds": [112, 113]
+  },
+  {
+    "id": 8,
+    "name": "Chiropractic Care",
+    "description": "A treatment focusing on disorders of the musculoskeletal system and the nervous system.",
+    "price": 90.00,
+    "status": false,
+    "doctorIds": [114, 115, 116]
+  },
+  {
+    "id": 9,
+    "name": "Acupuncture",
+    "description": "A treatment involving the insertion of thin needles through the skin at specific points.",
+    "price": 70.00,
+    "status": true,
+    "doctorIds": [117]
+  },
+  {
+    "id": 10,
+    "name": "Nutritional Therapy",
+    "description": "A treatment focusing on improving health through a well-balanced diet.",
+    "price": 60.00,
+    "status": true,
+    "doctorIds": [118, 119]
+  }
+];
+
 export const mockDataTeam = [
   {
     id: 1,
