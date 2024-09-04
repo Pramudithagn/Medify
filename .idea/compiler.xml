@@ -10,10 +10,12 @@
         <module name="doctor" />
         <module name="config-server" />
         <module name="treatment" />
+        <module name="notification" />
         <module name="discovery" />
         <module name="patient" />
         <module name="payment" />
         <module name="clinic" />
+        <module name="gateway" />
       </profile>
     </annotationProcessing>
   </component>
@@ -23,6 +25,8 @@
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />
       <module name="doctor" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="notification" options="-parameters" />
       <module name="patient" options="-parameters" />
       <module name="payment" options="-parameters" />
       <module name="treatment" options="-parameters" />
