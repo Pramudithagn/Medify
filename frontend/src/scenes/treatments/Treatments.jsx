@@ -884,6 +884,7 @@ export const Treatments = () => {
         <DataGrid
           rows={treatments}
           columns={columns}
+          disableRowSelectionOnClick 
           slots={{
             toolbar: CustomToolbar,
           }}

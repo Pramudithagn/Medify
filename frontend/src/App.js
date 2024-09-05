@@ -7,6 +7,7 @@ import Dashboard from "./scenes/dashboard/Dashboard";
 import Sidebar from "./scenes/global/Sidebar";
 import { Treatments } from "./scenes/treatments/Treatments";
 import Payments from "./scenes/payments/Payments";
+import Records from "./scenes/records/Records";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -25,6 +26,8 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/treatments" element={<Treatments />} />
             <Route path="/payments" element={<Payments />} />
+            <Route path="/medical-records" element={<Records />} />
+
 
 
               

@@ -437,7 +437,7 @@ const PaymentPage = () => {
         <DataGrid
           rows={payments}
           columns={columns}
-          disableSelectionOnClick
+          disableRowSelectionOnClick 
           slots={{
             toolbar: CustomToolbar,
           }}
