@@ -1,5 +1,6 @@
 package com.pramu.medify.patient;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public record PatientDTO(
@@ -9,9 +10,9 @@ public record PatientDTO(
         String phone,
         String photo,
         String gender,
-        String dob,
+        LocalDateTime dob,
         Address address,
-        String assignedDate,
+        LocalDateTime assignedDate,
         String bloodGroup,
         Integer age,
         Double weight,

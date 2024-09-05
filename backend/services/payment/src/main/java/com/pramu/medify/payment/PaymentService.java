@@ -69,6 +69,9 @@ public class PaymentService {
         if (paymentDTO.patientId() != null) {
             payment.setPatientId(paymentDTO.patientId());
         }
+        if (paymentDTO.medicalRecordId() != null) {
+            payment.setPatientId(paymentDTO.medicalRecordId());
+        }
 
         return paymentRepository.save(payment);
     }

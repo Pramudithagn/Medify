@@ -13,7 +13,8 @@ public class PaymentMapper {
                 payment.getAmount(),
                 payment.getMethod(),
                 payment.getStatus(),
-                payment.getPatientId()
+                payment.getPatientId(),
+                payment.getMedicalRecordId()
         );
     }
 
@@ -25,6 +26,7 @@ public class PaymentMapper {
                 .method(dto.method())
                 .status(dto.status())
                 .patientId(dto.patientId())
+                .medicalRecordId(dto.medicalRecordId())
                 .build();
     }
 }

@@ -2,6 +2,8 @@ package com.pramu.medify.patient;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -20,8 +22,8 @@ public class Patient {
     private String phone;
     private String photo;
     private String gender;
-    private String dob;
-    private String assignedDate;
+    private LocalDateTime dob;
+    private LocalDateTime assignedDate;
     private String bloodGroup;
     private Integer age;
     private Double weight;
