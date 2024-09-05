@@ -10,9 +10,12 @@ public class MedicalRecordMapper {
                 medicalRecord.getId(),
                 medicalRecord.getDiagnosis(),
                 medicalRecord.getPrescription(),
+                medicalRecord.getAssignDate(),
+                medicalRecord.getPrice(),
                 medicalRecord.getTreatmentIds(),
                 medicalRecord.getDoctorId(),
-                medicalRecord.getPatientId()
+                medicalRecord.getPatientId(),
+                medicalRecord.getPaymentId()
         );
     }
 
@@ -20,9 +23,12 @@ public class MedicalRecordMapper {
         return MedicalRecord.builder()
                 .diagnosis(dto.diagnosis())
                 .prescription(dto.prescription())
+                .assignDate(dto.assignDate())
+                .price(dto.price())
                 .treatmentIds(dto.treatmentIds())
                 .doctorId(dto.doctorId())
                 .patientId(dto.patientId())
+                .paymentId(dto.paymentId())
                 .build();
     }
 }

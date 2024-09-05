@@ -1,20 +1,18 @@
-package com.pramu.medify.patient;
+package com.pramu.medify.payment;
 
-import com.pramu.medify.patient.PatientDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Optional;
 
 @FeignClient(
-        name = "patient-service",
-        url = "${application.config.patient-url}"
+        name = "payment-service",
+        url = "${application.config.payment-url}"
 )
-//@RequestMapping("/api/v1/patients")
-public interface PatientClient {
+public interface PaymentClient {
 
-    @GetMapping("/{id}")
-    Optional<PatientDTO> getPatientById(@PathVariable("id") Long id);
+    @PostMapping()
+    Optional<PaymentDTO> createPayment(PaymentDTO paymentDTO);
 }

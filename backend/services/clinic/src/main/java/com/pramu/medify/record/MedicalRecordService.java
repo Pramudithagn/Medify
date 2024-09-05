@@ -7,11 +7,15 @@ import com.pramu.medify.kafka.AppointmentCreatedEvent;
 import com.pramu.medify.kafka.ClinicKafkaProducer;
 import com.pramu.medify.kafka.MedicalRecordCreatedEvent;
 import com.pramu.medify.patient.PatientClient;
+import com.pramu.medify.payment.PaymentClient;
+import com.pramu.medify.payment.PaymentDTO;
 import com.pramu.medify.treatment.TreatmentClient;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +30,7 @@ public class MedicalRecordService {
     private final PatientClient patientClient;
     private final TreatmentClient treatmentClient;
     private final ClinicKafkaProducer clinicKafkaProducer;
+    private final PaymentClient paymentClient;
 
     public List<MedicalRecordDTO> getAllMedicalRecords() {
         return medicalRecordRepository.findAll().stream()
@@ -52,13 +57,34 @@ public class MedicalRecordService {
                 .orElseThrow(() -> new BusinessException("Can't create medical record:: Treatment with ID: " + treatmentId + "isn't available!"))
         );
 
+        // Create Payment entry
+        Optional<PaymentDTO> optionalPaymentDTO = paymentClient.createPayment(new PaymentDTO(
+                null,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(7),
+                medicalRecordDTO.price(),
+                null,
+                "unpaid",
+                medicalRecordDTO.patientId(),
+                null
+        ));
+
+        if (optionalPaymentDTO.isEmpty()) {
+            throw new BusinessException("Payment creation failed for medical record creation!..");
+        }
+        PaymentDTO paymentDTO = optionalPaymentDTO.get();
+
+        // Create Medical Record
         MedicalRecord medicalRecord = medicalRecordMapper.toEntity(medicalRecordDTO);
+        medicalRecord.setAssignDate(LocalDateTime.now());
+        medicalRecord.setPaymentId(paymentDTO.id());
         MedicalRecord savedMedicalRecord = medicalRecordRepository.save(medicalRecord);
 
         clinicKafkaProducer.publishMedicalRecordCreatedEvent(new MedicalRecordCreatedEvent(
                 savedMedicalRecord.getId(),
                 savedMedicalRecord.getPatientId(),
-                savedMedicalRecord.getDoctorId()
+                savedMedicalRecord.getDoctorId(),
+                paymentDTO.id()
         ));
 
         return savedMedicalRecord;

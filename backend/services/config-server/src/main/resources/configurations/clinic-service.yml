@@ -26,3 +26,4 @@ application:
     treatment-url: http://localhost:9000/api/v1/treatments
     patient-url: http://localhost:9000/api/v1/patients
     doctor-url: http://localhost:9000/api/v1/doctors
+    payment-url: http://localhost:9000/api/v1/payments

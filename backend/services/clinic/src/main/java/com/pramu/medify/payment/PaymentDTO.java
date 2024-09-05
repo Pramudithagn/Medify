@@ -1,20 +1,16 @@
-package com.pramu.medify.patient;
+package com.pramu.medify.payment;
 
-import com.pramu.medify.doctor.Address;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public record PatientDTO(
+public record PaymentDTO(
         Long id,
-        String name,
-        String mail,
-        String phone,
-        String photo,
-        String gender,
-        String dob,
-        Address address,
-        String bloodGroup,
-        Integer age,
-        Double weight,
-        Double height,
-        String allergies
+        LocalDateTime issueDate,
+        LocalDateTime dueDate,
+        BigDecimal amount,
+        String method,
+        String status,
+        Long patientId,
+        Long medicalRecordId
 ) {
 }

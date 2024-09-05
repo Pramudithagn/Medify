@@ -51,6 +51,8 @@ public class PaymentService {
         }
         Payment payment = optionalPayment.get();
 
+        System.out.println("med rec with ID "+paymentDTO.medicalRecordId());
+
         if (paymentDTO.issueDate() != null) {
             payment.setIssueDate(paymentDTO.issueDate());
         }
@@ -70,7 +72,7 @@ public class PaymentService {
             payment.setPatientId(paymentDTO.patientId());
         }
         if (paymentDTO.medicalRecordId() != null) {
-            payment.setPatientId(paymentDTO.medicalRecordId());
+            payment.setMedicalRecordId(paymentDTO.medicalRecordId());
         }
 
         return paymentRepository.save(payment);
