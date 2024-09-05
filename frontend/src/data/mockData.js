@@ -96,6 +96,129 @@ export const mockDataTreatments = [
   }
 ];
 
+export const mockDataPayments = [
+  {
+    "id": 1,
+    "issueDate": "2024-01-15T09:30:00",
+    "dueDate": "2024-01-30T23:59:59",
+    "amount": 150.50,
+    "method": "Credit Card",
+    "status": "paid",
+    "patientId": 1,
+    "medicalRecordId": 101
+  },
+  {
+    "id": 2,
+    "issueDate": "2024-02-01T10:15:00",
+    "dueDate": "2024-02-15T23:59:59",
+    "amount": 200.75,
+    "method": "PayPal",
+    "status": "unpaid",
+    "patientId": 2,
+    "medicalRecordId": 102
+  },
+  {
+    "id": 3,
+    "issueDate": "2024-02-20T14:00:00",
+    "dueDate": "2024-03-05T23:59:59",
+    "amount": 320.00,
+    "method": "Bank Transfer",
+    "status": "failed",
+    "patientId": 3,
+    "medicalRecordId": 103
+  },
+  {
+    "id": 4,
+    "issueDate": "2024-03-10T11:00:00",
+    "dueDate": "2024-03-25T23:59:59",
+    "amount": 125.00,
+    "method": "Cash",
+    "status": "paid",
+    "patientId": 4,
+    "medicalRecordId": 104
+  },
+  {
+    "id": 5,
+    "issueDate": "2024-03-15T08:45:00",
+    "dueDate": "2024-03-29T23:59:59",
+    "amount": 275.00,
+    "method": "Credit Card",
+    "status": "reviewing",
+    "patientId": 5,
+    "medicalRecordId": 105
+  },
+  {
+    "id": 6,
+    "issueDate": "2024-04-01T15:30:00",
+    "dueDate": "2024-04-15T23:59:59",
+    "amount": 500.00,
+    "method": "PayPal",
+    "status": "unpaid",
+    "patientId": 6,
+    "medicalRecordId": 106
+  },
+  {
+    "id": 7,
+    "issueDate": "2024-04-10T13:00:00",
+    "dueDate": "2024-04-24T23:59:59",
+    "amount": 300.00,
+    "method": "Bank Transfer",
+    "status": "failed",
+    "patientId": 7,
+    "medicalRecordId": 107
+  },
+  {
+    "id": 8,
+    "issueDate": "2024-05-05T12:00:00",
+    "dueDate": "2024-05-20T23:59:59",
+    "amount": 350.00,
+    "method": "Credit Card",
+    "status": "paid",
+    "patientId": 8,
+    "medicalRecordId": 108
+  },
+  {
+    "id": 9,
+    "issueDate": "2024-05-10T09:30:00",
+    "dueDate": "2024-05-24T23:59:59",
+    "amount": 420.50,
+    "method": "Cash",
+    "status": "reviewing",
+    "patientId": 9,
+    "medicalRecordId": 109
+  },
+  {
+    "id": 10,
+    "issueDate": "2024-06-01T16:00:00",
+    "dueDate": "2024-06-15T23:59:59",
+    "amount": 225.00,
+    "method": "PayPal",
+    "status": "paid",
+    "patientId": 10,
+    "medicalRecordId": 110
+  },
+  {
+    "id": 11,
+    "issueDate": "2024-06-15T11:45:00",
+    "dueDate": "2024-06-30T23:59:59",
+    "amount": 275.75,
+    "method": "Bank Transfer",
+    "status": "unpaid",
+    "patientId": 11,
+    "medicalRecordId": 111
+  },
+  {
+    "id": 12,
+    "issueDate": "2024-07-01T10:00:00",
+    "dueDate": "2024-07-15T23:59:59",
+    "amount": 150.00,
+    "method": "Cash",
+    "status": "failed",
+    "patientId": 12,
+    "medicalRecordId": 112
+  }
+];
+
 export const mockDataTeam = [
   {
     id: 1,
