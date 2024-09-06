@@ -891,7 +891,7 @@ export const Treatments = () => {
         />
       </Box>
 
-      {/* Modal for managing treatment */}
+      {/* Modal for editing treatment */}
       <Modal open={open} onClose={handleClose}>
         <Box
           p={4}
@@ -899,8 +899,8 @@ export const Treatments = () => {
             position: "absolute",
             top: "50%",
             left: "50%",
-            transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
+            transform: "translate(-50%, -50%)", 
+            backgroundColor: colors.grey[800],
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 500,
@@ -915,16 +915,16 @@ export const Treatments = () => {
             "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
               backgroundColor: grey[600],
             },
-            "& .MuiButton-contained": {
-              backgroundColor: `${colors.greenAccent[600]} !important`,
-              color: `${colors.grey[100]} !important`,
-              "&:hover": {},
-            },
-            "& .MuiButton-outlined": {
-              backgroundColor: `${colors.redAccent[500]} !important`,
-              color: `${colors.grey[100]} !important`,
-              "&:hover": {},
-            },
+            // "& .MuiButton-contained": {
+            //   backgroundColor: `${colors.greenAccent[600]} !important`,
+            //   color: `${colors.grey[100]} !important`,
+            //   "&:hover": {},
+            // },
+            // "& .MuiButton-outlined": {
+            //   backgroundColor: `${colors.redAccent[500]} !important`,
+            //   color: `${colors.grey[100]} !important`,
+            //   "&:hover": {},
+            // },
           }}
         >
           <h1 id="parent-modal-title">Update Treatment</h1>
@@ -984,10 +984,10 @@ export const Treatments = () => {
             />
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button variant="contained" onClick={handleSave}>
+            <Button variant="contained" onClick={handleSave} sx={{backgroundColor: colors.greenAccent[600] }}>
               Save Changes
             </Button>
-            <Button variant="outlined" onClick={handleClose}>
+            <Button variant="contained" onClick={handleClose} sx={{backgroundColor: colors.grey[600] }}>
               Cancel
             </Button>
           </Box>
@@ -1036,7 +1036,7 @@ export const Treatments = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            bgcolor: "background.paper",
+            bgcolor: colors.grey[800],
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 500,
@@ -1051,16 +1051,16 @@ export const Treatments = () => {
             "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
               backgroundColor: grey[600],
             },
-            "& .MuiButton-contained": {
-              backgroundColor: `${colors.greenAccent[600]} !important`,
-              color: `${colors.grey[100]} !important`,
-              "&:hover": {},
-            },
-            "& .MuiButton-outlined": {
-              backgroundColor: `${colors.redAccent[500]} !important`,
-              color: `${colors.grey[100]} !important`,
-              "&:hover": {},
-            },
+            // "& .MuiButton-contained": {
+            //   backgroundColor: `${colors.greenAccent[600]} !important`,
+            //   color: `${colors.grey[100]} !important`,
+            //   "&:hover": {},
+            // },
+            // "& .MuiButton-outlined": {
+            //   backgroundColor: `${colors.redAccent[500]} !important`,
+            //   color: `${colors.grey[100]} !important`,
+            //   "&:hover": {},
+            // },
           }}
         >
           <h1 id="parent-modal-title">Create New Treatment</h1>
@@ -1120,10 +1120,10 @@ export const Treatments = () => {
             />
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button variant="contained" onClick={handleSave}>
+            <Button variant="contained" onClick={handleSave} sx={{backgroundColor: colors.greenAccent[600] }}>
               Save New Treatment
             </Button>
-            <Button variant="outlined" onClick={handleClose}>
+            <Button variant="contained" onClick={handleClose} sx={{backgroundColor: colors.grey[600] }}>
               Cancel
             </Button>
           </Box>

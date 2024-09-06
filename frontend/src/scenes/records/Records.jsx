@@ -1877,7 +1877,7 @@ const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
+  // bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: 2,
   p: 4,
@@ -2028,7 +2028,7 @@ const Records = () => {
 //       </Box> */}
 
         {/* Record List */}
-        <Box sx={{ overflowY: "auto", maxHeight: "55vh"}}>
+        <Box sx={{ overflowY: "auto", maxHeight: "55vh" }}>
           {paginatedRecords.map((record) => (
             <Card
               key={record.id}
@@ -2188,7 +2188,6 @@ const Records = () => {
             >
               {/* Next */}
               <ArrowForwardIcon />
-
             </Button>
           </Box>
         </Box>
@@ -2218,7 +2217,7 @@ const Records = () => {
 
         {/* Edit Record Modal */}
         <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
-          <Box p={4} sx={{ ...modalStyle }}>
+          <Box p={4} sx={{ ...modalStyle, backgroundColor: colors.grey[800] }}>
             {selectedRecord && (
               <>
                 <TextField
@@ -2302,7 +2301,16 @@ const Records = () => {
                     </Box>
                   ))}
                 </Box>
-                <Button variant="contained" onClick={handleEditSave}>
+                <Button
+                  variant="contained"
+                  onClick={handleEditSave}
+                  sx={{
+                    // color: colors.greenAccent[400]
+                    backgroundColor: colors.greenAccent[600],
+                    width: "50%",
+                    ml: "25%"
+                  }}
+                >
                   Save Changes
                 </Button>
               </>
@@ -2312,14 +2320,22 @@ const Records = () => {
 
         {/* Delete Confirmation Modal */}
         <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
-          <Box p={4} sx={{ ...modalStyle }}>
+          <Box p={4} sx={{ ...modalStyle, backgroundColor: colors.grey[800]  }}>
             <Typography>
               Are you sure you want to delete this record?
             </Typography>
-            <Button variant="contained" onClick={handleDeleteConfirm}>
+            <Button variant="contained" onClick={handleDeleteConfirm}
+            sx={{
+              // color: colors.greenAccent[400]
+              backgroundColor: colors.redAccent[600],
+            }}>
               Confirm
             </Button>
-            <Button variant="outlined" onClick={() => setOpenDelete(false)}>
+            <Button variant="contained" onClick={() => setOpenDelete(false)}
+              sx={{
+                // color: colors.greenAccent[400]
+                backgroundColor: colors.grey[600],
+              }}>
               Cancel
             </Button>
           </Box>
