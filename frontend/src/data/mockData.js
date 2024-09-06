@@ -219,6 +219,143 @@ export const mockDataPayments = [
   }
 ];
 
+export const mockDataRecords = [
+  {
+    "id": 1,
+    "diagnosis": "Hypertension",
+    "prescription": "Amlodipine 5mg",
+    "assignDate": "2024-08-30T10:15:30",
+    "price": 250.00,
+    "treatmentIds": [1, 2],
+    "doctorId": 101,
+    "patientId": 201,
+    "paymentId": 301
+  },
+  {
+    "id": 2,
+    "diagnosis": "Type 2 Diabetes",
+    "prescription": "Metformin 500mg",
+    "assignDate": "2024-08-29T11:00:00",
+    "price": 300.00,
+    "treatmentIds": [3],
+    "doctorId": 102,
+    "patientId": 202,
+    "paymentId": 302
+  },
+  {
+    "id": 3,
+    "diagnosis": "Asthma",
+    "prescription": "Salbutamol Inhaler",
+    "assignDate": "2024-08-28T09:45:00",
+    "price": 150.00,
+    "treatmentIds": [4],
+    "doctorId": 103,
+    "patientId": 203,
+    "paymentId": 303
+  },
+  {
+    "id": 4,
+    "diagnosis": "Migraine",
+    "prescription": "Sumatriptan 50mg",
+    "assignDate": "2024-08-27T15:30:00",
+    "price": 120.00,
+    "treatmentIds": [5, 6],
+    "doctorId": 104,
+    "patientId": 204,
+    "paymentId": 304
+  },
+  {
+    "id": 5,
+    "diagnosis": "Hypercholesterolemia",
+    "prescription": "Atorvastatin 20mg",
+    "assignDate": "2024-08-26T14:00:00",
+    "price": 200.00,
+    "treatmentIds": [7],
+    "doctorId": 105,
+    "patientId": 205,
+    "paymentId": 305
+  },
+  {
+    "id": 6,
+    "diagnosis": "Arthritis",
+    "prescription": "Ibuprofen 400mg",
+    "assignDate": "2024-08-25T13:00:00",
+    "price": 220.00,
+    "treatmentIds": [8],
+    "doctorId": 106,
+    "patientId": 206,
+    "paymentId": 306
+  },
+  {
+    "id": 7,
+    "diagnosis": "Bronchitis",
+    "prescription": "Amoxicillin 500mg",
+    "assignDate": "2024-08-24T12:00:00",
+    "price": 180.00,
+    "treatmentIds": [9, 10],
+    "doctorId": 107,
+    "patientId": 207,
+    "paymentId": 307
+  },
+  {
+    "id": 8,
+    "diagnosis": "Gastritis",
+    "prescription": "Omeprazole 20mg",
+    "assignDate": "2024-08-23T11:15:00",
+    "price": 160.00,
+    "treatmentIds": [11],
+    "doctorId": 108,
+    "patientId": 208,
+    "paymentId": 308
+  },
+  {
+    "id": 9,
+    "diagnosis": "Pneumonia",
+    "prescription": "Azithromycin 500mg",
+    "assignDate": "2024-08-22T10:30:00",
+    "price": 280.00,
+    "treatmentIds": [12],
+    "doctorId": 109,
+    "patientId": 209,
+    "paymentId": 309
+  },
+  {
+    "id": 10,
+    "diagnosis": "Tonsillitis",
+    "prescription": "Paracetamol 500mg",
+    "assignDate": "2024-08-21T09:30:00",
+    "price": 130.00,
+    "treatmentIds": [13, 14],
+    "doctorId": 110,
+    "patientId": 210,
+    "paymentId": 310
+  },
+  {
+    "id": 11,
+    "diagnosis": "Gout",
+    "prescription": "Allopurinol 100mg",
+    "assignDate": "2024-08-20T08:30:00",
+    "price": 240.00,
+    "treatmentIds": [15],
+    "doctorId": 111,
+    "patientId": 211,
+    "paymentId": 311
+  },
+  {
+    "id": 12,
+    "diagnosis": "Anemia",
+    "prescription": "Ferrous Sulfate 200mg",
+    "assignDate": "2024-08-19T07:45:00",
+    "price": 260.00,
+    "treatmentIds": [16],
+    "doctorId": 112,
+    "patientId": 212,
+    "paymentId": 312
+  }
+];
+
+export const mockTreatmentIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
+
 export const mockDataTeam = [
   {
     id: 1,

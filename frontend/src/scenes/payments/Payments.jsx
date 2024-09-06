@@ -232,9 +232,9 @@ import {
   GridToolbarFilterButton,
 } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material";
-import { tokens } from "../../theme"; // your theme token
-import Header from "../../components/Header"; // your header component
-import { mockDataPayments } from "../../data/mockData"; // assuming mock data
+import { tokens } from "../../theme";
+import Header from "../../components/Header";
+import { mockDataPayments } from "../../data/mockData";
 
 function CustomToolbar() {
   return (
