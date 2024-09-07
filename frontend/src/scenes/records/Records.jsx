@@ -1871,6 +1871,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SearchIcon from "@mui/icons-material/Search";
 
 const modalStyle = {
   position: "absolute",
@@ -1975,7 +1976,7 @@ const Records = () => {
             pb: 2,
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            // justifyContent: "space-between",
             borderBottom: `1px solid ${colors.grey[700]}`,
           }}
         >
@@ -2002,6 +2003,7 @@ const Records = () => {
             // sx={{ flexGrow: 1 }}
             sx={{ backgroundColor: colors.grey[800], borderRadius: 1 }}
           />
+          <SearchIcon sx={{ marginLeft: 1 }} />
         </Box>
 
         {/* Mini Header Bar */}
