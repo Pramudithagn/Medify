@@ -2,6 +2,8 @@ package com.pramu.medify.doctor;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -15,10 +17,12 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String uuid;
     private String name;
     private String mail;
     private String phone;
     private String photo;
+    private LocalDateTime assignedDate;
     private String specialization;
 
     @Embedded

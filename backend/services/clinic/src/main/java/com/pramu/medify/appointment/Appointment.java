@@ -16,9 +16,9 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String title;
     private LocalDateTime dateTime;
-    private int duration; // Duration in minutes
+    private int duration;
 
     @Column(name = "doctor_id")
     private Long doctorId;

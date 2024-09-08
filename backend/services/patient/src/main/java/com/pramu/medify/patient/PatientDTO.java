@@ -5,6 +5,7 @@ import java.util.Set;
 
 public record PatientDTO(
         Long id,
+        String uuid,
         String name,
         String mail,
         String phone,

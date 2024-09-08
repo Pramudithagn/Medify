@@ -8,6 +8,7 @@ public class PatientMapper {
     public PatientDTO toDto(Patient patient) {
         return new PatientDTO(
                 patient.getId(),
+                patient.getUuid(),
                 patient.getName(),
                 patient.getMail(),
                 patient.getPhone(),
@@ -30,6 +31,7 @@ public class PatientMapper {
 
     public Patient toEntity(PatientDTO dto) {
         return Patient.builder()
+                .uuid(dto.uuid())
                 .name(dto.name())
                 .mail(dto.mail())
                 .phone(dto.phone())

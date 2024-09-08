@@ -8,6 +8,7 @@ public class AppointmentMapper {
     public AppointmentDTO toDto(Appointment appointment) {
         return new AppointmentDTO(
                 appointment.getId(),
+                appointment.getTitle(),
                 appointment.getDateTime(),
                 appointment.getDuration(),
                 appointment.getDoctorId(),
@@ -17,6 +18,7 @@ public class AppointmentMapper {
 
     public Appointment toEntity(AppointmentDTO dto) {
         return Appointment.builder()
+                .title(dto.title())
                 .dateTime(dto.dateTime())
                 .duration(dto.duration())
                 .doctorId(dto.doctorId())

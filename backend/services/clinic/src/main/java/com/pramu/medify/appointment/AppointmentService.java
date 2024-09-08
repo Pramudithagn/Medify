@@ -86,6 +86,9 @@ public class AppointmentService {
                 throw new BusinessException("Appointment time conflicts with another appointment.");
             }
 
+            if (appointmentDTO.title() != null) {
+                appointment.setTitle(appointmentDTO.title());
+            }
             appointment.setDateTime(appointmentDTO.dateTime());
             appointment.setDuration(appointmentDTO.duration());
 //            appointment.setDoctorId(appointmentDTO.doctorId());

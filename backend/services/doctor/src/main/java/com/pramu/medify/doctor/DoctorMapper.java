@@ -11,10 +11,12 @@ public class DoctorMapper {
         }
         return new DoctorDTO(
                 doctor.getId(),
+                doctor.getUuid(),
                 doctor.getName(),
                 doctor.getMail(),
                 doctor.getPhone(),
                 doctor.getPhoto(),
+                doctor.getAssignedDate(),
                 doctor.getAddress(),
                 doctor.getSpecialization(),
                 doctor.getPatientIds(),
@@ -29,10 +31,12 @@ public class DoctorMapper {
             return null;
         }
         return Doctor.builder()
+                .uuid(dto.uuid())
                 .name(dto.name())
                 .mail(dto.mail())
                 .phone(dto.phone())
                 .photo(dto.photo())
+                .assignedDate(dto.assignedDate())
                 .address(dto.address())
                 .specialization(dto.specialization())
                 .patientIds(dto.patientIds())

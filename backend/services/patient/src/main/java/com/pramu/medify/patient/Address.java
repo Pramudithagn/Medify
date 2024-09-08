@@ -14,5 +14,6 @@ import org.springframework.validation.annotation.Validated;
 public class Address {
     private String street;
     private String houseNumber;
+    private String city;
     private Long zipCode;
 }
