@@ -10,6 +10,7 @@ import Payments from "./scenes/payments/Payments";
 import Records from "./scenes/records/Records";
 import Appointments from "./scenes/appointments/Appointments";
 import Doctors from "./scenes/doctors/Doctors";
+import Patients from "./scenes/patients/Patients";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -31,6 +32,7 @@ function App() {
             <Route path="/medical-records" element={<Records />} />
             <Route path="/appointments" element={<Appointments />} />   
             <Route path="/doctors" element={<Doctors />} />              
+            <Route path="/patients" element={<Patients />} />              
            
             </Routes>
           </main>

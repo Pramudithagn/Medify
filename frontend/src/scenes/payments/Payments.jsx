@@ -222,6 +222,7 @@ import {
   Fab,
   InputLabel,
   FormControl,
+  Typography,
 } from "@mui/material";
 import {
   DataGrid,
@@ -275,7 +276,7 @@ const PaymentPage = () => {
   const handleClose = () => {
     setOpen(false);
     // setPaymentMethod("");
-    setSelectedMethod("")
+    setSelectedMethod("");
   };
 
   const handleMethodChange = (event) => {
@@ -302,7 +303,7 @@ const PaymentPage = () => {
         : payment
     );
 
-        // Call backend process payment
+    // Call backend process payment
 
     setPayments(updatedPayments);
     setOpen(false);
@@ -331,7 +332,7 @@ const PaymentPage = () => {
       headerName: "Medical Record ID",
       width: 0,
       flex: 1,
-      renderCell: (params) => params.row.medicalRecordId || "N/A", 
+      renderCell: (params) => params.row.medicalRecordId || "N/A",
     },
     {
       field: "amount",
@@ -437,7 +438,7 @@ const PaymentPage = () => {
         <DataGrid
           rows={payments}
           columns={columns}
-          disableRowSelectionOnClick 
+          disableRowSelectionOnClick
           slots={{
             toolbar: CustomToolbar,
           }}
@@ -453,7 +454,7 @@ const PaymentPage = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            bgcolor: colors.grey[800],
+            bgcolor: colors.primary[400],
             boxShadow: 24,
             borderRadius: 2,
             display: "flex",
@@ -463,7 +464,11 @@ const PaymentPage = () => {
             width: 400,
           }}
         >
-          <h2 id="parent-modal-title">Payment Method</h2>
+          {/* <h2 id="parent-modal-title">Payment Method</h2> */}
+
+          <Typography variant="h3" padding={3} align="center">
+            Payment Method
+          </Typography>
 
           <FormControl fullWidth sx={{ gap: 2 }}>
             <TextField

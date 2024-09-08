@@ -10,10 +10,11 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
-import PaidIcon from '@mui/icons-material/Paid';
-import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
-import HealingIcon from '@mui/icons-material/Healing';
+import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
+import PaidIcon from "@mui/icons-material/Paid";
+import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
+import HealingIcon from "@mui/icons-material/Healing";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -183,6 +184,13 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
+              title="Register"
+              to="/register"
+              icon={<PersonAddAltIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Profile"
               to="/profile"
               icon={<PersonOutlinedIcon />}
@@ -204,7 +212,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
           </Box>
         </Menu>
       </ProSidebar>

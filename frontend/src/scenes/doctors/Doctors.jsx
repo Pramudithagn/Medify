@@ -807,7 +807,6 @@
 
 //======================================================================================================================================================
 
-
 // import React, { useState } from "react";
 // import {
 //   Box,
@@ -982,7 +981,7 @@
 //         <DataGrid
 //           rows={doctors}
 //           columns={columns}
-//           disableRowSelectionOnClick 
+//           disableRowSelectionOnClick
 //           slots={{
 //             toolbar: CustomToolbar,
 //           }}
@@ -1226,8 +1225,6 @@
 
 //======================================================================================================================================================
 
-
-
 import React, { useState } from "react";
 import {
   Box,
@@ -1259,7 +1256,7 @@ import {
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 // yup validationschema
 const validationSchema = Yup.object().shape({
@@ -1312,7 +1309,7 @@ const Doctors = () => {
   const [isUuidDeleted, setIsUuidDeleted] = useState(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState(false);
 
-  const isAdmin = true; // admin non-admin toggle
+  const isAdmin = false; // admin non-admin toggle
 
   const handleOpen = (doctor) => {
     setSelectedDoctor(doctor);
@@ -1379,14 +1376,14 @@ const Doctors = () => {
     {
       field: "specialization",
       headerName: "Specialization",
-      flex: 1,
+      flex: 0.5,
     },
     {
       field: "actions",
       headerName: "Actions",
-      flex: 1, 
+      flex: 1,
       headerAlign: "center",
-      // align: "center", 
+      // align: "center",
       renderCell: (params) => (
         <Box display="flex" justifyContent="center" ml="3%" pt="2%">
           <IconButton
@@ -1399,7 +1396,7 @@ const Doctors = () => {
           <IconButton
             aria-label="delete"
             onClick={() => handleDeleteOpen(params.row)}
-            sx={{ color: colors.grey[400],  }}
+            sx={{ color: colors.grey[400] }}
           >
             <DeleteIcon />
           </IconButton>
@@ -1442,7 +1439,7 @@ const Doctors = () => {
         <DataGrid
           rows={doctors}
           columns={columns}
-          disableRowSelectionOnClick 
+          disableRowSelectionOnClick
           slots={{
             toolbar: CustomToolbar,
           }}
@@ -1458,7 +1455,7 @@ const Doctors = () => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             backgroundColor:
-              theme.palette.mode === "dark" ? colors.grey[700] : "white",
+              theme.palette.mode === "dark" ? colors.primary[400] : "white",
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 600,
@@ -1494,6 +1491,9 @@ const Doctors = () => {
             },
           }}
         >
+          <Typography variant="h3" padding={1} align="center">
+            Doctor Details
+          </Typography>
           {selectedDoctor && (
             <Formik
               initialValues={selectedDoctor}
@@ -1514,6 +1514,7 @@ const Doctors = () => {
                       value={values.name}
                       onChange={handleChange}
                       fullWidth
+                      size="small"
                       disabled={!isAdmin}
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
@@ -1525,6 +1526,7 @@ const Doctors = () => {
                     value={values.mail}
                     onChange={handleChange}
                     fullWidth
+                    size="small"
                     disabled={!isAdmin}
                     error={touched.mail && Boolean(errors.mail)}
                     helperText={touched.mail && errors.mail}
@@ -1535,6 +1537,7 @@ const Doctors = () => {
                     value={values.phone}
                     onChange={handleChange}
                     fullWidth
+                    size="small"
                     disabled={!isAdmin}
                     error={touched.phone && Boolean(errors.phone)}
                     helperText={touched.phone && errors.phone}
@@ -1551,6 +1554,7 @@ const Doctors = () => {
                     onChange={handleChange}
                     InputLabelProps={{ shrink: true }}
                     fullWidth
+                    size="small"
                     disabled={!isAdmin}
                     error={touched.assignedDate && Boolean(errors.assignedDate)}
                     helperText={touched.assignedDate && errors.assignedDate}
@@ -1561,6 +1565,7 @@ const Doctors = () => {
                     value={values.specialization}
                     onChange={handleChange}
                     fullWidth
+                    size="small"
                     disabled={!isAdmin}
                     error={
                       touched.specialization && Boolean(errors.specialization)
@@ -1574,6 +1579,7 @@ const Doctors = () => {
                       value={values.address.street || ""}
                       onChange={handleChange}
                       fullWidth
+                      size="small"
                       disabled={!isAdmin}
                       error={
                         touched.address?.street &&
@@ -1589,6 +1595,7 @@ const Doctors = () => {
                       value={values.address.houseNumber || ""}
                       onChange={handleChange}
                       fullWidth
+                      size="small"
                       disabled={!isAdmin}
                       error={
                         touched.address?.houseNumber &&
@@ -1605,6 +1612,7 @@ const Doctors = () => {
                       value={values.address.zipCode || ""}
                       onChange={handleChange}
                       fullWidth
+                      size="small"
                       disabled={!isAdmin}
                       error={
                         touched.address?.zipCode &&
@@ -1617,6 +1625,7 @@ const Doctors = () => {
                   </Box>
                   <Autocomplete
                     multiple
+                    disabled={!isAdmin}
                     options={mockTreatmentIds}
                     getOptionLabel={(option) => option}
                     value={values.treatmentIds}
@@ -1627,20 +1636,20 @@ const Doctors = () => {
                       <TextField
                         {...params}
                         label="Treatment IDs"
-                        placeholder="Select Treatments"
+                        // placeholder="Select Treatments"
                         fullWidth
+                        size="small"
                         disabled={!isAdmin}
                         error={
                           touched.treatmentIds && Boolean(errors.treatmentIds)
                         }
-                        helperText={
-                          touched.treatmentIds && errors.treatmentIds
-                        }
+                        helperText={touched.treatmentIds && errors.treatmentIds}
                       />
                     )}
                   />
                   <Autocomplete
                     multiple
+                    disabled={!isAdmin}
                     options={mockPatientIds}
                     getOptionLabel={(option) => option}
                     value={values.patientIds}
@@ -1653,24 +1662,31 @@ const Doctors = () => {
                         label="Patient IDs"
                         placeholder="Select Patients"
                         fullWidth
+                        size="small"
                         disabled={!isAdmin}
                         error={touched.patientIds && Boolean(errors.patientIds)}
                         helperText={touched.patientIds && errors.patientIds}
                       />
                     )}
                   />
-                  <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    gap={2}
-                    mt={4}
-                  >
-                    <Button type="submit" color="secondary" variant="contained">
-                      Save
+                  <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
+                    {isAdmin && (
+                      <Button
+                        type="submit"
+                        color="secondary"
+                        variant="contained"
+                      >
+                        Save
+                      </Button>
+                    )}
+                    <Button
+                      sx={{
+                        backgroundColor: colors.grey[600],
+                      }}
+                      onClick={handleClose}
+                    >
+                      Close
                     </Button>
-                    <Button sx={{
-              backgroundColor: colors.grey[600],
-            }} onClick={handleClose}>Cancel</Button>
                   </Box>
                 </Form>
               )}
@@ -1679,8 +1695,8 @@ const Doctors = () => {
         </Box>
       </Modal>
 
-       {/* Delete Confirmation Modal */}
-       <Modal open={deleteOpen} onClose={handleDeleteClose}>
+      {/* Delete Confirmation Modal */}
+      <Modal open={deleteOpen} onClose={handleDeleteClose}>
         <Box
           p={4}
           sx={{
@@ -1689,20 +1705,22 @@ const Doctors = () => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             backgroundColor:
-              theme.palette.mode === "dark" ? colors.grey[700] : "white",
+              theme.palette.mode === "dark" ? colors.primary[400] : "white",
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 400,
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
             gap: 2,
           }}
         >
-          <Typography variant="h4">Delete Doctor</Typography>
+          {/* <Typography variant="h4">Delete Doctor</Typography>
           <Typography>
-            Please make sure that this user have been completely removed from the user authentication system first. Are you sure you want to delete the selected doctor? 
-            Please confirm by toggling.
+            Please make sure that this user have been completely removed from
+            the user authentication system first. Are you sure you want to
+            delete the selected doctor? Please confirm by toggling.
           </Typography>
           <Switch
             checked={isUuidDeleted}
@@ -1718,11 +1736,56 @@ const Doctors = () => {
             >
               Delete
             </Button>
-            <Button sx={{
-              backgroundColor: colors.grey[600],
+            <Button
+              sx={{
+                backgroundColor: colors.grey[600],
+              }}
+              variant="contained"
+              onClick={handleDeleteClose}
+            >
+              Cancel
+            </Button>
+          </Box> */}
+          <Typography
+            variant="h4"
+            sx={{
+              color: colors.redAccent[500],
             }}
-            variant="contained"
-            onClick={handleDeleteClose}>Cancel</Button>
+          >
+            Warning !
+          </Typography>
+
+          <Typography variant="h6" align="center" color="text.primary">
+            Please make sure that this user have been completely removed from
+            the user authentication system first. Are you sure you want to
+            delete this doctor ?
+          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            <Switch
+              checked={isUuidDeleted}
+              onChange={handleSwitchChange}
+              color="secondary"
+            />
+            <Typography>Enable to confirm delete</Typography>
+          </Box>
+          <Box display="flex" justifyContent="flex-end" gap={2}>
+            <Button
+              onClick={handleDelete}
+              variant="contained"
+              color="error"
+              disabled={!deleteButtonEnabled}
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={handleDeleteClose}
+              sx={{
+                backgroundColor: colors.grey[600],
+              }}
+              variant="contained"
+            >
+              Cancel
+            </Button>
           </Box>
         </Box>
       </Modal>

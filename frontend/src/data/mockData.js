@@ -24,6 +24,20 @@ export const mockPatientIds = [
   "P009",
   "P010",
 ];
+export const mockTreatmentIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
+
+export const mockPaymentIds = [
+  "PAY1",
+  "PAY2",
+  "PAY3",
+  "PAY4",
+  "PAY5",
+  "PAY6",
+  "PAY7",
+  "PAY8",
+  "PAY9",
+  "PAY0",
+];
 
 export const mockDataTreatments = [
   {
@@ -366,8 +380,6 @@ export const mockDataRecords = [
   }
 ];
 
-export const mockTreatmentIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
-
 export const mockDataDoctors = [
   {
     id: 1,
@@ -520,6 +532,399 @@ export const mockDataDoctors = [
     treatmentIds: ['T6', 'T4'],
   },
 ];
+
+export const mockDataPatients =[
+  {
+    id: 1,
+    uuid: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    name: "Alice Johnson",
+    mail: "alice.johnson@example.com",
+    phone: "123-456-7890",
+    photo: "https://via.placeholder.com/80",
+    gender: "Female",
+    dob: "1990-05-15T00:00:00",
+    assignedDate: "2023-01-15T00:00:00",
+    bloodGroup: "O+",
+    age: 34,
+    weight: 55.5,
+    height: 165.0,
+    allergies: "Peanuts",
+    address: {
+      street: "Main St",
+      houseNumber: "101",
+      city: "Springfield",
+      zipCode: 12345
+    },
+    doctorIds: [1, 2],
+    medicalRecordIds: [1, 2],
+    appointmentIds: [1, 2],
+    paymentIds: [1, 2]
+  },
+  {
+    id: 2,
+    uuid: "b2c3d4e5-f6g7-8901-bcde-f23456789012",
+    name: "Bob Smith",
+    mail: "bob.smith@example.com",
+    phone: "234-567-8901",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1985-03-22T00:00:00",
+    assignedDate: "2023-02-20T00:00:00",
+    bloodGroup: "A-",
+    age: 39,
+    weight: 80.0,
+    height: 175.0,
+    allergies: "Dust",
+    address: {
+      street: "Elm St",
+      houseNumber: "202",
+      city: "Metropolis",
+      zipCode: 54321
+    },
+    doctorIds: [2, 3],
+    medicalRecordIds: [3, 4],
+    appointmentIds: [3, 4],
+    paymentIds: [3, 4]
+  },
+  {
+    id: 3,
+    uuid: "c3d4e5f6-g7h8-9012-cdef-34567890123",
+    name: "Charlie Brown",
+    mail: "charlie.brown@example.com",
+    phone: "345-678-9012",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1978-07-10T00:00:00",
+    assignedDate: "2023-03-10T00:00:00",
+    bloodGroup: "B+",
+    age: 46,
+    weight: 70.0,
+    height: 180.0,
+    allergies: "Shellfish",
+    address: {
+      street: "Pine St",
+      houseNumber: "303",
+      city: "Gotham",
+      zipCode: 67890
+    },
+    doctorIds: [3, 4],
+    medicalRecordIds: [5, 6],
+    appointmentIds: [5, 6],
+    paymentIds: [5, 6]
+  },
+  {
+    id: 4,
+    uuid: "d4e5f6g7-h8i9-0123-def0-45678901234",
+    name: "Diana Prince",
+    mail: "diana.prince@example.com",
+    phone: "456-789-0123",
+    photo: "https://via.placeholder.com/80",
+    gender: "Female",
+    dob: "1988-09-30T00:00:00",
+    assignedDate: "2023-04-12T00:00:00",
+    bloodGroup: "AB-",
+    age: 36,
+    weight: 62.0,
+    height: 170.0,
+    allergies: "Gluten",
+    address: {
+      street: "Oak St",
+      houseNumber: "404",
+      city: "Star City",
+      zipCode: 78901
+    },
+    doctorIds: [4, 5],
+    medicalRecordIds: [7, 8],
+    appointmentIds: [7, 8],
+    paymentIds: [7, 8]
+  },
+  {
+    id: 5,
+    uuid: "e5f6g7h8-i9j0-1234-ef01-56789012345",
+    name: "Edward Norton",
+    mail: "edward.norton@example.com",
+    phone: "567-890-1234",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1995-11-22T00:00:00",
+    assignedDate: "2023-05-15T00:00:00",
+    bloodGroup: "O-",
+    age: 28,
+    weight: 85.0,
+    height: 185.0,
+    allergies: "None",
+    address: {
+      street: "Cedar St",
+      houseNumber: "505",
+      city: "Central City",
+      zipCode: 89012
+    },
+    doctorIds: [5, 6],
+    medicalRecordIds: [9, 10],
+    appointmentIds: [9, 10],
+    paymentIds: [9, 10]
+  },
+  {
+    id: 6,
+    uuid: "f6g7h8i9-j0k1-2345-fg12-67890123456",
+    name: "Fiona Apple",
+    mail: "fiona.apple@example.com",
+    phone: "678-901-2345",
+    photo: "https://via.placeholder.com/80",
+    gender: "Female",
+    dob: "1982-04-12T00:00:00",
+    assignedDate: "2023-06-20T00:00:00",
+    bloodGroup: "A+",
+    age: 42,
+    weight: 58.0,
+    height: 160.0,
+    allergies: "Pollen",
+    address: {
+      street: "Birch Ave",
+      houseNumber: "606",
+      city: "Metropolis",
+      zipCode: 90123
+    },
+    doctorIds: [6, 7],
+    medicalRecordIds: [11, 12],
+    appointmentIds: [11, 12],
+    paymentIds: [11, 12]
+  },
+  {
+    id: 7,
+    uuid: "g7h8i9j0-k1l2-3456-gh23-78901234567",
+    name: "George Clooney",
+    mail: "george.clooney@example.com",
+    phone: "789-012-3456",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1965-10-08T00:00:00",
+    assignedDate: "2023-07-25T00:00:00",
+    bloodGroup: "B-",
+    age: 58,
+    weight: 90.0,
+    height: 175.0,
+    allergies: "Latex",
+    address: {
+      street: "Maple Ave",
+      houseNumber: "707",
+      city: "Gotham",
+      zipCode: 401234
+    },
+    doctorIds: [7, 8],
+    medicalRecordIds: [13, 14],
+    appointmentIds: [13, 14],
+    paymentIds: [13, 14]
+  },
+  {
+    id: 8,
+    uuid: "h8i9j0k1-l2m3-4567-hi34-89012345678",
+    name: "Hannah Montana",
+    mail: "hannah.montana@example.com",
+    phone: "890-123-4567",
+    photo: "https://via.placeholder.com/80",
+    gender: "Female",
+    dob: "1998-02-18T00:00:00",
+    assignedDate: "2023-08-30T00:00:00",
+    bloodGroup: "AB+",
+    age: 26,
+    weight: 50.0,
+    height: 155.0,
+    allergies: "Milk",
+    address: {
+      street: "Spruce St",
+      houseNumber: "808",
+      city: "Star City",
+      zipCode: 12367
+    },
+    doctorIds: [8, 9],
+    medicalRecordIds: [15, 16],
+    appointmentIds: [15, 16],
+    paymentIds: [15, 16]
+  },
+  {
+    id: 9,
+    uuid: "i9j0k1l2-m3n4-5678-ij45-90123456789",
+    name: "Ian Malcolm",
+    mail: "ian.malcolm@example.com",
+    phone: "901-234-5678",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1972-06-20T00:00:00",
+    assignedDate: "2023-09-12T00:00:00",
+    bloodGroup: "O+",
+    age: 52,
+    weight: 75.0,
+    height: 170.0,
+    allergies: "Penicillin",
+    address: {
+      street: "Fir St",
+      houseNumber: "909",
+      city: "Central City",
+      zipCode: 23456
+    },
+    doctorIds: [9, 10],
+    medicalRecordIds: [17, 18],
+    appointmentIds: [17, 18],
+    paymentIds: [17, 18]
+  },
+  {
+    id: 10,
+    uuid: "j0k1l2m3-n4o5-6789-jk56-01234567890",
+    name: "Jessica Jones",
+    mail: "jessica.jones@example.com",
+    phone: "012-345-6789",
+    photo: "https://via.placeholder.com/80",
+    gender: "Female",
+    dob: "1984-11-14T00:00:00",
+    assignedDate: "2023-10-05T00:00:00",
+    bloodGroup: "B+",
+    age: 39,
+    weight: 68.0,
+    height: 162.0,
+    allergies: "Soy",
+    address: {
+      street: "Oak St",
+      houseNumber: "1010",
+      city: "Gotham",
+      zipCode: 34567
+    },
+    doctorIds: [10, 1],
+    medicalRecordIds: [19, 20],
+    appointmentIds: [19, 20],
+    paymentIds: [19, 20]
+  },
+  {
+    id: 11,
+    uuid: "k1l2m3n4-o5p6-7890-kl67-12345678901",
+    name: "Kevin Hart",
+    mail: "kevin.hart@example.com",
+    phone: "123-456-7891",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1989-07-11T00:00:00",
+    assignedDate: "2023-11-02T00:00:00",
+    bloodGroup: "A-",
+    age: 35,
+    weight: 80.0,
+    height: 180.0,
+    allergies: "Eggs",
+    address: {
+      street: "Cedar St",
+      houseNumber: "1111",
+      city: "Metropolis",
+      zipCode: 45678
+    },
+    doctorIds: [1, 3],
+    medicalRecordIds: [21, 22],
+    appointmentIds: [21, 22],
+    paymentIds: [21, 22]
+  },
+  {
+    id: 12,
+    uuid: "l2m3n4o5-p6q7-8901-mn78-23456789012",
+    name: "Laura Croft",
+    mail: "laura.croft@example.com",
+    phone: "234-567-8902",
+    photo: "https://via.placeholder.com/80",
+    gender: "Female",
+    dob: "1975-12-30T00:00:00",
+    assignedDate: "2023-12-12T00:00:00",
+    bloodGroup: "O-",
+    age: 48,
+    weight: 65.0,
+    height: 168.0,
+    allergies: "Shellfish",
+    address: {
+      street: "Maple Ave",
+      houseNumber: "1212",
+      city: "Star City",
+      zipCode: 56789
+    },
+    doctorIds: [2, 4],
+    medicalRecordIds: [23, 24],
+    appointmentIds: [23, 24],
+    paymentIds: [23, 24]
+  },
+  {
+    id: 13,
+    uuid: "m3n4o5p6-q7r8-9012-no89-34567890123",
+    name: "Michael Jordan",
+    mail: "michael.jordan@example.com",
+    phone: "345-678-9013",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1980-03-15T00:00:00",
+    assignedDate: "2024-01-18T00:00:00",
+    bloodGroup: "AB-",
+    age: 44,
+    weight: 85.0,
+    height: 190.0,
+    allergies: "None",
+    address: {
+      street: "Birch Ave",
+      houseNumber: "1313",
+      city: "Gotham",
+      zipCode: 67890
+    },
+    doctorIds: [5, 6],
+    medicalRecordIds: [25, 26],
+    appointmentIds: [25, 26],
+    paymentIds: [25, 26]
+  },
+  {
+    id: 14,
+    uuid: "n4o5p6q7-r8s9-0123-op90-45678901234",
+    name: "Nina Simone",
+    mail: "nina.simone@example.com",
+    phone: "456-789-0124",
+    photo: "https://via.placeholder.com/80",
+    gender: "Female",
+    dob: "1992-08-21T00:00:00",
+    assignedDate: "2024-02-10T00:00:00",
+    bloodGroup: "B+",
+    age: 32,
+    weight: 58.0,
+    height: 160.0,
+    allergies: "Latex",
+    address: {
+      street: "Pine St",
+      houseNumber: "1414",
+      city: "Central City",
+      zipCode: 78901
+    },
+    doctorIds: [7, 8],
+    medicalRecordIds: [27, 28],
+    appointmentIds: [27, 28],
+    paymentIds: [27, 28]
+  },
+  {
+    id: 15,
+    uuid: "o5p6q7r8-s9t0-1234-pq12-56789012345",
+    name: "Oscar Wilde",
+    mail: "oscar.wilde@example.com",
+    phone: "567-890-1235",
+    photo: "https://via.placeholder.com/80",
+    gender: "Male",
+    dob: "1960-05-09T00:00:00",
+    assignedDate: "2024-03-01T00:00:00",
+    bloodGroup: "A+",
+    age: 64,
+    weight: 95.0,
+    height: 185.0,
+    allergies: "None",
+    address: {
+      street: "Spruce St",
+      houseNumber: "1515",
+      city: "Star City",
+      zipCode: 89012
+    },
+    doctorIds: [9, 10],
+    medicalRecordIds: [29, 30],
+    appointmentIds: [29, 30],
+    paymentIds: [29, 30]
+  }
+]
 
 
 export const mockDataTeam = [

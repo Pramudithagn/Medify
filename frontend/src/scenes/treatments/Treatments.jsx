@@ -717,6 +717,7 @@ import {
   Switch,
   Autocomplete,
   Fab,
+  Typography,
 } from "@mui/material";
 import {
   DataGrid,
@@ -773,7 +774,7 @@ export const Treatments = () => {
 
   const handleSave = () => {
     if (isCreating) {
-      // Save new treatment  call backend 
+      // Save new treatment  call backend
       setTreatments([...treatments, selectedTreatment]);
     } else {
       // Update  treatment
@@ -883,7 +884,7 @@ export const Treatments = () => {
         <DataGrid
           rows={treatments}
           columns={columns}
-          disableRowSelectionOnClick 
+          disableRowSelectionOnClick
           slots={{
             toolbar: CustomToolbar,
           }}
@@ -898,8 +899,8 @@ export const Treatments = () => {
             position: "absolute",
             top: "50%",
             left: "50%",
-            transform: "translate(-50%, -50%)", 
-            backgroundColor: colors.grey[800],
+            transform: "translate(-50%, -50%)",
+            backgroundColor: colors.primary[400],
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 500,
@@ -926,7 +927,10 @@ export const Treatments = () => {
             // },
           }}
         >
-          <h1 id="parent-modal-title">Update Treatment</h1>
+          {/* <h1 id="parent-modal-title">Update Treatment</h1> */}
+          <Typography variant="h2" padding={3} align="center">
+            Update Treatment
+          </Typography>
 
           <TextField
             label="Name"
@@ -983,10 +987,18 @@ export const Treatments = () => {
             />
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button variant="contained" onClick={handleSave} sx={{backgroundColor: colors.greenAccent[600] }}>
+            <Button
+              variant="contained"
+              onClick={handleSave}
+              sx={{ backgroundColor: colors.greenAccent[600] }}
+            >
               Save Changes
             </Button>
-            <Button variant="contained" onClick={handleClose} sx={{backgroundColor: colors.grey[600] }}>
+            <Button
+              variant="contained"
+              onClick={handleClose}
+              sx={{ backgroundColor: colors.grey[600] }}
+            >
               Cancel
             </Button>
           </Box>
@@ -1030,12 +1042,13 @@ export const Treatments = () => {
       <Modal open={open && isCreating} onClose={handleClose}>
         <Box
           p={4}
+          // alignItems="center"
           sx={{
             position: "absolute",
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            bgcolor: colors.grey[800],
+            bgcolor: colors.primary[400],
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 500,
@@ -1062,8 +1075,17 @@ export const Treatments = () => {
             // },
           }}
         >
-          <h1 id="parent-modal-title">Create New Treatment</h1>
-
+          {/* <h1 id="parent-modal-title">Create New Treatment</h1> */}
+          <Typography
+            variant="h2"
+            padding={3}
+            align="center"
+            // sx={{
+            //   color: colors.redAccent[500],
+            // }}
+          >
+            Create New Treatment
+          </Typography>
           <TextField
             label="Name"
             value={selectedTreatment?.name || ""}
@@ -1118,12 +1140,20 @@ export const Treatments = () => {
               onChange={handleStatusChange}
             />
           </Box>
-          <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button variant="contained" onClick={handleSave} sx={{backgroundColor: colors.greenAccent[600] }}>
-              Save New Treatment
+          <Box display="flex" justifyContent="center" gap={2} mb={1}>
+            <Button
+              variant="contained"
+              onClick={handleSave}
+              sx={{ backgroundColor: colors.greenAccent[600] }}
+            >
+              Save
             </Button>
-            <Button variant="contained" onClick={handleClose} sx={{backgroundColor: colors.grey[600] }}>
-              Cancel
+            <Button
+              variant="contained"
+              onClick={handleClose}
+              sx={{ backgroundColor: colors.grey[600] }}
+            >
+              Close
             </Button>
           </Box>
         </Box>

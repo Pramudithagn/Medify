@@ -568,10 +568,7 @@ const Appointments = () => {
 
   return (
     <Box m="20px">
-      <Header
-        title="Appointments"
-        subtitle="Manage your appointments here"
-      />
+      <Header title="Appointments" subtitle="Manage your appointments here" />
 
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
@@ -644,7 +641,7 @@ const Appointments = () => {
         onClose={closeCreateModal}
         sx={{
           "& .MuiDialog-paper": {
-            backgroundColor: colors.grey[800],
+            backgroundColor: colors.primary[800],
             width: "20%",
           },
         }}
@@ -699,21 +696,29 @@ const Appointments = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleCreateAppointment}
-            variant="contained"
-            color="secondary"
+          <Box
+            sx={{ display: "flex", justifyContent: "center" }}
+            width="100%"
+            gap={2}
+            mb={3}
           >
-            Create
-          </Button>
-          <Button
-            onClick={closeCreateModal}
-            sx={{
-              backgroundColor: colors.grey[600],
-            }}
-          >
-            Cancel
-          </Button>
+            <Button
+              onClick={handleCreateAppointment}
+              variant="contained"
+              color="secondary"
+            >
+              Create
+            </Button>
+            <Button
+              onClick={closeCreateModal}
+              variant="contained"
+              sx={{
+                backgroundColor: colors.grey[600],
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
         </DialogActions>
       </Dialog>
 
@@ -723,7 +728,7 @@ const Appointments = () => {
         onClose={closeDeleteModal}
         sx={{
           "& .MuiDialog-paper": {
-            backgroundColor: colors.grey[800],
+            backgroundColor: colors.primary[400],
           },
         }}
       >
@@ -737,22 +742,29 @@ const Appointments = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleDeleteAppointment}
-            variant="contained"
-            color="error"
+          <Box
+            sx={{ display: "flex", justifyContent: "center" }}
+            width="100%"
+            gap={2}
+            mb={3}
           >
-            Delete
-          </Button>
-          <Button
-            onClick={closeDeleteModal}
-            variant="contained"
-            sx={{
-              backgroundColor: colors.grey[600],
-            }}
-          >
-            Cancel
-          </Button>
+            <Button
+              onClick={handleDeleteAppointment}
+              variant="contained"
+              color="error"
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={closeDeleteModal}
+              variant="contained"
+              sx={{
+                backgroundColor: colors.grey[600],
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
         </DialogActions>
       </Dialog>
       {/* Update Confirmation Modal */}
@@ -761,7 +773,7 @@ const Appointments = () => {
         onClose={closeUpdateModal}
         sx={{
           "& .MuiDialog-paper": {
-            backgroundColor: colors.grey[800],
+            backgroundColor: colors.primary[800],
           },
         }}
       >
@@ -792,22 +804,29 @@ const Appointments = () => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={handleConfirmUpdate}
-            variant="contained"
-            color="secondary"
+          <Box
+            sx={{ display: "flex", justifyContent: "center" }}
+            width="100%"
+            gap={2}
+            mb={3}
           >
-            Confirm
-          </Button>
-          <Button
-            onClick={closeUpdateModal}
-            variant="contained"
-            sx={{
-              backgroundColor: colors.grey[600],
-            }}
-          >
-            Cancel
-          </Button>
+            <Button
+              onClick={handleConfirmUpdate}
+              variant="contained"
+              color="secondary"
+            >
+              Confirm
+            </Button>
+            <Button
+              onClick={closeUpdateModal}
+              variant="contained"
+              sx={{
+                backgroundColor: colors.grey[600],
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
         </DialogActions>
       </Dialog>
     </Box>
@@ -817,8 +836,6 @@ const Appointments = () => {
 export default Appointments;
 
 //===============================================================================================================================================
-
-
 
 // import React, { useState } from "react";
 // import {
@@ -863,7 +880,7 @@ export default Appointments;
 //     setIsModalOpen(false);
 //   };
 
-//   // updating appointment 
+//   // updating appointment
 //   const handleUpdateAppointment = () => {
 //     closeModal();
 //   };

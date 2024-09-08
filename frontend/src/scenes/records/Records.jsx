@@ -672,8 +672,6 @@
 //           )}
 //         </Box>
 //       </Modal>
-
-//       {/* Edit and Delete modals as in your previous implementation */}
 //     </Box>
 //   );
 // };
@@ -916,8 +914,6 @@
 //           )}
 //         </Box>
 //       </Modal>
-
-//       {/* Edit and Delete modals */}
 //     </Box>
 //   );
 // };
@@ -972,7 +968,7 @@
 //   const [openView, setOpenView] = useState(false);
 //   const [openEdit, setOpenEdit] = useState(false);
 //   const [openDelete, setOpenDelete] = useState(false);
-//   const [filterText, setFilterText] = useState(""); // State for the filter input
+//   const [filterText, setFilterText] = useState("");
 
 //   // Handle opening modals
 //   const handleViewOpen = (record) => {
@@ -1146,9 +1142,6 @@
 //           </CardContent>
 //         </Card>
 //       ))}
-
-//       {/* Modals for View, Edit, Delete */}
-//       {/* ... Keep the existing modals for viewing, editing, and deleting records */}
 //     </Box>
 //   );
 // };
@@ -1212,7 +1205,7 @@
 //   const [currentPage, setCurrentPage] = useState(1);
 //   const [recordsPerPage, setRecordsPerPage] = useState(5);
 
-//   const [filterText, setFilterText] = useState(""); // State for the filter input
+//   const [filterText, setFilterText] = useState("");
 
 //   // Handle View, Edit, Delete modals
 //   const handleViewOpen = (record) => {
@@ -1427,10 +1420,7 @@
 //         </Card>
 //       ))}
 
-//       {/* View, Edit, and Delete Modals */}
-//       {/* Same as previous code for modals */}
 //       {/* View Modal */}
-
 //       <Modal open={openView} onClose={() => setOpenView(false)}>
 //         <Box p={4} sx={{ ...modalStyle }}>
 //           {selectedRecord && (
@@ -1493,7 +1483,6 @@
 //                 }
 //                 label="Treatment A"
 //               />
-//               {/* Add more treatments as checkboxes */}
 //               <Button
 //                 variant="contained"
 //                 color="primary"
@@ -1832,8 +1821,6 @@
 //         </Box>
 //       </Modal>
 
-//       {/* Edit Record Modal (same as before)... */}
-//       {/* Delete Confirmation Modal (same as before)... */}
 //     </Box>
 //   );
 // };
@@ -1931,12 +1918,12 @@ const Records = () => {
 
   const handleFilterChange = (e) => {
     setFilterText(e.target.value);
-    setCurrentPage(1); // Reset to first page on filter change
+    setCurrentPage(1);
   };
 
   const handleRecordsPerPageChange = (e) => {
     setRecordsPerPage(e.target.value);
-    setCurrentPage(1); // Reset to first page on change
+    setCurrentPage(1);
   };
 
   const filteredRecords = records.filter(
@@ -2001,7 +1988,7 @@ const Records = () => {
             value={filterText}
             onChange={handleFilterChange}
             // sx={{ flexGrow: 1 }}
-            sx={{ backgroundColor: colors.grey[800], borderRadius: 1 }}
+            sx={{ backgroundColor: colors.primary[400], borderRadius: 1 }}
           />
           <SearchIcon sx={{ marginLeft: 1 }} />
         </Box>
@@ -2039,7 +2026,7 @@ const Records = () => {
                 mb: 2,
                 p: 2,
                 borderRadius: 2,
-                backgroundColor: colors.grey[800],
+                backgroundColor: colors.primary[400],
               }}
             >
               <CardContent
@@ -2049,7 +2036,7 @@ const Records = () => {
                   maxHeight: "23vh",
                 }}
               >
-                <Box sx={{ width: "90%" }}>
+                <Box sx={{ width: "90%", pt: 2 }}>
                   <Grid
                     container
                     rowSpacing={1}
@@ -2139,7 +2126,7 @@ const Records = () => {
           ))}
         </Box>
 
-        {/* Pagination Bottom Header Bar */}
+        {/* Pagination  ted Bar */}
         <Box
           sx={{
             display: "flex",
@@ -2175,7 +2162,6 @@ const Records = () => {
               disabled={currentPage === 1}
               sx={{ color: colors.grey[100] }}
             >
-              {/* Previous */}
               <ArrowBackIcon />
             </Button>
             <Typography
@@ -2188,7 +2174,6 @@ const Records = () => {
               disabled={currentPage === totalPages}
               sx={{ color: colors.grey[100] }}
             >
-              {/* Next */}
               <ArrowForwardIcon />
             </Button>
           </Box>
@@ -2219,7 +2204,10 @@ const Records = () => {
 
         {/* Edit Record Modal */}
         <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
-          <Box p={4} sx={{ ...modalStyle, backgroundColor: colors.grey[800] }}>
+          <Box
+            p={4}
+            sx={{ ...modalStyle, backgroundColor: colors.primary[400] }}
+          >
             {selectedRecord && (
               <>
                 <TextField
@@ -2310,7 +2298,7 @@ const Records = () => {
                     // color: colors.greenAccent[400]
                     backgroundColor: colors.greenAccent[600],
                     width: "50%",
-                    ml: "25%"
+                    ml: "25%",
                   }}
                 >
                   Save Changes
@@ -2322,22 +2310,45 @@ const Records = () => {
 
         {/* Delete Confirmation Modal */}
         <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
-          <Box p={4} sx={{ ...modalStyle, backgroundColor: colors.grey[800]  }}>
+          <Box
+            p={4}
+            sx={{
+              ...modalStyle,
+              backgroundColor: colors.primary[400],
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                color: colors.redAccent[500],
+              }}
+            >
+              Warning !
+            </Typography>
             <Typography>
               Are you sure you want to delete this record?
             </Typography>
-            <Button variant="contained" onClick={handleDeleteConfirm}
-            sx={{
-              // color: colors.greenAccent[400]
-              backgroundColor: colors.redAccent[600],
-            }}>
+            <Button
+              variant="contained"
+              onClick={handleDeleteConfirm}
+              sx={{
+                // color: colors.greenAccent[400]
+                backgroundColor: colors.redAccent[600],
+                width: "50%",
+              }}
+            >
               Confirm
             </Button>
-            <Button variant="contained" onClick={() => setOpenDelete(false)}
+            <Button
+              variant="contained"
+              onClick={() => setOpenDelete(false)}
               sx={{
                 // color: colors.greenAccent[400]
                 backgroundColor: colors.grey[600],
-              }}>
+                width: "50%",
+              }}
+            >
               Cancel
             </Button>
           </Box>
