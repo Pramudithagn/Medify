@@ -12,6 +12,18 @@ export const mockDoctorIds = [
   "D009",
   "D010",
 ];
+export const mockPatientIds = [
+  "P001",
+  "P002",
+  "P003",
+  "P004",
+  "P005",
+  "P006",
+  "P007",
+  "P008",
+  "P009",
+  "P010",
+];
 
 export const mockDataTreatments = [
   {
@@ -355,6 +367,160 @@ export const mockDataRecords = [
 ];
 
 export const mockTreatmentIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
+
+export const mockDataDoctors = [
+  {
+    id: 1,
+    name: 'Dr. John Smith',
+    mail: 'john.smith@example.com',
+    phone: '123-456-7890',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-01-15T00:00:00',
+    specialization: 'Cardiology',
+    address: {
+      street: 'Main St',
+      houseNumber: '123',
+      zipCode: '12345',
+    },
+    treatmentIds: ['T1', 'T2'],
+  },
+  {
+    id: 2,
+    name: 'Dr. Emily Johnson',
+    mail: 'emily.johnson@example.com',
+    phone: '987-654-3210',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-02-10T00:00:00',
+    specialization: 'Neurology',
+    address: {
+      street: 'Elm St',
+      houseNumber: '456',
+      zipCode: '54321',
+    },
+    treatmentIds: ['T3', 'T4'],
+  },
+  {
+    id: 3,
+    name: 'Dr. Michael Brown',
+    mail: 'michael.brown@example.com',
+    phone: '456-789-1234',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-03-05T00:00:00',
+    specialization: 'Orthopedics',
+    address: {
+      street: 'Maple Ave',
+      houseNumber: '789',
+      zipCode: '67890',
+    },
+    treatmentIds: ['T2', 'T5'],
+  },
+  {
+    id: 4,
+    name: 'Dr. Sophia Williams',
+    mail: 'sophia.williams@example.com',
+    phone: '321-654-9870',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-04-12T00:00:00',
+    specialization: 'Pediatrics',
+    address: {
+      street: 'Oak St',
+      houseNumber: '321',
+      zipCode: '98765',
+    },
+    treatmentIds: ['T1', 'T6'],
+  },
+  {
+    id: 5,
+    name: 'Dr. James Taylor',
+    mail: 'james.taylor@example.com',
+    phone: '789-123-4567',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-05-18T00:00:00',
+    specialization: 'Dermatology',
+    address: {
+      street: 'Birch Ave',
+      houseNumber: '654',
+      zipCode: '76543',
+    },
+    treatmentIds: ['T7', 'T8'],
+  },
+  {
+    id: 6,
+    name: 'Dr. Olivia Martinez',
+    mail: 'olivia.martinez@example.com',
+    phone: '654-789-3210',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-06-07T00:00:00',
+    specialization: 'Gynecology',
+    address: {
+      street: 'Cedar St',
+      houseNumber: '987',
+      zipCode: '23456',
+    },
+    treatmentIds: ['T9', 'T10'],
+  },
+  {
+    id: 7,
+    name: 'Dr. William Garcia',
+    mail: 'william.garcia@example.com',
+    phone: '432-123-9876',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-07-22T00:00:00',
+    specialization: 'Ophthalmology',
+    address: {
+      street: 'Pine St',
+      houseNumber: '789',
+      zipCode: '34567',
+    },
+    treatmentIds: ['T5', 'T7'],
+  },
+  {
+    id: 8,
+    name: 'Dr. Isabella Rodriguez',
+    mail: 'isabella.rodriguez@example.com',
+    phone: '543-234-8765',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-08-14T00:00:00',
+    specialization: 'Radiology',
+    address: {
+      street: 'Spruce St',
+      houseNumber: '987',
+      zipCode: '45678',
+    },
+    treatmentIds: ['T3', 'T9'],
+  },
+  {
+    id: 9,
+    name: 'Dr. Alexander Wilson',
+    mail: 'alexander.wilson@example.com',
+    phone: '876-543-2345',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-09-09T00:00:00',
+    specialization: 'Oncology',
+    address: {
+      street: 'Fir St',
+      houseNumber: '654',
+      zipCode: '56789',
+    },
+    treatmentIds: ['T8', 'T10'],
+  },
+  {
+    id: 10,
+    name: 'Dr. Mia Lee',
+    mail: 'mia.lee@example.com',
+    phone: '654-987-4321',
+    photo: 'https://via.placeholder.com/80',
+    assignedDate: '2023-10-01T00:00:00',
+    specialization: 'Psychiatry',
+    address: {
+      street: 'Willow St',
+      houseNumber: '123',
+      zipCode: '67890',
+    },
+    treatmentIds: ['T6', 'T4'],
+  },
+];
+
 
 export const mockDataTeam = [
   {

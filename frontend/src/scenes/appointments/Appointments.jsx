@@ -815,3 +815,202 @@ const Appointments = () => {
 };
 
 export default Appointments;
+
+//===============================================================================================================================================
+
+
+
+// import React, { useState } from "react";
+// import {
+//   Box,
+//   Button,
+//   Container,
+//   Dialog,
+//   DialogActions,
+//   DialogContent,
+//   DialogTitle,
+//   Typography,
+//   useTheme,
+//   TextField,
+//   Autocomplete,
+//   IconButton,
+// } from "@mui/material";
+// import { DataGrid } from "@mui/x-data-grid";
+// import EditIcon from "@mui/icons-material/Edit";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import { tokens } from "../../theme";
+
+// // Mock data for appointments
+// const mockAppointments = [
+//   { id: 1, title: "Appointment 1", patientId: 1, patientName: "John Doe", doctorId: 101, doctorName: "Dr. John Specialist", date: "2024-09-14", time: "10:00 AM" },
+//   { id: 2, title: "Appointment 2", patientId: 2, patientName: "Jane Smith", doctorId: 103, doctorName: "Dr. Alex Surgeon", date: "2024-09-20", time: "2:00 PM" },
+// ];
+
+// const AdminAppointments = () => {
+//   const theme = useTheme();
+//   const colors = tokens(theme.palette.mode);
+//   const [appointments, setAppointments] = useState(mockAppointments);
+//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [selectedAppointment, setSelectedAppointment] = useState(null);
+
+//   // Open close modals
+//   const openEditModal = (appointment) => {
+//     setSelectedAppointment(appointment);
+//     setIsModalOpen(true);
+//   };
+//   const closeModal = () => {
+//     setSelectedAppointment(null);
+//     setIsModalOpen(false);
+//   };
+
+//   // updating appointment 
+//   const handleUpdateAppointment = () => {
+//     closeModal();
+//   };
+
+//   const columns = [
+//     { field: "id", headerName: "ID", width: 90 },
+//     { field: "title", headerName: "Title", width: 150 },
+//     { field: "patientName", headerName: "Patient", width: 150 },
+//     { field: "doctorName", headerName: "Doctor", width: 150 },
+//     { field: "date", headerName: "Date", width: 120 },
+//     { field: "time", headerName: "Time", width: 120 },
+//     {
+//       field: "actions",
+//       headerName: "Actions",
+//       width: 150,
+//       renderCell: (params) => (
+//         <>
+//           <IconButton onClick={() => openEditModal(params.row)}>
+//             <EditIcon />
+//           </IconButton>
+//           <IconButton color="error" onClick={() => handleDeleteAppointment(params.row.id)}>
+//             <DeleteIcon />
+//           </IconButton>
+//         </>
+//       ),
+//     },
+//   ];
+
+//   // deleting  appointment
+//   const handleDeleteAppointment = (id) => {
+//     setAppointments(appointments.filter((appointment) => appointment.id !== id));
+//   };
+
+//   return (
+//     <Container>
+//       <Box m="20px">
+//         <Typography variant="h4" gutterBottom>
+//           Admin - Manage Appointments
+//         </Typography>
+
+//         <Box height="75vh">
+//           <DataGrid
+//             rows={appointments}
+//             columns={columns}
+//             pageSize={5}
+//             rowsPerPageOptions={[5, 10, 15]}
+//             pagination
+//           />
+//         </Box>
+
+//         {/* Edit Appointment Modal */}
+//         <Dialog open={isModalOpen} onClose={closeModal}>
+//           <DialogTitle>Edit Appointment</DialogTitle>
+//           <DialogContent>
+//             <TextField
+//               label="Title"
+//               fullWidth
+//               margin="dense"
+//               value={selectedAppointment?.title || ""}
+//               onChange={(e) =>
+//                 setSelectedAppointment((prev) => ({
+//                   ...prev,
+//                   title: e.target.value,
+//                 }))
+//               }
+//             />
+//             <TextField
+//               label="Date"
+//               fullWidth
+//               margin="dense"
+//               type="date"
+//               value={selectedAppointment?.date || ""}
+//               onChange={(e) =>
+//                 setSelectedAppointment((prev) => ({
+//                   ...prev,
+//                   date: e.target.value,
+//                 }))
+//               }
+//             />
+//             <TextField
+//               label="Time"
+//               fullWidth
+//               margin="dense"
+//               type="time"
+//               value={selectedAppointment?.time || ""}
+//               onChange={(e) =>
+//                 setSelectedAppointment((prev) => ({
+//                   ...prev,
+//                   time: e.target.value,
+//                 }))
+//               }
+//             />
+//             <Autocomplete
+//               options={mockAppointments.map((app) => ({
+//                 id: app.patientId,
+//                 name: app.patientName,
+//               }))}
+//               getOptionLabel={(option) => option.name}
+//               value={
+//                 selectedAppointment
+//                   ? { id: selectedAppointment.patientId, name: selectedAppointment.patientName }
+//                   : null
+//               }
+//               onChange={(e, value) =>
+//                 setSelectedAppointment((prev) => ({
+//                   ...prev,
+//                   patientId: value?.id || null,
+//                   patientName: value?.name || "",
+//                 }))
+//               }
+//               renderInput={(params) => (
+//                 <TextField {...params} label="Select Patient" margin="dense" fullWidth />
+//               )}
+//             />
+//             <Autocomplete
+//               options={mockAppointments.map((app) => ({
+//                 id: app.doctorId,
+//                 name: app.doctorName,
+//               }))}
+//               getOptionLabel={(option) => option.name}
+//               value={
+//                 selectedAppointment
+//                   ? { id: selectedAppointment.doctorId, name: selectedAppointment.doctorName }
+//                   : null
+//               }
+//               onChange={(e, value) =>
+//                 setSelectedAppointment((prev) => ({
+//                   ...prev,
+//                   doctorId: value?.id || null,
+//                   doctorName: value?.name || "",
+//                 }))
+//               }
+//               renderInput={(params) => (
+//                 <TextField {...params} label="Select Doctor" margin="dense" fullWidth />
+//               )}
+//             />
+//           </DialogContent>
+//           <DialogActions>
+//             <Button onClick={closeModal}>Cancel</Button>
+//             <Button onClick={handleUpdateAppointment} variant="contained" color="primary">
+//               Save
+//             </Button>
+//           </DialogActions>
+//         </Dialog>
+//       </Box>
+//     </Container>
+//   );
+// };
+
+// export default AdminAppointments;

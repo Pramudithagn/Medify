@@ -773,11 +773,10 @@ export const Treatments = () => {
 
   const handleSave = () => {
     if (isCreating) {
-      // Save new treatment and call backend to create it
-      // For demonstration, we'll just add it to the state
+      // Save new treatment  call backend 
       setTreatments([...treatments, selectedTreatment]);
     } else {
-      // Update existing treatment
+      // Update  treatment
       setTreatments(
         treatments.map((treatment) =>
           treatment.id === selectedTreatment.id ? selectedTreatment : treatment
@@ -994,7 +993,7 @@ export const Treatments = () => {
         </Box>
       </Modal>
 
-      {/* FAB for creating a new treatment */}
+      {/* FAB for creating a  treatment */}
       <Box
         sx={{
           "& .MuiFab-root": {
@@ -1027,7 +1026,7 @@ export const Treatments = () => {
         </Fab>
       </Box>
 
-      {/* Modal for creating a new treatment */}
+      {/* Modal for creating a  treatment */}
       <Modal open={open && isCreating} onClose={handleClose}>
         <Box
           p={4}

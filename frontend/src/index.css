@@ -8,12 +8,43 @@ body,
   height: 100%;
   width: 100%;
   font-family: "Source Sans Pro", sans-serif;
+  /* flex: 1; */
+  /* transition: margin-left 0.3s; */
+  overflow-x: hidden; 
+
 }
 
 .app {
   display: flex;
   position: relative;
 }
+/* .app {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+} */
+/* 
+.sidebar {
+  width: 250px;
+  transition: width 0.3s;
+} */
+
+/* .sidebar.collapsed {
+  width: 80px;
+} */
+/* 
+.content {
+  flex: 1;
+  margin-left: 250px;
+  transition: margin-left 0.3s;
+  overflow-x: hidden; 
+  font-family: "Source Sans Pro", sans-serif;
+} */
+
+/* .sidebar.collapsed ~ .content {
+  margin-left: 80px;
+} */
 
 ::-webkit-scrollbar {
   width: 10px;
