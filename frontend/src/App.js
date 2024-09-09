@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Topbar from "./scenes/global/Topbar";
 import Dashboard from "./scenes/dashboard/Dashboard";
 import Sidebar from "./scenes/global/Sidebar";
@@ -11,6 +13,7 @@ import Records from "./scenes/records/Records";
 import Appointments from "./scenes/appointments/Appointments";
 import Doctors from "./scenes/doctors/Doctors";
 import Patients from "./scenes/patients/Patients";
+import Register from "./scenes/register/Register";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -18,6 +21,8 @@ function App() {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+      
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
@@ -33,11 +38,13 @@ function App() {
             <Route path="/appointments" element={<Appointments />} />   
             <Route path="/doctors" element={<Doctors />} />              
             <Route path="/patients" element={<Patients />} />              
+            <Route path="/register" element={<Register />} />              
            
             </Routes>
           </main>
         </div>
       </ThemeProvider>
+      </LocalizationProvider>
     </ColorModeContext.Provider>
   );
 }

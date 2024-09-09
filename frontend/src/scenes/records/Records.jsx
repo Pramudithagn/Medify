@@ -655,7 +655,7 @@
 //         sx={{ borderRadius: 2, height: "70vh", overflow: "hidden" }}
 //       />
 
-//       {/* Modals for view, edit, delete (similar to the original implementation) */}
+//       {/* Modals view, edit, delete */}
 //       {/* View Record Modal */}
 //       <Modal open={openView} onClose={() => setOpenView(false)}>
 //         <Box p={4} sx={{ ...modalStyle }}>
@@ -836,7 +836,7 @@
 //     const value = event.target.value;
 //     setFilter(value);
 
-//     // Filter records based on diagnosis, prescription, or patient ID
+//     // Filter records
 //     const filtered = records.filter(
 //       (record) =>
 //         record.diagnosis.toLowerCase().includes(value.toLowerCase()) ||
@@ -1620,7 +1620,7 @@
 //   // Pagination logic
 //   const handlePageSizeChange = (event) => {
 //     setPageSize(event.target.value);
-//     setCurrentPage(1); // Reset to first page when page size changes
+//     setCurrentPage(1); 
 //   };
 
 //   const handleNextPage = () => {
@@ -2294,9 +2294,10 @@ const Records = () => {
                 <Button
                   variant="contained"
                   onClick={handleEditSave}
+                  color="secondary"
                   sx={{
                     // color: colors.greenAccent[400]
-                    backgroundColor: colors.greenAccent[600],
+                    // backgroundColor: colors.greenAccent[600],
                     width: "50%",
                     ml: "25%",
                   }}
