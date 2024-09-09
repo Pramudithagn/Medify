@@ -738,6 +738,7 @@ import {
   Autocomplete,
   Box,
   useTheme,
+  Divider,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Header from "../../components/Header";
@@ -767,6 +768,7 @@ const Register = () => {
   };
 
   const initValues = {
+    uuid: "",
     name: "",
     mail: "",
     phone: "",
@@ -790,6 +792,7 @@ const Register = () => {
   };
 
   const validationSchema = Yup.object().shape({
+    uuid: Yup.string().required("Uuid is required"),
     name: Yup.string().required("Name is required"),
     mail: Yup.string()
       .email("Invalid email format")
@@ -963,7 +966,22 @@ const Register = () => {
                   <ToggleButton value="doctor">Doctor</ToggleButton>
                 </ToggleButtonGroup>
               </Box>
+              <Divider/>
 
+              <TextField
+                  fullWidth
+                  id="uuid"
+                  name="uuid"
+                  label="UUID"
+                  size="small"
+                  variant="filled"
+                  value={values.uuid}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.uuid && Boolean(errors.uuid)}
+                  helperText={touched.uuid && errors.uuid}
+                  // margin="normal"
+                />
               <TextField
                 fullWidth
                 id="name"
@@ -1219,6 +1237,7 @@ const Register = () => {
                     <TextField
                       {...params}
                       label="Treatments"
+                      size="small"
                       // margin="normal"
                       variant="filled"
                       error={
@@ -1260,6 +1279,7 @@ const Register = () => {
                       <TextField
                         {...params}
                         label="Doctors"
+                        size="small"
                         // margin="normal"
                         variant="filled"
                         error={touched.doctorIds && Boolean(errors.doctorIds)}
