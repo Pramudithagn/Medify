@@ -14,6 +14,8 @@ import Appointments from "./scenes/appointments/Appointments";
 import Doctors from "./scenes/doctors/Doctors";
 import Patients from "./scenes/patients/Patients";
 import Register from "./scenes/register/Register";
+import Profile from "./scenes/profile/Profile";
+import FAQ from "./scenes/faq/Faq";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -39,6 +41,8 @@ function App() {
             <Route path="/doctors" element={<Doctors />} />              
             <Route path="/patients" element={<Patients />} />              
             <Route path="/register" element={<Register />} />              
+            <Route path="/faq" element={<FAQ />} />              
+            {/* <Route path="/profile" element={<Profile />} />               */}
            
             </Routes>
           </main>
