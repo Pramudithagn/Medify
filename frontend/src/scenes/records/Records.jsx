@@ -767,7 +767,7 @@ const Records = () => {
                       </Typography>
                     </Grid>
                     <Grid size={12}>
-                      <Divider sx={{ width: "65%", marginTop: "1%" }} />
+                      <Divider sx={{ width: "65%" }} />
                     </Grid>
                     <Grid size={6}>
                       <Box
