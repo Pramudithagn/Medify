@@ -1018,8 +1018,8 @@ export const Treatments = () => {
           aria-label="add"
           sx={{
             position: "fixed",
-            bottom: 116,
-            right: 72,
+            bottom: "12%",
+            right: "5%",
           }}
           onClick={() => {
             setSelectedTreatment({

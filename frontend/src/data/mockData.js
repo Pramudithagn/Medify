@@ -1,5 +1,45 @@
 import { tokens } from "../theme";
 
+export const mockPatient = {
+  type: 'patient',
+  data: {
+    name: 'John Doe',
+    mail: 'john.doe@example.com',
+    phone: '123-456-7890',
+    photo: 'https://via.placeholder.com/150',
+    gender: 'Male',
+    dob: '1980-01-01',
+    bloodGroup: 'O+',
+    age: 44,
+    weight: 70,
+    height: 175,
+    allergies: 'None',
+    address: {
+      street: '123 Main St',
+      houseNumber: '4A',
+      city: 'Colombo',
+      zipCode: '12345'
+    }
+  }
+};
+export const mockDoctor  = {
+  type: 'doctor',
+  data: {
+    name: 'Dr. Jane Smith',
+    mail: 'jane.smith@example.com',
+    phone: '987-654-3210',
+    photo: 'https://via.placeholder.com/150',
+    specialization: 'Cardiologist',
+    assignedDate: '2015-03-15',
+    address: {
+      street: '456 Elm St',
+      houseNumber: '12B',
+      city: 'Colombo',
+      zipCode: '67890'
+    }
+  }
+};
+
 export const mockDoctorIds = [
   "D001",
   "D002",
