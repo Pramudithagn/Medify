@@ -574,7 +574,6 @@ const modalStyle = {
   minWidth: 400,
 };
 
-// Validation schema
 const recordValidationSchema = Yup.object().shape({
   diagnosis: Yup.string().required("Diagnosis is required"),
   prescription: Yup.string().required("Prescription is required"),
@@ -1158,7 +1157,6 @@ const Records = () => {
                 fullWidth
                 margin="normal"
               />
-              {/* Checkbox Container */}
               <Box
                 sx={{
                   display: "flex",
@@ -1268,5 +1266,3 @@ const Records = () => {
 };
 
 export default Records;
-
-//================================================================================================================================================
