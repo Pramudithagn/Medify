@@ -30,6 +30,7 @@ function App() {
             <Sidebar isSidebar={isSidebar} />
             <main className="content">
               <Topbar />
+              {/* <Dashboard/> */}
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/treatments" element={<Treatments />} />
