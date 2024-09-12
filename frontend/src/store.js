@@ -1,16 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 // import patientReducer from './features/recordSlice';
 import recordReducer from "./features/recordSlice";
-// import doctorReducer from './features/doctorSlice';
+import doctorReducer from "./features/doctorSlice";
 // import appointmentReducer from './features/appointmentSlice';
-import paymentReducer from './features/paymentSlice';
-import treatmentReducer from './features/treatmentSlice';
+import paymentReducer from "./features/paymentSlice";
+import treatmentReducer from "./features/treatmentSlice";
 
 export const store = configureStore({
   reducer: {
     // patient: patientReducer,
     record: recordReducer,
-    // doctor: doctorReducer,
+    doctor: doctorReducer,
     // appointment: appointmentReducer,
     payment: paymentReducer,
     treatment: treatmentReducer,
