@@ -24,9 +24,13 @@
 // export default recordSlice.reducer;
 
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  mockDataRecords,
+} from "../data/mockData";
 
 const initialState = {
-  records: [],
+  // records: [],
+  records: mockDataRecords,
   selectedRecord: null,
   createModelOpen: false,
   editModelOpen: false,
