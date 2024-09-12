@@ -625,6 +625,7 @@ const Doctors = () => {
 
   useEffect(() => {
     dispatch(setDoctors(mockDataDoctors));
+    console.log(doctors)
   }, [dispatch]);
 
   const handleOpen = (doctor) => {

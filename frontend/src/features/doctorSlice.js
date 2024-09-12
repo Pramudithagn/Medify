@@ -53,6 +53,7 @@ const doctorSlice = createSlice({
   initialState,
   reducers: {
     setDoctors(state, action) {
+      console.log(action.payload)
       state.doctors = action.payload;
     },
     addDoctor(state, action) {
