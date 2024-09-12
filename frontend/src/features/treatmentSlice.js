@@ -32,11 +32,9 @@ initialState,
         state.editModelOpen = action.payload;
       },
     addTreatment(state, action) {
-        console.log(action.payload)
       state.treatments.push(action.payload);
     },
     updateTreatment(state, action) {
-        console.log(action.payload)
 
       const index = state.treatments.findIndex(treatment => treatment.id === action.payload.id);
       if (index !== -1) {

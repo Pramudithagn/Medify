@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import recordReducer from "./features/recordSlice";
 // import doctorReducer from './features/doctorSlice';
 // import appointmentReducer from './features/appointmentSlice';
-// import paymentReducer from './features/paymentSlice';
+import paymentReducer from './features/paymentSlice';
 import treatmentReducer from './features/treatmentSlice';
 
 export const store = configureStore({
@@ -12,7 +12,7 @@ export const store = configureStore({
     record: recordReducer,
     // doctor: doctorReducer,
     // appointment: appointmentReducer,
-    // payment: paymentReducer,
+    payment: paymentReducer,
     treatment: treatmentReducer,
   },
 });
