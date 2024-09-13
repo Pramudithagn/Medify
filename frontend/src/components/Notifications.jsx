@@ -135,14 +135,22 @@ const Notifications = () => {
   const isOpen = useSelector((state) => state.notification.isOpen);
 
   const dropdownRef = useRef(null);
+  const iconRef = useRef(null); 
 
   const handleMarkAsRead = (id) => {
     dispatch(markAsRead(id));
   };
 
   const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      dispatch(toggleDropdown());
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target) &&
+      iconRef.current &&
+      !iconRef.current.contains(event.target)
+    ) {
+      if (isOpen) {
+        dispatch(toggleDropdown());
+      }
     }
   };
 
@@ -151,11 +159,11 @@ const Notifications = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isOpen]); 
 
   return (
     <Box position="relative" ref={dropdownRef}>
-      <IconButton onClick={() => dispatch(toggleDropdown())}>
+      <IconButton ref={iconRef} onClick={() => dispatch(toggleDropdown())}>
         <Badge badgeContent={unreadCount} color="error" invisible={unreadCount === 0}>
           <NotificationsOutlinedIcon />
         </Badge>
