@@ -966,6 +966,19 @@ export const mockDataPatients =[
   }
 ]
 
+export const mockDataNotifications =[
+  { id: 1, message: "New message from Dr. Smith", createdDate: "2024-09-10T12:30:00Z" },
+  { id: 2, message: "Payment for appointment due", createdDate: "2024-09-09T09:15:00Z" },
+  { id: 3, message: "Your lab report is ready", createdDate: "2024-09-08T14:00:00Z" },
+  { id: 4, message: "New treatment assigned", createdDate: "2024-09-07T16:20:00Z" },
+  { id: 5, message: "Appointment reminder for tomorrow", createdDate: "2024-09-06T18:10:00Z" },
+  { id: 6, message: "Your lab report is ready", createdDate: "2024-09-08T14:00:00Z" },
+  { id: 7, message: "New treatment assigned", createdDate: "2024-09-07T16:20:00Z" },
+  { id: 8, message: "Appointment reminder for tomorrow", createdDate: "2024-09-06T18:10:00Z" },
+];
+
+
+
 
 export const mockDataTeam = [
   {
