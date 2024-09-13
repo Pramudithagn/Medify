@@ -57,6 +57,7 @@ const doctorSlice = createSlice({
       state.doctors = action.payload;
     },
     addDoctor(state, action) {
+      console.log(action.payload)
       state.doctors.push(action.payload);
     },
     updateDoctor(state, action) {

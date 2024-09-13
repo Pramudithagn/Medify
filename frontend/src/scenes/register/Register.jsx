@@ -727,9 +727,586 @@
 
 //=================================================================================================================================================
 
+// import React, { useState } from "react";
+// import { Formik } from "formik";
+// import * as Yup from "yup";
+// import {
+//   TextField,
+//   Button,
+//   ToggleButton,
+//   ToggleButtonGroup,
+//   Autocomplete,
+//   Box,
+//   useTheme,
+//   Divider,
+// } from "@mui/material";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import Header from "../../components/Header";
+// import { tokens } from "../../theme";
+// import useMediaQuery from "@mui/material/useMediaQuery";
+
+// const treatments = [1, 2, 3];
+// const doctors = [101, 102, 103];
+// const genders = ["Male", "Female"];
+// const bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
+
+// const Register = () => {
+//   const theme = useTheme();
+//   const colors = tokens(theme.palette.mode);
+//   const isNonMobile = useMediaQuery("(min-width:600px)");
+//   const [userType, setUserType] = useState("patient");
+
+//   const handleToggleChange = (event, newType) => {
+//       setUserType(newType);
+//       initValues.userType = newType;
+//       // setFieldValue('userType', newType);
+//   };
+
+//   const handleFormSubmit = (values, { resetForm }) => {
+//     console.log(values);
+//     resetForm();
+//   };
+
+//   const initValues = {
+//     uuid: "",
+//     name: "",
+//     mail: "",
+//     phone: "",
+//     specialization: "",
+//     photo: "",
+//     gender: "",
+//     dob: null,
+//     bloodGroup: "",
+//     age: "",
+//     weight: "",
+//     height: "",
+//     allergies: "",
+//     street: "",
+//     houseNumber: "",
+//     city: "",
+//     zipCode: "",
+//     assignedDate: null,
+//     doctorIds: [],
+//     treatmentIds: [],
+//     userType: "patient",
+//   };
+
+//   const validationSchema = Yup.object().shape({
+//     uuid: Yup.string().required("Uuid is required"),
+//     name: Yup.string().required("Name is required"),
+//     mail: Yup.string()
+//       .email("Invalid email format")
+//       .required("Email is required"),
+//     phone: Yup.string().required("Phone is required"),
+//     specialization: Yup.string().when("userType", {
+//       is: (value) => value === "doctor",
+//       then: () => Yup.string().required("Specialization is required"),
+//       otherwise: () => Yup.string().notRequired(),
+//     }),
+//     dob: Yup.date().when("userType", {
+//       is: (value) => value === "patient",
+//       then: () => Yup.date().required("Date of Birth is required"),
+//       otherwise: () => Yup.date().notRequired(),
+//     }),
+//     assignedDate: Yup.date().required("Assigned Date is required"),
+//     gender: Yup.string().when("userType", {
+//       is: (value) => value === "patient",
+//       then: () => Yup.string().required("Gender is required"),
+//       otherwise: () => Yup.string().notRequired(),
+//     }),
+//     bloodGroup: Yup.string().when("userType", {
+//       is: (value) => value === "patient",
+//       then: () => Yup.string().required("Blood group is required"),
+//       otherwise: () => Yup.string().notRequired(),
+//     }),
+//     allergies: Yup.string().notRequired(),
+//     age: Yup.number().when("userType", {
+//       is: (value) => value === "patient",
+//       then: () => Yup.number().required("Age is required"),
+//       otherwise: () => Yup.number().notRequired(),
+//     }),
+//     weight: Yup.number().when("userType", {
+//       is: (value) => value === "patient",
+//       then: () => Yup.number().required("Weight is required"),
+//       otherwise: () => Yup.number().notRequired(),
+//     }),
+//     height: Yup.number().when("userType", {
+//       is: (value) => value === "patient",
+//       then: () => Yup.number().required("Height is required"),
+//       otherwise: () => Yup.number().notRequired(),
+//     }),
+//     street: Yup.string().required("Street is required"),
+//     houseNumber: Yup.string().required("House number is required"),
+//     city: Yup.string().required("City is required"),
+//     zipCode: Yup.string().required("Zip code is required"),
+//     doctorIds: Yup.array().notRequired(),
+//     treatmentIds: Yup.array().notRequired(),
+//   });
+
+//   return (
+//     <Box m="20px">
+//       <Header title="USER REGISTER" subtitle="User Registration" />
+
+//       <Formik
+//         initialValues={initValues}
+//         validationSchema={validationSchema}
+//         onSubmit={handleFormSubmit}
+//       >
+//         {({
+//           values,
+//           errors,
+//           touched,
+//           handleChange,
+//           handleBlur,
+//           handleSubmit,
+//           setFieldValue,
+//         }) => (
+//           <form onSubmit={handleSubmit}>
+//             <Box
+//               display="flex"
+//               flexDirection="column"
+//               // gap="20px"
+//               gap={2}
+//               mx="5%"
+//               sx={{
+//                 "& .MuiTextField-root": {
+//                   "& .MuiOutlinedInput-root": {
+//                     "& fieldset": {
+//                       borderColor: colors.grey[500],
+//                     },
+//                     "&.Mui-focused fieldset": {
+//                       borderColor: colors.grey[400],
+//                     },
+//                   },
+//                   "& .MuiInputLabel-root": {
+//                     color: colors.grey[200],
+//                   },
+//                   "& .MuiInputLabel-root.Mui-focused": {
+//                     color: colors.grey[400],
+//                   },
+//                 },
+//               }}
+//             >
+//               <Box display="flex" justifyContent="center">
+//                 <ToggleButtonGroup
+//                   value={values.userType}
+//                   exclusive
+//                   onChange={(event, newValue) => {
+//                     if (newValue !== null) {
+//                       setFieldValue("userType", newValue);
+//                       handleToggleChange(event, newValue);
+//                     }
+//                   }}
+//                   aria-label="User type"
+//                   // style={{ marginBottom: "20px" }}
+//                 >
+//                   <ToggleButton value="patient">Patient</ToggleButton>
+//                   <ToggleButton value="doctor">Doctor</ToggleButton>
+//                 </ToggleButtonGroup>
+//               </Box>
+//               <Divider/>
+
+//               <TextField
+//                   fullWidth
+//                   id="uuid"
+//                   name="uuid"
+//                   label="UUID"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.uuid}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={touched.uuid && Boolean(errors.uuid)}
+//                   helperText={touched.uuid && errors.uuid}
+//                   // margin="normal"
+//                 />
+//               <TextField
+//                 fullWidth
+//                 id="name"
+//                 name="name"
+//                 label="Name"
+//                 size="small"
+//                 variant="filled"
+//                 value={values.name}
+//                 onChange={handleChange}
+//                 onBlur={handleBlur}
+//                 error={touched.name && Boolean(errors.name)}
+//                 helperText={touched.name && errors.name}
+//                 // margin="normal"
+//               />
+
+//               <Box display="flex" justifyContent="space-between" gap={2}>
+//                 <TextField
+//                   fullWidth
+//                   id="mail"
+//                   name="mail"
+//                   label="Email"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.mail}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={touched.mail && Boolean(errors.mail)}
+//                   helperText={touched.mail && errors.mail}
+//                   // margin="normal"
+//                 />
+//                 <TextField
+//                   fullWidth
+//                   id="phone"
+//                   name="phone"
+//                   label="Phone"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.phone}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={touched.phone && Boolean(errors.phone)}
+//                   helperText={touched.phone && errors.phone}
+//                   // margin="normal"
+//                 />
+//               </Box>
+
+//               <TextField
+//                 fullWidth
+//                 id="photo"
+//                 name="photo"
+//                 label="Photo URL"
+//                 size="small"
+//                 variant="filled"
+//                 value={values.photo}
+//                 onChange={handleChange}
+//                 onBlur={handleBlur}
+//                 // margin="normal"
+//               />
+//               {userType === "doctor" && (
+//                 <TextField
+//                   fullWidth
+//                   id="specialization"
+//                   name="specialization"
+//                   label="Specialization"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.specialization}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={
+//                     touched.specialization && Boolean(errors.specialization)
+//                   }
+//                   helperText={touched.specialization && errors.specialization}
+//                   // margin="normal"
+//                 />
+//               )}
+
+//               <Box display="flex" gap={2}>
+//                 {userType === "patient" && (
+//                   <>
+//                     <Box flexGrow={1}>
+//                       <Autocomplete
+//                         id="gender"
+//                         options={genders}
+//                         getOptionLabel={(option) => option}
+//                         value={values.gender}
+//                         size="small"
+//                         onChange={(event, value) =>
+//                           setFieldValue("gender", value)
+//                         }
+//                         renderInput={(params) => (
+//                           <TextField
+//                             {...params}
+//                             label="Gender"
+//                             // margin="normal"
+//                             variant="filled"
+//                             error={touched.gender && Boolean(errors.gender)}
+//                             helperText={touched.gender && errors.gender}
+//                           />
+//                         )}
+//                       />
+//                     </Box>
+
+//                     <Box flexGrow={1}>
+//                       <Autocomplete
+//                         id="bloodGroup"
+//                         options={bloodGroups}
+//                         getOptionLabel={(option) => option}
+//                         value={values.bloodGroup}
+//                         size="small"
+//                         onChange={(event, value) =>
+//                           setFieldValue("bloodGroup", value)
+//                         }
+//                         renderInput={(params) => (
+//                           <TextField
+//                             {...params}
+//                             label="Blood Group"
+//                             // margin="normal"
+//                             variant="filled"
+//                             error={
+//                               touched.bloodGroup && Boolean(errors.bloodGroup)
+//                             }
+//                             helperText={touched.bloodGroup && errors.bloodGroup}
+//                           />
+//                         )}
+//                       />
+//                     </Box>
+
+//                     <Box flexGrow={1}>
+//                       <TextField
+//                         fullWidth
+//                         id="age"
+//                         name="age"
+//                         label="Age"
+//                         type="number"
+//                         size="small"
+//                         variant="filled"
+//                         value={values.age}
+//                         onChange={handleChange}
+//                         onBlur={handleBlur}
+//                         error={touched.age && Boolean(errors.age)}
+//                         helperText={touched.age && errors.age}
+//                         // margin="normal"
+//                       />
+//                     </Box>
+
+//                     <Box flexGrow={1}>
+//                       <TextField
+//                         fullWidth
+//                         id="weight"
+//                         name="weight"
+//                         label="Weight"
+//                         type="number"
+//                         size="small"
+//                         variant="filled"
+//                         value={values.weight}
+//                         onChange={handleChange}
+//                         onBlur={handleBlur}
+//                         error={touched.weight && Boolean(errors.weight)}
+//                         helperText={touched.weight && errors.weight}
+//                         // margin="normal"
+//                       />
+//                     </Box>
+
+//                     <Box flexGrow={1}>
+//                       <TextField
+//                         fullWidth
+//                         id="height"
+//                         name="height"
+//                         label="Height"
+//                         type="number"
+//                         size="small"
+//                         variant="filled"
+//                         value={values.height}
+//                         onChange={handleChange}
+//                         onBlur={handleBlur}
+//                         error={touched.height && Boolean(errors.height)}
+//                         helperText={touched.height && errors.height}
+//                         // margin="normal"
+//                       />
+//                     </Box>
+//                   </>
+//                 )}
+//               </Box>
+
+//               <Box display="flex" justifyContent="space-between" gap={2}>
+//                 {userType === "patient" && (
+//                   <DatePicker
+//                     label="Date of Birth"
+//                     value={values.dob}
+//                     onChange={(value) => setFieldValue("dob", value)}
+//                     slotProps={{
+//                       textField: {
+//                         size: "small",
+//                         variant: "filled",
+//                         // margin: "normal",
+//                         fullWidth: true,
+//                         error: touched.dob && Boolean(errors.dob),
+//                         helperText: touched.dob && errors.dob,
+//                       },
+//                     }}
+//                     renderInput={(params) => (
+//                       <TextField
+//                         {...params}
+//                         fullWidth
+//                       />
+//                     )}
+//                   />
+//                 )}
+//                 <DatePicker
+//                   label="Assigned Date"
+//                   value={values.assignedDate}
+//                   onChange={(value) => setFieldValue("assignedDate", value)}
+//                   slotProps={{
+//                     textField: {
+//                       size: "small",
+//                       variant: "filled",
+//                       // margin: "normal",
+//                       fullWidth: true,
+//                       error:
+//                         touched.assignedDate && Boolean(errors.assignedDate),
+//                       helperText: touched.assignedDate && errors.assignedDate,
+//                     },
+//                   }}
+//                   renderInput={(params) => (
+//                     <TextField
+//                       {...params}
+//                       fullWidth
+//                     />
+//                   )}
+//                 />
+//               </Box>
+
+//               {userType === "doctor" && (
+//                 <Autocomplete
+//                   id="treatmentIds"
+//                   multiple
+//                   options={treatments}
+//                   getOptionLabel={(option) => `Treatment ${option}`}
+//                   value={values.treatmentIds}
+//                   onChange={(event, value) =>
+//                     setFieldValue("treatmentIds", value)
+//                   }
+//                   renderInput={(params) => (
+//                     <TextField
+//                       {...params}
+//                       label="Treatments"
+//                       size="small"
+//                       // margin="normal"
+//                       variant="filled"
+//                       error={
+//                         touched.treatmentIds && Boolean(errors.treatmentIds)
+//                       }
+//                       helperText={touched.treatmentIds && errors.treatmentIds}
+//                     />
+//                   )}
+//                 />
+//               )}
+
+//               {userType === "patient" && (
+//                 <>
+//                   <TextField
+//                     fullWidth
+//                     id="allergies"
+//                     name="allergies"
+//                     label="Allergies"
+//                     size="small"
+//                     variant="filled"
+//                     value={values.allergies}
+//                     onChange={handleChange}
+//                     onBlur={handleBlur}
+//                     error={touched.allergies && Boolean(errors.allergies)}
+//                     helperText={touched.allergies && errors.allergies}
+//                     // margin="normal"
+//                   />
+
+//                   <Autocomplete
+//                     id="doctorIds"
+//                     multiple
+//                     options={doctors}
+//                     getOptionLabel={(option) => `Doctor ${option}`}
+//                     value={values.doctorIds}
+//                     onChange={(event, value) =>
+//                       setFieldValue("doctorIds", value)
+//                     }
+//                     renderInput={(params) => (
+//                       <TextField
+//                         {...params}
+//                         label="Doctors"
+//                         size="small"
+//                         // margin="normal"
+//                         variant="filled"
+//                         error={touched.doctorIds && Boolean(errors.doctorIds)}
+//                         helperText={touched.doctorIds && errors.doctorIds}
+//                       />
+//                     )}
+//                   />
+//                 </>
+//               )}
+
+//               <Box display="flex" gap={2}>
+//                 <TextField
+//                   fullWidth
+//                   id="street"
+//                   name="street"
+//                   label="Street"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.street}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={touched.street && Boolean(errors.street)}
+//                   helperText={touched.street && errors.street}
+//                   // margin="normal"
+//                 />
+//                 <TextField
+//                   fullWidth
+//                   id="houseNumber"
+//                   name="houseNumber"
+//                   label="House Number"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.houseNumber}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={touched.houseNumber && Boolean(errors.houseNumber)}
+//                   helperText={touched.houseNumber && errors.houseNumber}
+//                   // margin="normal"
+//                 />
+//                 <TextField
+//                   fullWidth
+//                   id="city"
+//                   name="city"
+//                   label="City"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.city}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={touched.city && Boolean(errors.city)}
+//                   helperText={touched.city && errors.city}
+//                   // margin="normal"
+//                 />
+//                 <TextField
+//                   fullWidth
+//                   id="zipCode"
+//                   name="zipCode"
+//                   label="Zip Code"
+//                   size="small"
+//                   variant="filled"
+//                   value={values.zipCode}
+//                   onChange={handleChange}
+//                   onBlur={handleBlur}
+//                   error={touched.zipCode && Boolean(errors.zipCode)}
+//                   helperText={touched.zipCode && errors.zipCode}
+//                   // margin="normal"
+//                 />
+//               </Box>
+
+//               <Button
+//                 type="submit"
+//                 variant="contained"
+//                 color="secondary"
+//                 sx={{
+//                   mt: 2,
+//                   width: "50%",
+//                   ml: "25%",
+//                 }}
+//               >
+//                 Create User
+//               </Button>
+//             </Box>
+//           </form>
+//         )}
+//       </Formik>
+//     </Box>
+//   );
+// };
+
+// export default Register;
+
+//=================================================================================================================================================
+
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
 import {
   TextField,
   Button,
@@ -744,6 +1321,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import useMediaQuery from "@mui/material/useMediaQuery";
+// import { createPatient } from '../../features/patientSlice';
+// import { createDoctor } from '../../features/doctorSlice';
+import { addPatient } from "../../features/patientSlice";
+import { addDoctor } from "../../features/doctorSlice";
 
 const treatments = [1, 2, 3];
 const doctors = [101, 102, 103];
@@ -755,15 +1336,21 @@ const Register = () => {
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [userType, setUserType] = useState("patient");
+  const dispatch = useDispatch();
 
   const handleToggleChange = (event, newType) => {
-      setUserType(newType);
-      initValues.userType = newType;
-      // setFieldValue('userType', newType);
+    setUserType(newType);
+    // Other necessary state updates if any
   };
 
   const handleFormSubmit = (values, { resetForm }) => {
-    console.log(values);
+    if (values.userType === "patient") {
+      // dispatch(createPatient(values));
+      dispatch(addPatient(values));
+    } else {
+      // dispatch(createDoctor(values));
+      dispatch(addDoctor(values));
+    }
     resetForm();
   };
 
@@ -798,21 +1385,17 @@ const Register = () => {
       .email("Invalid email format")
       .required("Email is required"),
     phone: Yup.string().required("Phone is required"),
-    // specialization: Yup.string().required("Specialization is required"),
     specialization: Yup.string().when("userType", {
       is: (value) => value === "doctor",
       then: () => Yup.string().required("Specialization is required"),
       otherwise: () => Yup.string().notRequired(),
     }),
-    // dob: Yup.date().nullable().required("Date of Birth is required"),
     dob: Yup.date().when("userType", {
       is: (value) => value === "patient",
       then: () => Yup.date().required("Date of Birth is required"),
       otherwise: () => Yup.date().notRequired(),
     }),
     assignedDate: Yup.date().required("Assigned Date is required"),
-    // gender: Yup.string().required("Gender is required"),
-    // bloodGroup: Yup.string().required("Blood group is required"),
     gender: Yup.string().when("userType", {
       is: (value) => value === "patient",
       then: () => Yup.string().required("Gender is required"),
@@ -843,17 +1426,7 @@ const Register = () => {
     houseNumber: Yup.string().required("House number is required"),
     city: Yup.string().required("City is required"),
     zipCode: Yup.string().required("Zip code is required"),
-    // doctorIds: Yup.array().when("userType", {
-    //   is: (value) => value === 'patient',
-    //   then: () => Yup.array().min(1, "At least one doctor must be selected"),
-    //   otherwise: () => Yup.array().notRequired()
-    // }),
     doctorIds: Yup.array().notRequired(),
-    // treatmentIds: Yup.array().when("userType", {
-    //   is: (value) => value === 'doctor',
-    //   then: () => Yup.array().min(1,"At least one treatment must be selected for doctors"),
-    //   otherwise: () => Yup.array().notRequired()
-    // }),
     treatmentIds: Yup.array().notRequired(),
   });
 
@@ -864,45 +1437,6 @@ const Register = () => {
       <Formik
         initialValues={initValues}
         validationSchema={validationSchema}
-        // validationSchema={Yup.object({
-        //   name: Yup.string().required("Name is required"),
-        //   mail: Yup.string()
-        //     .email("Invalid email format")
-        //     .required("Email is required"),
-        //   phone: Yup.string().required("Phone is required"),
-        //   specialization: Yup.string().required("Specialization is required"),
-        //   dob: Yup.date().nullable().required("Date of Birth is required"),
-        //   assignedDate: Yup.date()
-        //     .required("Assigned Date is required"),
-        //   gender: Yup.string().required("Gender is required"),
-        //   bloodGroup: Yup.string().required("Blood group is required"),
-        //   // age: Yup.number().when("userType", {
-        //   //   is: "patient",
-        //   //   then: Yup.number().required("Age is required"),
-        //   // }),
-        //   age: Yup.number().when("userType", {
-        //     is: "patient",
-        //     then: Yup.number()
-        //   }),
-        //   street: Yup.string().required("Street is required"),
-        //   houseNumber: Yup.string().required("House number is required"),
-        //   city: Yup.string().required("City is required"),
-        //   zipCode: Yup.string().required("Zip code is required"),
-        //   doctorIds: Yup.array().when("userType", {
-        //     is: "patient",
-        //     then: Yup.array().min(1, "At least one doctor must be selected"),
-        //   }),
-        //   treatmentIds: Yup.array().when("userType", {
-        //     is: "doctor",
-        //     then: Yup.array().min(
-        //       1,
-        //       "At least one treatment must be selected for doctors"
-        //     ),
-        //   }),
-        // })}
-        // onSubmit={(values) => {
-        //   console.log("Form Values:", values);
-        // }}
         onSubmit={handleFormSubmit}
       >
         {({
@@ -918,7 +1452,6 @@ const Register = () => {
             <Box
               display="flex"
               flexDirection="column"
-              // gap="20px"
               gap={2}
               mx="5%"
               sx={{
@@ -941,15 +1474,6 @@ const Register = () => {
               }}
             >
               <Box display="flex" justifyContent="center">
-                {/* <ToggleButtonGroup
-                  value={userType}
-                  exclusive
-                  onChange={handleToggleChange}
-                  aria-label="User type"
-                >
-                  <ToggleButton value="patient">Patient</ToggleButton>
-                  <ToggleButton value="doctor">Doctor</ToggleButton>
-                </ToggleButtonGroup> */}
                 <ToggleButtonGroup
                   value={values.userType}
                   exclusive
@@ -960,28 +1484,67 @@ const Register = () => {
                     }
                   }}
                   aria-label="User type"
-                  // style={{ marginBottom: "20px" }}
                 >
                   <ToggleButton value="patient">Patient</ToggleButton>
                   <ToggleButton value="doctor">Doctor</ToggleButton>
                 </ToggleButtonGroup>
               </Box>
-              <Divider/>
+              <Divider />
 
+              {/* <TextField
+                fullWidth
+                label="UUID"
+                name="uuid"
+                value={values.uuid}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.uuid && !!errors.uuid}
+                helperText={touched.uuid && errors.uuid}
+              />
               <TextField
-                  fullWidth
-                  id="uuid"
-                  name="uuid"
-                  label="UUID"
-                  size="small"
-                  variant="filled"
-                  value={values.uuid}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.uuid && Boolean(errors.uuid)}
-                  helperText={touched.uuid && errors.uuid}
-                  // margin="normal"
-                />
+                fullWidth
+                label="Name"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                name="mail"
+                value={values.mail}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.mail && !!errors.mail}
+                helperText={touched.mail && errors.mail}
+              />
+              <TextField
+                fullWidth
+                label="Phone"
+                name="phone"
+                value={values.phone}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.phone && !!errors.phone}
+                helperText={touched.phone && errors.phone}
+              /> */}
+              <TextField
+                fullWidth
+                id="uuid"
+                name="uuid"
+                label="UUID"
+                size="small"
+                variant="filled"
+                value={values.uuid}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.uuid && Boolean(errors.uuid)}
+                helperText={touched.uuid && errors.uuid}
+                // margin="normal"
+              />
               <TextField
                 fullWidth
                 id="name"
@@ -1040,7 +1603,17 @@ const Register = () => {
                 onBlur={handleBlur}
                 // margin="normal"
               />
-              {userType === "doctor" && (
+              {values.userType === "doctor" && (
+                // <TextField
+                //   fullWidth
+                //   label="Specialization"
+                //   name="specialization"
+                //   value={values.specialization}
+                //   onChange={handleChange}
+                //   onBlur={handleBlur}
+                //   error={touched.specialization && !!errors.specialization}
+                //   helperText={touched.specialization && errors.specialization}
+                // />
                 <TextField
                   fullWidth
                   id="specialization"
@@ -1060,8 +1633,61 @@ const Register = () => {
               )}
 
               <Box display="flex" gap={2}>
-                {userType === "patient" && (
+                {values.userType === "patient" && (
                   <>
+                    {/* <TextField
+                    fullWidth
+                    label="Blood Group"
+                    name="bloodGroup"
+                    value={values.bloodGroup}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.bloodGroup && !!errors.bloodGroup}
+                    helperText={touched.bloodGroup && errors.bloodGroup}
+                    select
+                    SelectProps={{
+                      native: true,
+                    }}
+                  >
+                    {bloodGroups.map((bg) => (
+                      <option key={bg} value={bg}>
+                        {bg}
+                      </option>
+                    ))}
+                  </TextField>
+                  <TextField
+                    fullWidth
+                    label="Age"
+                    name="age"
+                    type="number"
+                    value={values.age}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.age && !!errors.age}
+                    helperText={touched.age && errors.age}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Weight"
+                    name="weight"
+                    type="number"
+                    value={values.weight}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.weight && !!errors.weight}
+                    helperText={touched.weight && errors.weight}
+                  />
+                  <TextField
+                    fullWidth
+                    label="Height"
+                    name="height"
+                    type="number"
+                    value={values.height}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.height && !!errors.height}
+                    helperText={touched.height && errors.height}
+                  /> */}
                     <Box flexGrow={1}>
                       <Autocomplete
                         id="gender"
@@ -1166,9 +1792,76 @@ const Register = () => {
                   </>
                 )}
               </Box>
-
+              {/* <TextField
+                fullWidth
+                label="Street"
+                name="street"
+                value={values.street}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.street && !!errors.street}
+                helperText={touched.street && errors.street}
+              />
+              <TextField
+                fullWidth
+                label="House Number"
+                name="houseNumber"
+                value={values.houseNumber}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.houseNumber && !!errors.houseNumber}
+                helperText={touched.houseNumber && errors.houseNumber}
+              />
+              <TextField
+                fullWidth
+                label="City"
+                name="city"
+                value={values.city}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.city && !!errors.city}
+                helperText={touched.city && errors.city}
+              />
+              <TextField
+                fullWidth
+                label="Zip Code"
+                name="zipCode"
+                value={values.zipCode}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.zipCode && !!errors.zipCode}
+                helperText={touched.zipCode && errors.zipCode}
+              />
+              <DatePicker
+                label="Date of Birth"
+                name="dob"
+                value={values.dob}
+                onChange={(newValue) => setFieldValue('dob', newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    error={touched.dob && !!errors.dob}
+                    helperText={touched.dob && errors.dob}
+                  />
+                )}
+              />
+              <DatePicker
+                label="Assigned Date"
+                name="assignedDate"
+                value={values.assignedDate}
+                onChange={(newValue) => setFieldValue('assignedDate', newValue)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    error={touched.assignedDate && !!errors.assignedDate}
+                    helperText={touched.assignedDate && errors.assignedDate}
+                  />
+                )}
+              /> */}
               <Box display="flex" justifyContent="space-between" gap={2}>
-                {userType === "patient" && (
+                {values.userType === "patient" && (
                   <DatePicker
                     label="Date of Birth"
                     value={values.dob}
@@ -1184,13 +1877,7 @@ const Register = () => {
                       },
                     }}
                     renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        fullWidth
-                        // margin="normal"
-                        // error={touched.dob && Boolean(errors.dob)}
-                        // helperText={touched.dob && errors.dob}
-                      />
+                      <TextField {...params} fullWidth />
                     )}
                   />
                 )}
@@ -1209,21 +1896,26 @@ const Register = () => {
                       helperText: touched.assignedDate && errors.assignedDate,
                     },
                   }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      // margin="normal"
-                      // error={
-                      //   touched.assignedDate && Boolean(errors.assignedDate)
-                      // }
-                      // helperText={touched.assignedDate && errors.assignedDate}
-                    />
-                  )}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
                 />
               </Box>
 
-              {userType === "doctor" && (
+              {values.userType === "doctor" && (
+                // <Autocomplete
+                //   multiple
+                //   options={treatments}
+                //   getOptionLabel={(option) => `Treatment ${option}`}
+                //   value={values.treatmentIds}
+                //   onChange={(event, newValue) => setFieldValue('treatmentIds', newValue)}
+                //   renderInput={(params) => (
+                //     <TextField
+                //       {...params}
+                //       label="Treatments"
+                //       error={touched.treatmentIds && !!errors.treatmentIds}
+                //       helperText={touched.treatmentIds && errors.treatmentIds}
+                //     />
+                //   )}
+                // />
                 <Autocomplete
                   id="treatmentIds"
                   multiple
@@ -1248,8 +1940,22 @@ const Register = () => {
                   )}
                 />
               )}
-
-              {userType === "patient" && (
+              {values.userType === "patient" && (
+                // <Autocomplete
+                //   multiple
+                //   options={doctors}
+                //   getOptionLabel={(option) => `Doctor ${option}`}
+                //   value={values.doctorIds}
+                //   onChange={(event, newValue) => setFieldValue('doctorIds', newValue)}
+                //   renderInput={(params) => (
+                //     <TextField
+                //       {...params}
+                //       label="Doctors"
+                //       error={touched.doctorIds && !!errors.doctorIds}
+                //       helperText={touched.doctorIds && errors.doctorIds}
+                //     />
+                //   )}
+                // />
                 <>
                   <TextField
                     fullWidth
@@ -1349,32 +2055,21 @@ const Register = () => {
                 />
               </Box>
 
+              {/* <Button type="submit" variant="contained" color="primary">
+                Register
+              </Button> */}
               <Button
                 type="submit"
                 variant="contained"
                 color="secondary"
                 sx={{
                   mt: 2,
-                  // backgroundColor: colors.greenAccent[500],
                   width: "50%",
                   ml: "25%",
                 }}
               >
                 Create User
               </Button>
-
-              {/* <Button
-                  variant="contained"
-                  onClick={handleEditSave}
-                  sx={{
-                    // color: colors.greenAccent[400]
-                    backgroundColor: colors.greenAccent[600],
-                    width: "50%",
-                    ml: "25%",
-                  }}
-                >
-                  Save Changes
-                </Button> */}
             </Box>
           </form>
         )}

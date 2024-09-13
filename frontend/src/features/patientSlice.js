@@ -25,6 +25,7 @@ const patientSlice = createSlice({
       state.deleteButtonEnabled = action.payload;
     },
     addPatient: (state, action) => {
+      console.log(action.payload)
       state.patients.push(action.payload);
     },
     updatePatient: (state, action) => {
