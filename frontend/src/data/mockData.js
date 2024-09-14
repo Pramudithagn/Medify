@@ -422,102 +422,103 @@ export const mockDataRecords = [
 
 export const mockDataAppointments = [
   {
-      id: 1,
-      title: "General Checkup",
-      start: "2024-09-15T09:00:00",
-      end: "2024-09-15T09:30:00",
-      doctorId: 101,
-      patientId: 201
+    id: 1,
+    title: "General Checkup",
+    duration: 30,
+    startTime: "2024-09-15T09:00:00",
+    doctorId: 101,
+    patientId: 201,
   },
   {
-      id: 2,
-      title: "Dental Cleaning",
-      start: "2024-09-16T11:00:00",
-      end: "2024-09-16T11:45:00",
-      doctorId: 102,
-      patientId: 202
+    id: 2,
+    title: "Dental Cleaning",
+    duration: 45,
+    startTime: "2024-09-16T11:00:00",
+    doctorId: 102,
+    patientId: 202,
   },
   {
-      id: 3,
-      title: "Eye Examination",
-      start: "2024-09-17T10:30:00",
-      end: "2024-09-17T11:00:00",
-      doctorId: 103,
-      patientId: 203
+    id: 3,
+    title: "Eye Examination",
+    duration: 30,
+    startTime: "2024-09-17T10:30:00",
+    doctorId: 103,
+    patientId: 203,
   },
   {
-      id: 4,
-      title: "Dermatology Consultation",
-      start: "2024-09-18T14:00:00",
-      end: "2024-09-18T14:30:00",
-      doctorId: 104,
-      patientId: 204
+    id: 4,
+    title: "Dermatology Consultation",
+    duration: 30,
+    startTime: "2024-09-18T14:00:00",
+    doctorId: 104,
+    patientId: 204,
   },
-  // {
-  //     id: 5,
-  //     title: "Physical Therapy",
-  //     start: "2024-09-19T16:00:00",
-  //     end: "2024-09-19T16:45:00",
-  //     doctorId: 105,
-  //     patientId: 205
-  // },
-  // {
-  //     id: 6,
-  //     title: "Cardiology Follow-up",
-  //     start: "2024-09-20T09:30:00",
-  //     end: "2024-09-20T10:00:00",
-  //     doctorId: 106,
-  //     patientId: 206
-  // },
-  // {
-  //     id: 7,
-  //     title: "Psychiatric Evaluation",
-  //     start: "2024-09-21T13:00:00",
-  //     end: "2024-09-21T14:00:00",
-  //     doctorId: 107,
-  //     patientId: 207
-  // },
-  // {
-  //     id: 8,
-  //     title: "Nutrition Consultation",
-  //     start: "2024-09-22T11:00:00",
-  //     end: "2024-09-22T11:30:00",
-  //     doctorId: 108,
-  //     patientId: 208
-  // },
-  // {
-  //     id: 9,
-  //     title: "Orthopedic Surgery Follow-up",
-  //     start: "2024-09-23T12:00:00",
-  //     end: "2024-09-23T12:30:00",
-  //     doctorId: 109,
-  //     patientId: 209
-  // },
-  // {
-  //     id: 10,
-  //     title: "Pediatric Consultation",
-  //     start: "2024-09-24T15:00:00",
-  //     end: "2024-09-24T15:30:00",
-  //     doctorId: 110,
-  //     patientId: 210
-  // },
-  // {
-  //     id: 11,
-  //     title: "Neurological Assessment",
-  //     start: "2024-09-25T10:00:00",
-  //     end: "2024-09-25T11:00:00",
-  //     doctorId: 111,
-  //     patientId: 211
-  // },
-  // {
-  //     id: 12,
-  //     title: "ENT Consultation",
-  //     start: "2024-09-26T09:30:00",
-  //     end: "2024-09-26T10:00:00",
-  //     doctorId: 112,
-  //     patientId: 212
-  // }
+  {
+    id: 5,
+    title: "Physical Therapy",
+    duration: 45,
+    startTime: "2024-09-19T16:00:00",
+    doctorId: 105,
+    patientId: 205,
+  },
+  {
+    id: 6,
+    title: "Cardiology Follow-up",
+    duration: 30,
+    startTime: "2024-09-20T09:30:00",
+    doctorId: 106,
+    patientId: 206,
+  },
+  {
+    id: 7,
+    title: "Psychiatric Evaluation",
+    duration: 60,
+    startTime: "2024-09-21T13:00:00",
+    doctorId: 107,
+    patientId: 207,
+  },
+  {
+    id: 8,
+    title: "Nutrition Consultation",
+    duration: 30,
+    startTime: "2024-09-22T11:00:00",
+    doctorId: 108,
+    patientId: 208,
+  },
+  {
+    id: 9,
+    title: "Orthopedic Surgery Follow-up",
+    duration: 30,
+    startTime: "2024-09-23T12:00:00",
+    doctorId: 109,
+    patientId: 209,
+  },
+  {
+    id: 10,
+    title: "Pediatric Consultation",
+    duration: 30,
+    startTime: "2024-09-24T15:00:00",
+    doctorId: 110,
+    patientId: 210,
+  },
+  {
+    id: 11,
+    title: "Neurological Assessment",
+    duration: 60,
+    startTime: "2024-09-25T10:00:00",
+    doctorId: 111,
+    patientId: 211,
+  },
+  {
+    id: 12,
+    title: "ENT Consultation",
+    duration: 30,
+    startTime: "2024-09-26T09:30:00",
+    doctorId: 112,
+    patientId: 212,
+  }
 ]
+
 
 export const mockDataDoctors = [
   {

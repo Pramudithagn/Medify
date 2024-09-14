@@ -2653,6 +2653,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import Header from "../../components/Header";
+import { mockDataAppointments } from "../../data/mockData";
 
 const mockPatients = [
   { id: 1, name: "John Doe" },
@@ -2692,24 +2693,7 @@ const Appointments = () => {
   useEffect(() => {
     // Initialize with mock data
     dispatch(
-      setAppointments([
-        {
-          id: 5,
-          title: "Physical Therapy",
-          duration: 20,
-          startTime: "2024-09-19T16:00:00",
-          doctorId: 105,
-          patientId: 205,
-        },
-        {
-          id: 6,
-          title: "Cardiology Follow-up",
-          duration: 10,
-          startTime: "2024-09-20T09:30:00",
-          doctorId: 106,
-          patientId: 206,
-        },
-      ])
+      setAppointments( mockDataAppointments )
     );
   }, [dispatch]);
 
@@ -2849,7 +2833,7 @@ const Appointments = () => {
           <Divider sx={{ mt: 1, backgroundColor: colors.grey[500] }} />
           <List
             sx={{
-              maxHeight: "400px", // Fixed height for scrolling
+              maxHeight: "400px",
               overflowY: "auto",
             }}
           >
