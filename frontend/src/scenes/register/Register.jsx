@@ -1321,8 +1321,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import useMediaQuery from "@mui/material/useMediaQuery";
-// import { createPatient } from '../../features/patientSlice';
-// import { createDoctor } from '../../features/doctorSlice';
 import { addPatient } from "../../features/patientSlice";
 import { addDoctor } from "../../features/doctorSlice";
 
@@ -1340,15 +1338,13 @@ const Register = () => {
 
   const handleToggleChange = (event, newType) => {
     setUserType(newType);
-    // Other necessary state updates if any
+    // Other  state updates
   };
 
   const handleFormSubmit = (values, { resetForm }) => {
     if (values.userType === "patient") {
-      // dispatch(createPatient(values));
       dispatch(addPatient(values));
     } else {
-      // dispatch(createDoctor(values));
       dispatch(addDoctor(values));
     }
     resetForm();
@@ -1490,47 +1486,6 @@ const Register = () => {
                 </ToggleButtonGroup>
               </Box>
               <Divider />
-
-              {/* <TextField
-                fullWidth
-                label="UUID"
-                name="uuid"
-                value={values.uuid}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.uuid && !!errors.uuid}
-                helperText={touched.uuid && errors.uuid}
-              />
-              <TextField
-                fullWidth
-                label="Name"
-                name="name"
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.name && !!errors.name}
-                helperText={touched.name && errors.name}
-              />
-              <TextField
-                fullWidth
-                label="Email"
-                name="mail"
-                value={values.mail}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.mail && !!errors.mail}
-                helperText={touched.mail && errors.mail}
-              />
-              <TextField
-                fullWidth
-                label="Phone"
-                name="phone"
-                value={values.phone}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.phone && !!errors.phone}
-                helperText={touched.phone && errors.phone}
-              /> */}
               <TextField
                 fullWidth
                 id="uuid"
@@ -1604,16 +1559,6 @@ const Register = () => {
                 // margin="normal"
               />
               {values.userType === "doctor" && (
-                // <TextField
-                //   fullWidth
-                //   label="Specialization"
-                //   name="specialization"
-                //   value={values.specialization}
-                //   onChange={handleChange}
-                //   onBlur={handleBlur}
-                //   error={touched.specialization && !!errors.specialization}
-                //   helperText={touched.specialization && errors.specialization}
-                // />
                 <TextField
                   fullWidth
                   id="specialization"
@@ -1635,59 +1580,6 @@ const Register = () => {
               <Box display="flex" gap={2}>
                 {values.userType === "patient" && (
                   <>
-                    {/* <TextField
-                    fullWidth
-                    label="Blood Group"
-                    name="bloodGroup"
-                    value={values.bloodGroup}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.bloodGroup && !!errors.bloodGroup}
-                    helperText={touched.bloodGroup && errors.bloodGroup}
-                    select
-                    SelectProps={{
-                      native: true,
-                    }}
-                  >
-                    {bloodGroups.map((bg) => (
-                      <option key={bg} value={bg}>
-                        {bg}
-                      </option>
-                    ))}
-                  </TextField>
-                  <TextField
-                    fullWidth
-                    label="Age"
-                    name="age"
-                    type="number"
-                    value={values.age}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.age && !!errors.age}
-                    helperText={touched.age && errors.age}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Weight"
-                    name="weight"
-                    type="number"
-                    value={values.weight}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.weight && !!errors.weight}
-                    helperText={touched.weight && errors.weight}
-                  />
-                  <TextField
-                    fullWidth
-                    label="Height"
-                    name="height"
-                    type="number"
-                    value={values.height}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={touched.height && !!errors.height}
-                    helperText={touched.height && errors.height}
-                  /> */}
                     <Box flexGrow={1}>
                       <Autocomplete
                         id="gender"
@@ -1792,74 +1684,6 @@ const Register = () => {
                   </>
                 )}
               </Box>
-              {/* <TextField
-                fullWidth
-                label="Street"
-                name="street"
-                value={values.street}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.street && !!errors.street}
-                helperText={touched.street && errors.street}
-              />
-              <TextField
-                fullWidth
-                label="House Number"
-                name="houseNumber"
-                value={values.houseNumber}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.houseNumber && !!errors.houseNumber}
-                helperText={touched.houseNumber && errors.houseNumber}
-              />
-              <TextField
-                fullWidth
-                label="City"
-                name="city"
-                value={values.city}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.city && !!errors.city}
-                helperText={touched.city && errors.city}
-              />
-              <TextField
-                fullWidth
-                label="Zip Code"
-                name="zipCode"
-                value={values.zipCode}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={touched.zipCode && !!errors.zipCode}
-                helperText={touched.zipCode && errors.zipCode}
-              />
-              <DatePicker
-                label="Date of Birth"
-                name="dob"
-                value={values.dob}
-                onChange={(newValue) => setFieldValue('dob', newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    error={touched.dob && !!errors.dob}
-                    helperText={touched.dob && errors.dob}
-                  />
-                )}
-              />
-              <DatePicker
-                label="Assigned Date"
-                name="assignedDate"
-                value={values.assignedDate}
-                onChange={(newValue) => setFieldValue('assignedDate', newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    error={touched.assignedDate && !!errors.assignedDate}
-                    helperText={touched.assignedDate && errors.assignedDate}
-                  />
-                )}
-              /> */}
               <Box display="flex" justifyContent="space-between" gap={2}>
                 {values.userType === "patient" && (
                   <DatePicker
@@ -1901,21 +1725,6 @@ const Register = () => {
               </Box>
 
               {values.userType === "doctor" && (
-                // <Autocomplete
-                //   multiple
-                //   options={treatments}
-                //   getOptionLabel={(option) => `Treatment ${option}`}
-                //   value={values.treatmentIds}
-                //   onChange={(event, newValue) => setFieldValue('treatmentIds', newValue)}
-                //   renderInput={(params) => (
-                //     <TextField
-                //       {...params}
-                //       label="Treatments"
-                //       error={touched.treatmentIds && !!errors.treatmentIds}
-                //       helperText={touched.treatmentIds && errors.treatmentIds}
-                //     />
-                //   )}
-                // />
                 <Autocomplete
                   id="treatmentIds"
                   multiple
@@ -1941,21 +1750,6 @@ const Register = () => {
                 />
               )}
               {values.userType === "patient" && (
-                // <Autocomplete
-                //   multiple
-                //   options={doctors}
-                //   getOptionLabel={(option) => `Doctor ${option}`}
-                //   value={values.doctorIds}
-                //   onChange={(event, newValue) => setFieldValue('doctorIds', newValue)}
-                //   renderInput={(params) => (
-                //     <TextField
-                //       {...params}
-                //       label="Doctors"
-                //       error={touched.doctorIds && !!errors.doctorIds}
-                //       helperText={touched.doctorIds && errors.doctorIds}
-                //     />
-                //   )}
-                // />
                 <>
                   <TextField
                     fullWidth
@@ -2054,10 +1848,6 @@ const Register = () => {
                   // margin="normal"
                 />
               </Box>
-
-              {/* <Button type="submit" variant="contained" color="primary">
-                Register
-              </Button> */}
               <Button
                 type="submit"
                 variant="contained"

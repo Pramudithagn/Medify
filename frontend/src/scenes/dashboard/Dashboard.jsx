@@ -269,8 +269,6 @@
 
 // export default Dashboard;
 
-
-
 import {
   Box,
   Button,
@@ -295,7 +293,13 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import { useEffect } from "react";
 import { setAppointments } from "../../features/appointmentSlice";
-import { mockDataAppointments, mockDataDoctors, mockDataPayments, mockDataRecords, mockDataTreatments } from "../../data/mockData";
+import {
+  mockDataAppointments,
+  mockDataDoctors,
+  mockDataPayments,
+  mockDataRecords,
+  mockDataTreatments,
+} from "../../data/mockData";
 import { setTreatments } from "../../features/treatmentSlice";
 import { setPayments } from "../../features/paymentSlice";
 import { setDoctors } from "../../features/doctorSlice";
@@ -304,81 +308,62 @@ import { setRecords } from "../../features/recordSlice";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  // Fetching data from Redux state
-  const {appointments} = useSelector((state) => state.appointment);
-  const {treatments} = useSelector((state) => state.treatment);
-  const {records} = useSelector((state) => state.record);
-  const {payments} = useSelector((state) => state.payment);
-  const {doctors} = useSelector((state) => state.doctor);
-
+  const { appointments } = useSelector((state) => state.appointment);
+  const { treatments } = useSelector((state) => state.treatment);
+  const { records } = useSelector((state) => state.record);
+  const { payments } = useSelector((state) => state.payment);
+  const { doctors } = useSelector((state) => state.doctor);
 
   useEffect(() => {
-    dispatch(setAppointments(mockDataAppointments))
-    dispatch(setTreatments(mockDataTreatments))
-    dispatch(setPayments(mockDataPayments))
-    dispatch(setDoctors(mockDataDoctors))
-    dispatch(setRecords(mockDataRecords))
-      },[])
-
-      console.log(appointments)
-
-  // const oneWeekAgo = new Date();
-  // oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-  
-  // const weeklyAppointments = appointments.filter(
-  //   (appointment) => new Date(appointment.startTime) >= oneWeekAgo
-  // );
-  // const weeklyNewDoctors = doctors.filter(
-  //   (user) => new Date(user.assignedDate) >= oneWeekAgo
-  // );
-
-  // const latestTreatments = treatments.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 7);
-  // const latestPayments = payments.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 7);
-  // const latestAppointments = appointments.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 4);
+    dispatch(setAppointments(mockDataAppointments));
+    dispatch(setTreatments(mockDataTreatments));
+    dispatch(setPayments(mockDataPayments));
+    dispatch(setDoctors(mockDataDoctors));
+    dispatch(setRecords(mockDataRecords));
+  }, []);
 
   const oneWeekAgo = new Date();
-oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-// Sort by newest entries first
-const sortByDateTime = (a, b) => new Date(b.startTime) - new Date(a.startTime);
+  // Sort by newest entries first
+  const sortByDateTime = (a, b) =>
+    new Date(b.startTime) - new Date(a.startTime);
 
-// Filteri sort
-const weeklyAppointments = appointments
-  .filter((appointment) => new Date(appointment.startTime) >= oneWeekAgo)
-  .sort(sortByDateTime);
+  // Filteri sort
+  const weeklyAppointments = appointments
+    .filter((appointment) => new Date(appointment.startTime) >= oneWeekAgo)
+    .sort(sortByDateTime);
 
-// Filtersort
-const weeklyNewDoctors = doctors
-  .filter((doctor) => new Date(doctor.assignedDate) >= oneWeekAgo)
-  .sort((a, b) => new Date(b.assignedDate) - new Date(a.assignedDate));
+  // Filtersort
+  const weeklyNewDoctors = doctors
+    .filter((doctor) => new Date(doctor.assignedDate) >= oneWeekAgo)
+    .sort((a, b) => new Date(b.assignedDate) - new Date(a.assignedDate));
 
-// Sort
-const latestTreatments = treatments
-  .slice()
-  .sort((a, b) => new Date(b.date) - new Date(a.date))
-  .slice(0, 7);
+  // Sort
+  const latestTreatments = treatments
+    .slice()
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 7);
 
-const latestRecords = records
-  .slice()
-  .sort((a, b) => new Date(b.assignDate) - new Date(a.assignDate))
-  .reverse()
-  .slice(0, 7);
+  const latestRecords = records
+    .slice()
+    .sort((a, b) => new Date(b.assignDate) - new Date(a.assignDate))
+    .reverse()
+    .slice(0, 7);
 
-const latestPayments = payments
-  .slice()
-  // .sort((a, b) => new Date(b.date) - new Date(a.date))
-  .sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate))
-  .reverse()
-  .slice(0, 7);
+  const latestPayments = payments
+    .slice()
+    .sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate))
+    .reverse()
+    .slice(0, 7);
 
-const latestAppointments = appointments
-  .slice()
-  .sort(sortByDateTime)
-  .slice(0, 4);
+  const latestAppointments = appointments
+    .slice()
+    .sort(sortByDateTime)
+    .slice(0, 4);
 
-  
   return (
     <Box m="20px">
       {/* HEADER */}
@@ -393,19 +378,22 @@ const latestAppointments = appointments
         gridAutoRows="140px"
         gap="20px"
       >
-
         {/* ROW 2 */}
         <Box
           gridColumn="span 4"
           gridRow="span 3"
           backgroundColor={colors.primary[400]}
+          display="flex"
+          flexDirection="column"
+          height="100%"
         >
           <Box
             mt="25px"
             p="0 30px"
-            display="flex "
+            display="flex"
+            flexDirection="column"
+            height="100%"
             justifyContent="space-between"
-            alignItems="center"
           >
             <Box>
               <Typography
@@ -417,19 +405,44 @@ const latestAppointments = appointments
               </Typography>
               <Divider sx={{ mt: 2, backgroundColor: colors.grey[500] }} />
               <Timeline
-                sx={{ width: "20vw", height: "50vh", gap: 2 }}
+                sx={{
+                  width: "100%",
+                  height: "50vh",
+                  gap: 2,
+                  overflowY: "auto",
+                }}
                 position="alternate"
               >
                 {latestAppointments.map((appointment, i) => (
                   <TimelineItem key={i}>
-                    <TimelineOppositeContent fontSize={12} color="text.secondary">
+                    <TimelineOppositeContent
+                      sx={{
+                        fontSize: 12,
+                        color: "text.secondary",
+                        maxWidth: "50%",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
                       {appointment.startTime}
                     </TimelineOppositeContent>
                     <TimelineSeparator>
                       <TimelineDot />
                       <TimelineConnector />
                     </TimelineSeparator>
-                    <TimelineContent color={colors.greenAccent[500]} fontSize={15}>{appointment.title}</TimelineContent>
+                    <TimelineContent
+                      sx={{
+                        color: colors.greenAccent[500],
+                        fontSize: 15,
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      {appointment.title}
+                    </TimelineContent>
                   </TimelineItem>
                 ))}
               </Timeline>
@@ -456,7 +469,6 @@ const latestAppointments = appointments
               Recent Treatments
             </Typography>
           </Box>
-          {/* {latestTreatments.map((treatment, i) => ( */}
           {latestRecords.map((record, i) => (
             <Box
               key={`${record.id}-${i}`}
@@ -478,7 +490,6 @@ const latestAppointments = appointments
                   {record.description}
                 </Typography>
               </Box>
-              {/* <Box color={colors.grey[100]}>{new Date(treatment.date).toLocaleDateString()}</Box> */}
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"
@@ -530,7 +541,9 @@ const latestAppointments = appointments
                   {payment.method}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{new Date(payment.dueDate).toLocaleDateString()}</Box>
+              <Box color={colors.grey[100]}>
+                {new Date(payment.dueDate).toLocaleDateString()}
+              </Box>
               <Box
                 backgroundColor={colors.greenAccent[500]}
                 p="5px 10px"

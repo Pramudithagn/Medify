@@ -630,7 +630,7 @@ export const Treatments = () => {
         />
       </Box>
 
-      {/* Modal for editing treatment */}
+      {/* Modal  editing treatment */}
       <Modal
         open={editModelOpen}
         onClose={handleEditClose}
@@ -741,7 +741,7 @@ export const Treatments = () => {
         </Box>
       </Modal>
       
-      {/* Modal for creating new treatment */}
+      {/* Modal creating new treatment */}
 
       <Modal open={isCreating} onClose={handleClose}>
       <Box
@@ -779,11 +779,6 @@ export const Treatments = () => {
             price: "",
             doctorIds: [],
             status: false,
-            // name: selectedTreatment?.name || "",
-            // description: selectedTreatment?.description || "",
-            // price: selectedTreatment?.price || "",
-            // doctorIds: selectedTreatment?.doctorIds || [],
-            // status: selectedTreatment?.status || false,
           }}
           validationSchema={validationSchema}
           onSubmit={handleSave}
@@ -882,16 +877,6 @@ export const Treatments = () => {
         color="primary"
         aria-label="add"
         onClick={() => {
-          // dispatch(
-          //   setSelectedTreatment({
-          //     id: Math.floor(Math.random() * 100),//  ID generation
-          //     name: "",
-          //     description: "",
-          //     price: 0,
-          //     status: false,
-          //     doctorIds: [],
-          //   })
-          // );
           dispatch(setIsCreating(true));
         }}
         sx={{ position: "fixed", bottom: 20, right: 20 }}

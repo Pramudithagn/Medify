@@ -1,23 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { mockDataTreatments } from '../data/mockData';
-
+import { createSlice } from "@reduxjs/toolkit";
+import { mockDataTreatments } from "../data/mockData";
 
 const initialState = {
-    treatments: mockDataTreatments,
-    // treatments: "",
-    selectedTreatment: null,
-    isCreating: false,
-    editModelOpen: false,
-  };
+  treatments: mockDataTreatments,
+  // treatments: "",
+  selectedTreatment: null,
+  isCreating: false,
+  editModelOpen: false,
+};
 
 const treatmentSlice = createSlice({
-  name: 'treatments',
-//   initialState: {
-//     treatments: mockDataTreatments,
-//     selectedTreatment: null,
-//     isCreating: false,
-//   },
-initialState,
+  name: "treatments",
+  initialState,
   reducers: {
     setTreatments(state, action) {
       state.treatments = action.payload;
@@ -29,20 +23,23 @@ initialState,
       state.isCreating = action.payload;
     },
     setEditModelOpen(state, action) {
-        state.editModelOpen = action.payload;
-      },
+      state.editModelOpen = action.payload;
+    },
     addTreatment(state, action) {
       state.treatments.push(action.payload);
     },
     updateTreatment(state, action) {
-
-      const index = state.treatments.findIndex(treatment => treatment.id === action.payload.id);
+      const index = state.treatments.findIndex(
+        (treatment) => treatment.id === action.payload.id
+      );
       if (index !== -1) {
         state.treatments[index] = action.payload;
       }
     },
     deleteTreatment(state, action) {
-      state.treatments = state.treatments.filter(treatment => treatment.id !== action.payload);
+      state.treatments = state.treatments.filter(
+        (treatment) => treatment.id !== action.payload
+      );
     },
   },
 });

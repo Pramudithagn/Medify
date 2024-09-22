@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// API Client Configuration
+// API Client Config
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL,
     headers: {
@@ -8,7 +8,7 @@ const api = axios.create({
     },
 });
 
-// Handli request errors globals
+// for request errors globals
 api.interceptors.response.use(
     response => response,
     error => {

@@ -1747,10 +1747,7 @@
 
 // export default Appointments;
 
-
 //===============================================================================================================================================
-
-
 
 // import { useEffect, useState } from "react";
 // import {
@@ -1987,7 +1984,7 @@
 //             ))}
 //           </List>
 //         </Box>
-        
+
 //         {/* CALENDAR */}
 //         <Box flex="1 1 100%" ml="15px">
 //         </Box>
@@ -2172,9 +2169,7 @@
 
 // export default Appointments;
 
-
 //===============================================================================================================================================
-
 
 // import { useEffect, useState } from "react";
 // import FullCalendar from "@fullcalendar/react";
@@ -2617,7 +2612,6 @@
 
 // export default Appointments;
 
-
 import { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -2691,10 +2685,7 @@ const Appointments = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Initialize with mock data
-    dispatch(
-      setAppointments( mockDataAppointments )
-    );
+    dispatch(setAppointments(mockDataAppointments));
   }, [dispatch]);
 
   const calculateEndTime = (startTime, duration) => {
@@ -2812,22 +2803,15 @@ const Appointments = () => {
           p="15px"
           borderRadius="4px"
         >
-          {/* <TextField
-            label="Search Appointments"
-            fullWidth
-            margin="dense"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          /> */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-          <TextField
-            label="Appointments List"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+            <TextField
+              label="Appointments List"
+              fullWidth
+              size="small"
+              margin="dense"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <SearchIcon sx={{ marginLeft: 1 }} />
           </Box>
           <Divider sx={{ mt: 1, backgroundColor: colors.grey[500] }} />
@@ -2864,7 +2848,12 @@ const Appointments = () => {
         <Box flex="1 1 100%" ml="15px">
           <FullCalendar
             height="70vh"
-            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+            plugins={[
+              dayGridPlugin,
+              timeGridPlugin,
+              interactionPlugin,
+              listPlugin,
+            ]}
             initialView="dayGridMonth"
             headerToolbar={{
               left: "prev,next today",
@@ -2875,9 +2864,9 @@ const Appointments = () => {
           />
         </Box>
 
-                {/* Create Appointment Modal */}
-                <Dialog open={isCreateModalOpen} onClose={closeCreateModal}>
-        <DialogTitle>Create New Appointment</DialogTitle>
+        {/* Create Appointment Modal */}
+        <Dialog open={isCreateModalOpen} onClose={closeCreateModal}>
+          <DialogTitle>Create New Appointment</DialogTitle>
           <DialogContent>
             <TextField
               label="Title"
@@ -2935,7 +2924,6 @@ const Appointments = () => {
               }
             />
             <TextField
-              // label="Start Time"
               type="datetime-local"
               fullWidth
               margin="dense"
@@ -2965,7 +2953,7 @@ const Appointments = () => {
 
         {/* Delete Appointment Modal */}
         <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal}>
-        <DialogTitle>Delete Appointment</DialogTitle>
+          <DialogTitle>Delete Appointment</DialogTitle>
           <DialogContent>
             Are you sure you want to delete this appointment?
           </DialogContent>
@@ -3018,7 +3006,6 @@ const Appointments = () => {
                 }
               />
               <TextField
-                // label="Start Time"
                 type="datetime-local"
                 fullWidth
                 margin="dense"
@@ -3055,423 +3042,5 @@ const Appointments = () => {
 };
 
 export default Appointments;
-
-
-
-
-
-
-
-//===============================================================================================================================================
-// import { useEffect, useState } from "react";
-// import FullCalendar from "@fullcalendar/react";
-// import dayGridPlugin from "@fullcalendar/daygrid";
-// import timeGridPlugin from "@fullcalendar/timegrid";
-// import interactionPlugin from "@fullcalendar/interaction";
-// import listPlugin from "@fullcalendar/list";
-// import {
-//   Box,
-//   Divider,
-//   List,
-//   ListItem,
-//   ListItemText,
-//   Typography,
-//   Button,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-//   TextField,
-//   Autocomplete,
-//   useTheme,
-// } from "@mui/material";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   setEvents,
-//   addEvent,
-//   removeEvent,
-//   updateEvent,
-//   setNewAppointment,
-//   resetNewAppointment,
-// } from "../../features/appointmentSlice";
-// import Header from "../../components/Header";
-// import { tokens } from "../../theme";
-// import { formatDate } from "@fullcalendar/core/index.js";
-// import {mockDataAppointments} from "../../data/mockData"
-
-// // some Mock data for patients and doctors
-// const mockPatients = [
-//   { id: 1, name: "John Doe" },
-//   { id: 2, name: "Jane Smith" },
-// ];
-
-// const mockDoctors = {
-//   1: [
-//     { id: 101, name: "Dr. John Specialist" },
-//     { id: 102, name: "Dr. Jane Expert" },
-//   ],
-//   2: [{ id: 103, name: "Dr. Alex Surgeon" }],
-// };
-
-// const Appointments = () => {
-//   const theme = useTheme();
-//   const colors = tokens(theme.palette.mode);
-//   const dispatch = useDispatch();
-
-//   const { currentEvents, newAppointment } = useSelector(
-//     (state) => state.appointment
-//   );
-
-//   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-//   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-//   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
-//   const [selectedAppointment, setSelectedAppointment] = useState(null);
-//   const [selectedEvent, setSelectedEvent] = useState(null);
-//   const [updatedEventInfo, setUpdatedEventInfo] = useState(null);
-
-//   useEffect(() => {
-//     dispatch(setEvents(mockDataAppointments));
-//     console.log(currentEvents);
-//   }, [dispatch]);
-
-//   // Handle create modal open/close
-//   const openCreateModal = () => setCreateModalOpen(true);
-//   const closeCreateModal = () => {
-//     setSelectedAppointment(null);
-//     setCreateModalOpen(false);
-//     dispatch(resetNewAppointment());
-//   };
-
-//   // Handle delete modal open/close
-//   const openDeleteModal = (event) => {
-//     setSelectedEvent(event);
-//     setDeleteModalOpen(true);
-//   };
-//   const closeDeleteModal = () => {
-//     setSelectedEvent(null);
-//     setDeleteModalOpen(false);
-//   };
-
-//   // Handle update modal open/close
-//   const openUpdateModal = (info) => {
-//     setUpdatedEventInfo(info);
-//     setUpdateModalOpen(true);
-//   };
-//   const closeUpdateModal = () => {
-//     if (updatedEventInfo) {
-//       updatedEventInfo.revert(); // Revert the event change
-//     }
-//     setUpdatedEventInfo(null);
-//     setUpdateModalOpen(false);
-//   };
-
-//   // Handle form field changes when creating new appointment
-//   const handleNewAppointmentChange = (field, value) => {
-//     dispatch(setNewAppointment({ [field]: value }));
-//   };
-
-//   const handleDateClick = (selected) => {
-//     setSelectedAppointment(selected);
-//     openCreateModal();
-//   };
-
-//   const handleEventClick = (selected) => {
-//     setSelectedEvent(selected.event);
-//     openDeleteModal(selected.event);
-//   };
-
-//   const handleCreateAppointment = () => {
-//     const calendarApi = selectedAppointment.view.calendar;
-//     calendarApi.unselect();
-//     if (
-//       newAppointment.title &&
-//       newAppointment.patientId &&
-//       newAppointment.doctorId
-//     ) {
-//       const title = newAppointment.title;
-
-//       const newEvent = {
-//         id: `${selectedAppointment.dateStr}-${title}`,
-//         title,
-//         start: selectedAppointment.startStr,
-//         end: selectedAppointment.endStr,
-//         allDay: selectedAppointment.allDay,
-//       };
-
-//        // Debugging logs
-//     console.log("Current events in calendar:", calendarApi.getEvents());
-//     console.log("New event ID:", newEvent.id);
-
-//       // calendarApi.addEvent(newEvent);
-//       // dispatch(addEvent(newEvent));
-//       const existingEvent = calendarApi.getEventById(newEvent.id);
-//     if (!existingEvent) {
-//       calendarApi.addEvent(newEvent);
-//       dispatch(addEvent(newEvent));
-//       console.log("Event added:", newEvent);
-//     } else {
-//       console.log("Event already exists:", existingEvent);
-//     }
-//       closeCreateModal();
-//     }
-//   };
-
-//   const handleDeleteAppointment = () => {
-//     if (selectedEvent) {
-//       dispatch(removeEvent(selectedEvent));
-//       selectedEvent.remove();
-//       setSelectedEvent(null);
-//       closeDeleteModal();
-//     }
-//   };
-
-//   const handleEventChange = (info) => {
-//     const oldStart = formatDate(info.oldEvent.start, {
-//       year: "numeric",
-//       month: "short",
-//       day: "numeric",
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-//     const oldEnd = formatDate(info.oldEvent.end, {
-//       year: "numeric",
-//       month: "short",
-//       day: "numeric",
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-//     const newStart = formatDate(info.event.start, {
-//       year: "numeric",
-//       month: "short",
-//       day: "numeric",
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-//     const newEnd = formatDate(info.event.end, {
-//       year: "numeric",
-//       month: "short",
-//       day: "numeric",
-//       hour: "2-digit",
-//       minute: "2-digit",
-//     });
-
-//     console.log("Old Start: ", oldStart, "Old End: ", oldEnd);
-//     console.log("New Start: ", newStart, "New End: ", newEnd);
-
-//     const updatedEvent = {
-//       id: info.event.id,
-//       title: info.event.title,
-//       start: newStart,
-//       end: newEnd,
-//       allDay: info.event.allDay,
-//     };
-//     console.log(updatedEvent);
-
-//     dispatch(updateEvent(updatedEvent));
-//     openUpdateModal(info);
-//   };
-
-//   const handleConfirmUpdate = () => {
-//     setUpdatedEventInfo(null);
-//     setUpdateModalOpen(false);
-//   };
-
-//   return (
-//     <Box m="20px">
-//       <Header title="Appointments" subtitle="Manage your appointments here" />
-
-//       <Box display="flex" justifyContent="space-between">
-
-//         {/* CALENDAR */}
-//         <Box flex="1 1 100%" ml="15px">
-//           <FullCalendar
-//             height="75vh"
-//             plugins={[
-//               dayGridPlugin,
-//               timeGridPlugin,
-//               interactionPlugin,
-//               listPlugin,
-//             ]}
-//             headerToolbar={{
-//               left: "prev,next today",
-//               center: "title",
-//               right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-//             }}
-//             initialView="dayGridMonth"
-//             editable={true}
-//             selectable={true}
-//             selectMirror={true}
-//             dayMaxEvents={true}
-//             select={handleDateClick}
-//             eventClick={handleEventClick}
-//             eventChange={handleEventChange}
-//             events={currentEvents}
-//             // eventsSet={(events) => dispatch(setEvents(events))}
-//             // eventsSet={(events) => dispatch(setEvents(events.map(event => ({
-//             //   ...event,
-//             //   start: event.start.toISOString(),
-//             //   end: event.end?.toISOString(),
-//             // }))))}
-
-//             // eventsSet={(events) => {
-//             //   // You may want to add conditions to prevent unnecessary updates
-//             //   const newEvents = events.map(event => ({
-//             //     ...event,
-//             //     start: event.start.toISOString(),
-//             //     end: event.end?.toISOString(),
-//             //   }));
-//             //   dispatch(setEvents(newEvents));
-//             // }}
-
-//             eventsSet={(events) => {
-//               // Synchronize events with Redux state only if there are changes
-//               const newEvents = events.map(event => ({
-//                 ...event,
-//                 start: event.start.toISOString(),
-//                 end: event.end?.toISOString(),
-//               }));
-
-//               const eventsAreDifferent = (existingEvents, newEvents) =>
-//                 existingEvents.length !== newEvents.length ||
-//                 existingEvents.some(
-//                   (event, index) =>
-//                     event.id !== newEvents[index].id ||
-//                     event.start !== newEvents[index].start ||
-//                     event.end !== newEvents[index].end ||
-//                     event.title !== newEvents[index].title
-//                 );
-
-//               if (eventsAreDifferent(currentEvents, newEvents)) {
-//                 dispatch(setEvents(newEvents));
-//               }
-//             }}
-
-//           />
-//         </Box>
-//       </Box>
-
-//       {/* Create Appointment Modal */}
-//       <Dialog open={isCreateModalOpen} onClose={closeCreateModal}>
-//         <DialogTitle>Create New Appointment</DialogTitle>
-//         <DialogContent>
-//           <TextField
-//             label="Title"
-//             fullWidth
-//             margin="dense"
-//             value={newAppointment.title}
-//             onChange={(e) =>
-//               handleNewAppointmentChange("title", e.target.value)
-//             }
-//           />
-//           <Autocomplete
-//             options={mockPatients}
-//             getOptionLabel={(option) => option.name}
-//             onChange={(e, value) =>
-//               handleNewAppointmentChange("patientId", value?.id)
-//             }
-//             renderInput={(params) => (
-//               <TextField
-//                 {...params}
-//                 label="Select Patient"
-//                 margin="dense"
-//                 fullWidth
-//               />
-//             )}
-//           />
-//           <Autocomplete
-//             options={
-//               newAppointment.patientId
-//                 ? mockDoctors[newAppointment.patientId]
-//                 : []
-//             }
-//             getOptionLabel={(option) => option.name}
-//             onChange={(e, value) =>
-//               handleNewAppointmentChange("doctorId", value?.id)
-//             }
-//             renderInput={(params) => (
-//               <TextField
-//                 {...params}
-//                 label="Select Doctor"
-//                 margin="dense"
-//                 fullWidth
-//               />
-//             )}
-//             disabled={!newAppointment.patientId}
-//           />
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={closeCreateModal}>Cancel</Button>
-//           <Button
-//             onClick={handleCreateAppointment}
-//             variant="contained"
-//             color="primary"
-//           >
-//             Create
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-
-//       {/* Delete Appointment Modal */}
-//       <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal}>
-//         <DialogTitle>Confirm Delete</DialogTitle>
-//         <DialogContent>
-//           <Typography>
-//             Are you sure you want to delete the appointment '
-//             {selectedAppointment?.title}'?
-//           </Typography>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={closeDeleteModal}>Cancel</Button>
-//           <Button
-//             onClick={handleDeleteAppointment}
-//             variant="contained"
-//             color="error"
-//           >
-//             Delete
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-//     </Box>
-//   );
-// };
-
-// export default Appointments;
-
-//===============================================================================================================================================
-
-// import {
-//   Box,
-//   useTheme,
-// } from "@mui/material";
-// import Header from "../../components/Header";
-// import { tokens } from "../../theme";
-
-// const Appointments = () => {
-//   const theme = useTheme();
-//   const colors = tokens(theme.palette.mode);
-
-//   return (
-//     <Box m="20px">
-//       <Header title="Appointments" subtitle="You can manage your appointments here" />
-
-//       <Box display="flex" justifyContent="space-between">
-//         {/* CALENDAR SIDEBAR */}
-//         <Box
-//           flex="1 1 20%"
-//           backgroundColor={colors.primary[400]}
-//           p="15px"
-//           borderRadius="4px"
-//         >
-//         </Box>
-
-//         {/* CALENDAR */}
-//         <Box flex="1 1 100%" ml="15px">
-//         </Box>
-//       </Box>
-//     </Box>
-//   );
-// };
-
-// export default Appointments;
 
 //===============================================================================================================================================

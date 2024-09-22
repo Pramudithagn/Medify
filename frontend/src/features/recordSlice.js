@@ -1,32 +1,5 @@
-// import { createSlice } from '@reduxjs/toolkit';
-
-// const recordSlice = createSlice({
-//   name: 'record',
-//   initialState: [],
-//   reducers: {
-//     setRecords: (state, action) => action.payload,
-//     addRecord: (state, action) => {
-//       state.push(action.payload);
-//     },
-//     updateRecord: (state, action) => {
-//       const index = state.findIndex(record => record.id === action.payload.id);
-//       if (index !== -1) {
-//         state[index] = action.payload;
-//       }
-//     },
-//     deleteRecord: (state, action) => {
-//       return state.filter(record => record.id !== action.payload);
-//     },
-//   },
-// });
-
-// export const { setRecords, addRecord, updateRecord, deleteRecord } = recordSlice.actions;
-// export default recordSlice.reducer;
-
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  mockDataRecords,
-} from "../data/mockData";
+import { mockDataRecords } from "../data/mockData";
 
 const initialState = {
   // records: [],

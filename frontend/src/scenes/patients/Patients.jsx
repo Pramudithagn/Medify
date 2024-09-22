@@ -805,8 +805,6 @@
 
 //=====================================================================================================================================================================================================================================
 
-// src/pages/Patients.js
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -1393,128 +1391,6 @@ const Patients = () => {
                       Cancel
                     </Button>
                   </Box>
-                  {/* <TextField
-                    fullWidth
-                    name="name"
-                    label="Name"
-                    variant="outlined"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.name}
-                    error={touched.name && Boolean(errors.name)}
-                    helperText={touched.name && errors.name}
-                  />
-                  <TextField
-                    fullWidth
-                    name="phone"
-                    label="Phone"
-                    variant="outlined"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.phone}
-                    error={touched.phone && Boolean(errors.phone)}
-                    helperText={touched.phone && errors.phone}
-                  />
-                  <TextField
-                    fullWidth
-                    name="mail"
-                    label="Email"
-                    variant="outlined"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.mail}
-                    error={touched.mail && Boolean(errors.mail)}
-                    helperText={touched.mail && errors.mail}
-                  />
-                  <TextField
-                    fullWidth
-                    name="dob"
-                    label="Date of Birth"
-                    type="date"
-                    variant="outlined"
-                    InputLabelProps={{ shrink: true }}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.dob}
-                    error={touched.dob && Boolean(errors.dob)}
-                    helperText={touched.dob && errors.dob}
-                  />
-                  <TextField
-                    fullWidth
-                    name="gender"
-                    label="Gender"
-                    variant="outlined"
-                    select
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.gender}
-                    error={touched.gender && Boolean(errors.gender)}
-                    helperText={touched.gender && errors.gender}
-                  >
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                  </TextField>
-                  <TextField
-                    fullWidth
-                    name="weight"
-                    label="Weight"
-                    variant="outlined"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.weight}
-                    error={touched.weight && Boolean(errors.weight)}
-                    helperText={touched.weight && errors.weight}
-                  />
-                  <TextField
-                    fullWidth
-                    name="height"
-                    label="Height"
-                    variant="outlined"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.height}
-                    error={touched.height && Boolean(errors.height)}
-                    helperText={touched.height && errors.height}
-                  />
-                  <TextField
-                    fullWidth
-                    name="allergies"
-                    label="Allergies"
-                    variant="outlined"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.allergies}
-                    error={touched.allergies && Boolean(errors.allergies)}
-                    helperText={touched.allergies && errors.allergies}
-                  />
-                  <TextField
-                    fullWidth
-                    name="address"
-                    label="Address"
-                    variant="outlined"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.address}
-                    error={touched.address && Boolean(errors.address)}
-                    helperText={touched.address && errors.address}
-                  />
-                  <Box display="flex" justifyContent="center" mt={2}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      sx={{ marginRight: 2 }}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={handleClose}
-                    >
-                      Cancel
-                    </Button>
-                  </Box> */}
                 </Form>
               )}
             </Formik>
@@ -1542,54 +1418,8 @@ const Patients = () => {
             flexDirection: "column",
             alignItems: "center",
             gap: 2,
-            // "& .MuiTextField-root, & .MuiFormControl-root": {
-            //   "& .MuiOutlinedInput-root": {
-            //     "& fieldset": {
-            //       borderColor: colors.grey[500],
-            //     },
-            //     "&.Mui-focused fieldset": {
-            //       borderColor: colors.grey[400],
-            //     },
-            //     "&.Mui-disabled fieldset": {
-            //       borderColor: colors.grey[300],
-            //     },
-            //     "&.Mui-disabled .MuiInputBase-input": {
-            //       WebkitTextFillColor: `${colors.grey[300]} !important`,
-            //     },
-            //   },
-            //   "& .MuiInputLabel-root": {
-            //     color: colors.grey[200],
-            //   },
-            //   "& .MuiInputLabel-root.Mui-focused": {
-            //     color: colors.grey[500],
-            //   },
-            //   mt: 2,
-            // },
           }}
         >
-          {/* <Typography variant="h3" align="center">
-            Confirm Delete
-          </Typography>
-          <Typography variant="body1" align="center" mt={2}>
-            Are you sure you want to delete this patient?
-          </Typography>
-          <Box display="flex" justifyContent="center" mt={2}>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={handleDelete}
-              sx={{ marginRight: 2 }}
-            >
-              Delete
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleDeleteClose}
-            >
-              Cancel
-            </Button>
-          </Box> */}
           <Typography
             variant="h4"
             sx={{

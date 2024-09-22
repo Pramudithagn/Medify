@@ -626,8 +626,6 @@
 
 // export default Records;
 
-
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -753,7 +751,7 @@ const Records = () => {
 
   const handleCreateRecord = (values, { resetForm }) => {
     const newRecord = {
-      id: records.length + 1, // ID generation logic
+      id: records.length + 1, // ID gener
       ...values,
     };
     dispatch(addRecord(newRecord));
@@ -979,17 +977,15 @@ const Records = () => {
             Create New Record
           </Typography>
           <Formik
-            initialValues={
-              {
-                diagnosis: "",
-                prescription: "",
-                price: 0,
-                doctorId: "",
-                patientId: "",
-                treatmentIds: [],
-                assignDate: dayjs().format("YYYY-MM-DD"),
-              }
-            }
+            initialValues={{
+              diagnosis: "",
+              prescription: "",
+              price: 0,
+              doctorId: "",
+              patientId: "",
+              treatmentIds: [],
+              assignDate: dayjs().format("YYYY-MM-DD"),
+            }}
             validationSchema={recordValidationSchema}
             onSubmit={handleCreateRecord}
           >
