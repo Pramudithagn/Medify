@@ -26,8 +26,8 @@ spring:
         - id: clinic-service
           uri: lb://CLINIC-SERVICE
           predicates:
-            - Path=/api/v1/medical-records/**
-            - Path=/api/v1/appointments/**
+            - Path=/api/v1/medical-records/**, /api/v1/appointments/**
+#            - Path=/api/v1/appointments/**
         - id: notification-service
           uri: lb://NOTIFICATION-SERVICE
           predicates:

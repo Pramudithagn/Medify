@@ -38,6 +38,7 @@ public class PatientKafkaConsumer {
                 null,
                 null,
                 null,
+                null,
                 medicalRecordIds,
                 null,
                 null
@@ -53,6 +54,7 @@ public class PatientKafkaConsumer {
 
         patientService.updatePatient(new PatientDTO(
                 event.patientId(),
+                null,
                 null,
                 null,
                 null,
@@ -89,6 +91,7 @@ public class PatientKafkaConsumer {
 
         patientService.updatePatient(new PatientDTO(
                 event.patientId(),
+                null,
                 null,
                 null,
                 null,
