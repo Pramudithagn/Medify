@@ -105,6 +105,9 @@ public class MedicalRecordService {
         if (medicalRecordDTO.prescription() != null) {
             medicalRecord.setPrescription(medicalRecordDTO.prescription());
         }
+        if (medicalRecordDTO.price() != null) {
+            medicalRecord.setPrice(medicalRecordDTO.price());
+        }
         if (medicalRecordDTO.treatmentIds() != null) {
             // Validate Treatments exist
             List<Long> treatmentIds = medicalRecordDTO.treatmentIds();

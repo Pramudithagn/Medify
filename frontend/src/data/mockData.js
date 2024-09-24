@@ -41,10 +41,10 @@ export const mockDoctor  = {
 };
 
 export const mockDoctorIds = [
-  "001",
+  "1",
   "002",
-  "003",
-  "004",
+  "3",
+  "4",
   "005",
   "006",
   "007",
@@ -53,6 +53,8 @@ export const mockDoctorIds = [
   "010",
 ];
 export const mockPatientIds = [
+  "1",
+  "3",
   "001",
   "002",
   "003",
@@ -64,7 +66,7 @@ export const mockPatientIds = [
   "009",
   "010",
 ];
-export const mockTreatmentIds = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
+export const mockTreatmentIds = [1, 3, 4, 102, 105, 106, 107, 108, 109, 110]
 
 export const mockPaymentIds = [
   "1",

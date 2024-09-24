@@ -1,4 +1,4 @@
-import api from './api';
+import api from "../config/api";
 
 export const getAllPatients = async () => {
     return await api.get('/patients');
