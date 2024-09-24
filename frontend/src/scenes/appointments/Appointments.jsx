@@ -2612,6 +2612,8 @@
 
 // export default Appointments;
 
+//===============================================================================================================================================
+
 import { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -2637,8 +2639,12 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setAppointments,
-  addAppointment,
+  // setAppointments,
+  // addAppointment,
+  // deleteAppointment,
+  // updateAppointment,
+  fetchAppointments,
+  createAppointment,
   deleteAppointment,
   updateAppointment,
 } from "../../features/appointmentSlice";
@@ -2650,13 +2656,13 @@ import Header from "../../components/Header";
 import { mockDataAppointments } from "../../data/mockData";
 
 const mockPatients = [
-  { id: 1, name: "John Doe" },
+  { id: 3, name: "John Doe" },
   { id: 2, name: "Jane Smith" },
 ];
 
 const mockDoctors = {
-  1: [
-    { id: 101, name: "Dr. John Specialist" },
+  3: [
+    { id: 4, name: "Dr. John Specialist" },
     { id: 102, name: "Dr. Jane Expert" },
   ],
   2: [{ id: 103, name: "Dr. Alex Surgeon" }],
@@ -2666,7 +2672,8 @@ const Appointments = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
-  const { appointments } = useSelector((state) => state.appointment);
+  // const { appointments } = useSelector((state) => state.appointment);
+  const { appointments, status } = useSelector((state) => state.appointment);
 
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -2677,20 +2684,29 @@ const Appointments = () => {
     title: "",
     patientId: null,
     doctorId: null,
-    duration: "",
-    startTime: "",
+    duration: null,
+    // startTime: "",
+    dateTime: "",
   });
 
   const [updatedAppointment, setUpdatedAppointment] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // useEffect(() => {
+  //   dispatch(setAppointments(mockDataAppointments));
+  // }, [dispatch]);
   useEffect(() => {
-    dispatch(setAppointments(mockDataAppointments));
-  }, [dispatch]);
+    if (status === "idle") {
+      dispatch(fetchAppointments());
+    }
+  }, [dispatch, status]);
 
-  const calculateEndTime = (startTime, duration) => {
-    const start = new Date(startTime);
+  console.log(appointments);
+
+  const calculateEndTime = (dateTime, duration) => {
+    const start = new Date(dateTime);
     const end = new Date(start.getTime() + duration * 60000);
+    console.log(dateTime);
     return end.toISOString();
   };
 
@@ -2706,27 +2722,24 @@ const Appointments = () => {
       newAppointment.title &&
       newAppointment.patientId &&
       newAppointment.doctorId &&
-      newAppointment.startTime &&
+      newAppointment.dateTime &&
       newAppointment.duration
     ) {
       const endTime = calculateEndTime(
-        newAppointment.startTime,
+        newAppointment.dateTime,
         newAppointment.duration
       );
 
-      dispatch(
-        addAppointment({
-          ...newAppointment,
-          id: `appt-${Date.now()}`,
-        })
-      );
+      console.log(newAppointment);
+
+      dispatch(createAppointment(newAppointment));
 
       setNewAppointment({
         title: "",
         patientId: null,
         doctorId: null,
         duration: 0,
-        startTime: "",
+        dateTime: "",
       });
       closeCreateModal();
     }
@@ -2742,16 +2755,13 @@ const Appointments = () => {
 
   const handleUpdateAppointment = () => {
     if (updatedAppointment) {
-      const endTime = calculateEndTime(
-        updatedAppointment.startTime,
-        updatedAppointment.duration
-      );
+      console.log(updatedAppointment);
 
       dispatch(
         updateAppointment({
           ...updatedAppointment,
-          start: updatedAppointment.startTime,
-          end: endTime,
+          // start: updatedAppointment.dateTime,
+          // end: endTime,
         })
       );
       setUpdatedAppointment(null);
@@ -2775,8 +2785,8 @@ const Appointments = () => {
   const appointmentEvents = appointments.map((appointment) => ({
     id: appointment.id,
     title: appointment.title,
-    start: appointment.startTime,
-    end: calculateEndTime(appointment.startTime, appointment.duration),
+    start: appointment.dateTime,
+    end: calculateEndTime(appointment.dateTime, appointment.duration),
   }));
 
   const filteredAppointments = appointments.filter((appointment) =>
@@ -2870,7 +2880,7 @@ const Appointments = () => {
           <DialogContent>
             <TextField
               label="Title"
-              placeholder="0"
+              // placeholder="0"
               fullWidth
               margin="dense"
               value={newAppointment.title}
@@ -2927,9 +2937,9 @@ const Appointments = () => {
               type="datetime-local"
               fullWidth
               margin="dense"
-              value={newAppointment.startTime}
+              value={newAppointment.dateTime}
               onChange={(e) =>
-                handleNewAppointmentChange("startTime", e.target.value)
+                handleNewAppointmentChange("dateTime", e.target.value)
               }
             />
           </DialogContent>
@@ -3009,11 +3019,11 @@ const Appointments = () => {
                 type="datetime-local"
                 fullWidth
                 margin="dense"
-                value={updatedAppointment.startTime}
+                value={updatedAppointment.dateTime}
                 onChange={(e) =>
                   setUpdatedAppointment({
                     ...updatedAppointment,
-                    startTime: e.target.value,
+                    dateTime: e.target.value,
                   })
                 }
               />

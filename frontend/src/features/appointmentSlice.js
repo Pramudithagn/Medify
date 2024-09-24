@@ -1,114 +1,150 @@
 // import { createSlice } from "@reduxjs/toolkit";
 
 // const initialState = {
-//   currentEvents: [],
-//   newAppointment: {
-//     title: "",
-//     patientId: null,
-//     doctorId: null,
-//   },
+//   appointments: [],
 // };
 
 // const appointmentSlice = createSlice({
 //   name: "appointments",
 //   initialState,
 //   reducers: {
-//     setEvents: (state, action) => {
-//       state.currentEvents = action.payload;
+//     setAppointments: (state, action) => {
+//       state.appointments = action.payload;
 //     },
-//     addEvent: (state, action) => {
-//       // state.currentEvents.push(action.payload);
-
-//       const eventExists = state.currentEvents.some(event => event.id === action.payload.id);
-//       if (!eventExists) {
-//         state.currentEvents.push(action.payload);
-//         console.log("Added event to state:", action.payload);
-//       } else {
-//         console.log("Event already exists in state:", action.payload);
+//     addAppointment: (state, action) => {
+//       console.log(action.payload);
+//       state.appointments.push(action.payload);
+//     },
+//     updateAppointment: (state, action) => {
+//       const index = state.appointments.findIndex(
+//         (appt) => appt.id === action.payload.id
+//       );
+//       if (index !== -1) {
+//         state.appointments[index] = action.payload;
 //       }
 //     },
-//     removeEvent: (state, action) => {
-//       state.currentEvents = state.currentEvents.filter(
-//         (event) => event.id !== action.payload.id
+//     deleteAppointment: (state, action) => {
+//       state.appointments = state.appointments.filter(
+//         (appt) => appt.id !== action.payload
 //       );
-//     },
-//     updateEvent: (state, action) => {
-//       // const index = state.currentEvents.findIndex(
-//       //   (event) => event.id === action.payload.id
-//       // );
-//       // if (index !== -1) {
-//       //   state.currentEvents[index] = action.payload;
-//       // }
-
-//       state.currentEvents = state.currentEvents.map((event) =>
-//         event.id === action.payload.id ? action.payload : event
-//       );
-//     },
-//     setNewAppointment: (state, action) => {
-//       state.newAppointment = {
-//         ...state.newAppointment,
-//         ...action.payload,
-//       };
-//     },
-//     resetNewAppointment: (state) => {
-//       state.newAppointment = {
-//         title: "",
-//         patientId: null,
-//         doctorId: null,
-//       };
 //     },
 //   },
 // });
 
 // export const {
-//   setEvents,
-//   addEvent,
-//   removeEvent,
-//   updateEvent,
-//   setNewAppointment,
-//   resetNewAppointment,
+//   setAppointments,
+//   addAppointment,
+//   updateAppointment,
+//   deleteAppointment,
 // } = appointmentSlice.actions;
 
 // export default appointmentSlice.reducer;
 
-import { createSlice } from "@reduxjs/toolkit";
+//=======================================================================================================================================================================================
+
+
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  getAllAppointments,
+  getAppointmentById,
+  createAppointment as createAppointmentApi,
+  updateAppointment as updateAppointmentApi,
+  deleteAppointment as deleteAppointmentApi,
+} from "../controllers/appointments.controller";
 
 const initialState = {
   appointments: [],
+  status: "idle",
+  error: null,
 };
+
+// Thunks 
+export const fetchAppointments = createAsyncThunk(
+  "appointments/fetchAppointments",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getAllAppointments();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const createAppointment = createAsyncThunk(
+  "appointments/createAppointment",
+  async (appointmentData, { rejectWithValue }) => {
+    try {
+      const response = await createAppointmentApi(appointmentData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const updateAppointment = createAsyncThunk(
+  "appointments/updateAppointment",
+  async (appointmentData, { rejectWithValue }) => {
+    try {
+      const response = await updateAppointmentApi(appointmentData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteAppointment = createAsyncThunk(
+  "appointments/deleteAppointment",
+  async (id, { rejectWithValue }) => {
+    try {
+      await deleteAppointmentApi(id);
+      return id;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 const appointmentSlice = createSlice({
   name: "appointments",
   initialState,
-  reducers: {
-    setAppointments: (state, action) => {
-      state.appointments = action.payload;
-    },
-    addAppointment: (state, action) => {
-      console.log(action.payload);
-      state.appointments.push(action.payload);
-    },
-    updateAppointment: (state, action) => {
-      const index = state.appointments.findIndex(
-        (appt) => appt.id === action.payload.id
-      );
-      if (index !== -1) {
-        state.appointments[index] = action.payload;
-      }
-    },
-    deleteAppointment: (state, action) => {
-      state.appointments = state.appointments.filter(
-        (appt) => appt.id !== action.payload
-      );
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAppointments.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchAppointments.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.appointments = action.payload;
+      })
+      .addCase(fetchAppointments.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(createAppointment.fulfilled, (state, action) => {
+        state.appointments.push(action.payload);
+      })
+      .addCase(updateAppointment.fulfilled, (state, action) => {
+        const index = state.appointments.findIndex(
+          (appt) => appt.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.appointments[index] = action.payload;
+        }
+      })
+      .addCase(deleteAppointment.fulfilled, (state, action) => {
+        state.appointments = state.appointments.filter(
+          (appt) => appt.id !== action.payload
+        );
+      });
   },
 });
 
 export const {
-  setAppointments,
-  addAppointment,
-  updateAppointment,
-  deleteAppointment,
-} = appointmentSlice.actions;
+    setAppointments,
+  } = appointmentSlice.actions;
 
 export default appointmentSlice.reducer;
