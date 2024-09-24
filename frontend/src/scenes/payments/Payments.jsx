@@ -283,7 +283,8 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setPayments,
+  fetchPayments,
+  // setPayments,
   setSelectedPayment,
   updatePaymentMethod,
   updatePaymentStatus,
@@ -318,7 +319,8 @@ const Payment = () => {
   const [selectedMethod, setSelectedMethod] = useState("");
 
   useEffect(() => {
-    dispatch(setPayments(mockDataPayments));
+    // dispatch(setPayments(mockDataPayments));
+    dispatch(fetchPayments());
   }, [dispatch]);
 
   const handleOpen = (payment) => {
@@ -332,30 +334,55 @@ const Payment = () => {
   };
 
   const handleMethodChange = (event) => {
+    const updatedMethod = event.target.value;
+
+    const updatedPayment = {
+      ...selectedPayment,
+      method: updatedMethod,
+      status: "reviewing",
+    };
+    dispatch(setSelectedPayment(updatedPayment));
     setSelectedMethod(event.target.value);
   };
 
-  const handlePay = () => {
-    dispatch(
-      updatePaymentMethod({
-        id: selectedPayment.id,
-        method: selectedMethod,
-      })
-    );
-    dispatch(
-      updatePaymentStatus({
-        id: selectedPayment.id,
-        status: "reviewing",
-      })
-    );
+  const handlePay = async () => {
+    // dispatch(
+    //   updatePaymentMethod(
+    //     //   {
+    //     //   id: selectedPayment.id,
+    //     //   method: selectedMethod,
+    //     // }
+    //     selectedPayment
+    //   )
+    // );
+    // dispatch(
+    //   updatePaymentStatus({
+    //     id: selectedPayment.id,
+    //     status: "reviewing",
+    //   })
+    // );
 
     // Call backend process payment
+    // setSelectedMethod("");
+    const updatedPayment = await dispatch(
+      updatePaymentMethod(selectedPayment)
+    ).unwrap();
+    dispatch(setSelectedPayment(null));
+    dispatch(updatePaymentStatus({ ...updatedPayment, status: "reviewing" }));
 
     handleClose();
   };
 
-  const handleStatusChange = (id, event) => {
-    dispatch(updatePaymentStatus({ id, status: event.target.value }));
+  const handleStatusChange = (payment, event) => {
+    const updatedPayment = {
+      ...payment,
+      status: event.target.value,
+      method: event.target.value === "unpaid" || "failed" ? "" : payment.method,
+    };
+
+    // dispatch(updatePaymentStatus({ id, status: event.target.value }));
+    dispatch(updatePaymentStatus(updatedPayment));
+    setSelectedMethod("");
   };
 
   const columns = [
@@ -390,7 +417,7 @@ const Payment = () => {
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
           <Select
             value={params.row.status}
-            onChange={(e) => handleStatusChange(params.row.id, e)}
+            onChange={(e) => handleStatusChange(params.row, e)}
             sx={{
               paddingTop: 1,
               color:
@@ -491,12 +518,14 @@ const Payment = () => {
             Payment Method
           </Typography>
 
+          <TextField
+            fullWidth
+            label="Amount"
+            value={selectedPayment?.amount || ""}
+            disabled
+          />
           <FormControl fullWidth sx={{ gap: 2 }}>
-            <TextField
-              label="Amount"
-              value={selectedPayment?.amount || ""}
-              disabled
-            />
+            <InputLabel id="method-select-label">Method</InputLabel>
             <Select
               value={selectedMethod}
               onChange={handleMethodChange}
@@ -504,8 +533,8 @@ const Payment = () => {
             >
               <MenuItem value="cash">Cash</MenuItem>
               <MenuItem value="credit">Credit</MenuItem>
-              <MenuItem value="PayPal">PayPal</MenuItem>
-              <MenuItem value="Bank Transfer">Bank Transfer</MenuItem>
+              <MenuItem value="paypal">PayPal</MenuItem>
+              <MenuItem value="bank transfer">Bank Transfer</MenuItem>
             </Select>
           </FormControl>
 

@@ -1,4 +1,61 @@
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from "@reduxjs/toolkit";
+
+// const initialState = {
+//   payments: [],
+//   selectedPayment: null,
+//   isCreating: false,
+//   isLoading: false,
+// };
+
+// const paymentSlice = createSlice({
+//   name: "payment",
+//   initialState,
+//   reducers: {
+//     setPayments: (state, action) => {
+//       state.payments = action.payload;
+//     },
+//     setSelectedPayment: (state, action) => {
+//       state.selectedPayment = action.payload;
+//     },
+//     updatePaymentStatus: (state, action) => {
+//       const { id, status } = action.payload;
+//       state.payments = state.payments.map((payment) =>
+//         payment.id === id ? { ...payment, status } : payment
+//       );
+//     },
+//     updatePaymentMethod: (state, action) => {
+//       const { id, method } = action.payload;
+//       state.payments = state.payments.map((payment) =>
+//         payment.id === id ? { ...payment, method } : payment
+//       );
+//     },
+//     setIsLoading: (state, action) => {
+//       state.isLoading = action.payload;
+//     },
+//     setIsCreating: (state, action) => {
+//       state.isCreating = action.payload;
+//     },
+//   },
+// });
+
+// export const {
+//   setPayments,
+//   setSelectedPayment,
+//   updatePaymentStatus,
+//   updatePaymentMethod,
+//   setIsLoading,
+//   setIsCreating,
+// } = paymentSlice.actions;
+
+// export default paymentSlice.reducer;
+
+//==========================================================================================================================================
+
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  getAllPayments,
+  updatePayment,
+} from "../controllers/payments.controller";
 
 const initialState = {
   payments: [],
@@ -7,44 +64,70 @@ const initialState = {
   isLoading: false,
 };
 
+export const fetchPayments = createAsyncThunk(
+  "payment/fetchPayments",
+  async () => {
+    const response = await getAllPayments();
+    return response.data;
+  }
+);
+
+export const updatePaymentStatus = createAsyncThunk(
+  "payment/updatePaymentStatus",
+  async (payment) => {
+    const response = await updatePayment(payment);
+    return response.data;
+  }
+);
+
+export const updatePaymentMethod = createAsyncThunk(
+  "payment/updatePaymentMethod",
+  async (payment) => {
+    const response = await updatePayment(payment);
+    return response.data;
+  }
+);
+
 const paymentSlice = createSlice({
   name: "payment",
   initialState,
   reducers: {
-    setPayments: (state, action) => {
-      state.payments = action.payload;
-    },
     setSelectedPayment: (state, action) => {
       state.selectedPayment = action.payload;
     },
-    updatePaymentStatus: (state, action) => {
-      const { id, status } = action.payload;
-      state.payments = state.payments.map((payment) =>
-        payment.id === id ? { ...payment, status } : payment
-      );
+    setPayments: (state, action) => {
+      //       state.payments = action.payload;
     },
-    updatePaymentMethod: (state, action) => {
-      const { id, method } = action.payload;
-      state.payments = state.payments.map((payment) =>
-        payment.id === id ? { ...payment, method } : payment
-      );
-    },
-    setIsLoading: (state, action) => {
-      state.isLoading = action.payload;
-    },
-    setIsCreating: (state, action) => {
-      state.isCreating = action.payload;
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPayments.fulfilled, (state, action) => {
+        state.payments = action.payload;
+      })
+      .addCase(updatePaymentStatus.fulfilled, (state, action) => {
+        const { id, status } = action.payload;
+        state.payments = state.payments.map((payment) =>
+          payment.id === id ? { ...payment, status } : payment
+        );
+      })
+      // .addCase(updatePaymentMethod.fulfilled, (state, action) => {
+      //   const { id, method } = action.payload;
+      //   state.payments = state.payments.map((payment) =>
+      //     payment.id === id ? { ...payment, method } : payment
+      //   );
+      // });
+      .addCase(updatePaymentMethod.fulfilled, (state, action) => {
+        const updatedPayment = action.payload;
+        state.payments = state.payments.map((payment) =>
+          payment.id === updatedPayment.id ? updatedPayment : payment
+        );
+        if (state.selectedPayment?.id === updatedPayment.id) {
+          state.selectedPayment = updatedPayment;
+        }
+      });
   },
 });
 
-export const {
-  setPayments,
-  setSelectedPayment,
-  updatePaymentStatus,
-  updatePaymentMethod,
-  setIsLoading,
-  setIsCreating,
-} = paymentSlice.actions;
+export const { setSelectedPayment, setPayments } = paymentSlice.actions;
 
 export default paymentSlice.reducer;
