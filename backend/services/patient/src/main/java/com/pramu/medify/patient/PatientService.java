@@ -86,7 +86,8 @@ public class PatientService {
             patient.setAllergies(patientDTO.allergies());
         }
         if (patientDTO.doctorIds() != null) {
-            patient.getDoctorIds().addAll(patientDTO.doctorIds());
+//            patient.getDoctorIds().addAll(patientDTO.doctorIds());
+            patient.setDoctorIds(patientDTO.doctorIds());
         }
         if (patientDTO.medicalRecordIds() != null) {
             patient.getMedicalRecordIds().addAll(patientDTO.medicalRecordIds());
@@ -95,7 +96,8 @@ public class PatientService {
             patient.getAppointmentIds().addAll(patientDTO.appointmentIds());
         }
         if (patientDTO.paymentIds() != null) {
-            patient.getPaymentIds().addAll(patientDTO.paymentIds());
+//            patient.getPaymentIds().addAll(patientDTO.paymentIds());
+            patient.setPaymentIds(patientDTO.paymentIds());
         }
 
         return patientRepository.save(patient);

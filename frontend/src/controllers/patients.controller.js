@@ -13,6 +13,7 @@ export const createPatient = async (patientData) => {
 };
 
 export const updatePatient = async (patientData) => {
+    console.log(patientData)
     return await api.put('/patients', patientData);
 };
 
