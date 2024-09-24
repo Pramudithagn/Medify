@@ -1,4 +1,4 @@
-import api from './api';
+import api from "../config/api";
 
 export const getAllDoctors = async () => {
     return await api.get('/doctors');
@@ -13,6 +13,7 @@ export const createDoctor = async (doctorData) => {
 };
 
 export const updateDoctor = async (doctorData) => {
+    console.log(doctorData)
     return await api.put('/doctors', doctorData);
 };
 

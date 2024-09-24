@@ -1,4 +1,4 @@
-// import React, { useState } from "react";
+// import React, { useEffect, useState } from "react";
 // import {
 //   Box,
 //   Button,
@@ -21,6 +21,14 @@
 // } from "@mui/x-data-grid";
 // import { tokens } from "../../theme";
 // import Header from "../../components/Header";
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   setDoctors,
+//   updateDoctor,
+//   deleteDoctor,
+//   setSelectedDoctor,
+//   clearSelectedDoctor,
+// } from "../../features/doctorSlice";
 // import {
 //   mockDataDoctors,
 //   mockPatientIds,
@@ -33,23 +41,13 @@
 
 // const validationSchema = Yup.object().shape({
 //   name: Yup.string().required("Name is required"),
-//   mail: Yup.string()
-//     .email("Invalid email address")
-//     .required("Email is required"),
+//   mail: Yup.string().email("Invalid email address").required("Email is required"),
 //   phone: Yup.string().required("Phone number is required"),
 //   assignedDate: Yup.date().required("Assigned date is required"),
 //   specialization: Yup.string().required("Specialization is required"),
-//   address: Yup.object().shape({
-//     street: Yup.string().required("Street is required"),
-//     houseNumber: Yup.string().required("House number is required"),
-//     zipCode: Yup.string().required("Zip code is required"),
-//   }),
-//   treatmentIds: Yup.array()
-//     .of(Yup.string())
-//     .required("At least one treatment ID is required"),
-//   patientIds: Yup.array()
-//     .of(Yup.string())
-//     .required("At least one patient ID is required"),
+//   address: Yup.object().shape({street: Yup.string().required("Street is required"),houseNumber: Yup.string().required("House number is required"),zipCode: Yup.string().required("Zip code is required"),}),
+//   treatmentIds: Yup.array().of(Yup.string()).required("At least one treatment ID is required"),
+//   patientIds: Yup.array().of(Yup.string()).required("At least one patient ID is required"),
 // });
 
 // function CustomToolbar() {
@@ -57,15 +55,9 @@
 //     <GridToolbarContainer>
 //       <GridToolbarColumnsButton />
 //       <GridToolbarFilterButton />
-//       <GridToolbarDensitySelector
-//         slotProps={{ tooltip: { title: "Change density" } }}
-//       />
+//       <GridToolbarDensitySelector slotProps={{ tooltip: { title: "Change density" } }} />
 //       <Box sx={{ flexGrow: 1 }} />
-//       <GridToolbarExport
-//         slotProps={{
-//           tooltip: { title: "Export data" },
-//         }}
-//       />
+//       <GridToolbarExport slotProps={{ tooltip: { title: "Export data" } }} />
 //     </GridToolbarContainer>
 //   );
 // }
@@ -73,39 +65,37 @@
 // const Doctors = () => {
 //   const theme = useTheme();
 //   const colors = tokens(theme.palette.mode);
-
-//   const [doctors, setDoctors] = useState(mockDataDoctors);
-//   const [selectedDoctor, setSelectedDoctor] = useState(null);
+//   const dispatch = useDispatch();
+//   const { doctors, selectedDoctor } = useSelector((state) => state.doctor);
 //   const [open, setOpen] = useState(false);
 //   const [deleteOpen, setDeleteOpen] = useState(false);
-//   const [isUuidDeleted, setIsUuidDeleted] = useState(false);
 //   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState(false);
+//   const [isUuidDeleted, setIsUuidDeleted] = useState(false);
 
-//   const isAdmin = false; // admin non-admin toggle
+//   const isAdmin = true;
+
+//   useEffect(() => {
+//     dispatch(setDoctors(mockDataDoctors));
+//     console.log(doctors)
+//   }, [dispatch]);
 
 //   const handleOpen = (doctor) => {
-//     setSelectedDoctor(doctor);
+//     dispatch(setSelectedDoctor(doctor));
 //     setOpen(true);
 //   };
 
 //   const handleClose = () => {
 //     setOpen(false);
-//     setSelectedDoctor(null);
+//     dispatch(clearSelectedDoctor());
 //   };
 
 //   const handleSave = (values) => {
-//     // all form values to the console log
-//     console.log("Form Values: ", values);
-
-//     // Update  doctors list
-//     setDoctors(
-//       doctors.map((doc) => (doc.id === values.id ? { ...doc, ...values } : doc))
-//     );
+//     dispatch(updateDoctor(values));
 //     handleClose();
 //   };
 
 //   const handleDeleteOpen = (doctor) => {
-//     setSelectedDoctor(doctor);
+//     dispatch(setSelectedDoctor(doctor));
 //     setDeleteOpen(true);
 //   };
 
@@ -113,18 +103,17 @@
 //     setDeleteOpen(false);
 //     setIsUuidDeleted(false);
 //     setDeleteButtonEnabled(false);
-//     setSelectedDoctor(null);
+//     dispatch(clearSelectedDoctor());
 //   };
 
 //   const handleDelete = () => {
-//     // Remove doctor from doc list
-//     setDoctors(doctors.filter((doc) => doc.id !== selectedDoctor.id));
+//     dispatch(deleteDoctor(selectedDoctor.id));
 //     handleDeleteClose();
 //   };
 
 //   const handleSwitchChange = (event) => {
-//     setIsUuidDeleted(event.target.checked);
-//     setDeleteButtonEnabled(event.target.checked);
+//     setIsUuidDeleted(!!event.target.checked);
+//     setDeleteButtonEnabled(!!event.target.checked);
 //   };
 
 //   const columns = [
@@ -158,7 +147,7 @@
 //       renderCell: (params) => (
 //         <Box display="flex" justifyContent="center" ml="3%" pt="2%">
 //           <IconButton
-//             aria-label="delete"
+//             aria-label="view"
 //             onClick={() => handleOpen(params.row)}
 //             sx={{ color: colors.grey[400], marginRight: 2 }}
 //           >
@@ -186,32 +175,18 @@
 //           "& .MuiDataGrid-root": { border: "none" },
 //           "& .MuiDataGrid-cell": { borderBottom: "none" },
 //           "& .name-column--cell": { color: colors.greenAccent[300] },
-//           "& .MuiDataGrid-columnHeaders": {
-//             backgroundColor: `${colors.blueAccent[700]} !important`,
-//             borderBottom: "none",
-//           },
-//           "& .MuiDataGrid-virtualScroller": {
-//             backgroundColor: colors.primary[400],
-//           },
-//           "& .MuiDataGrid-footerContainer": {
-//             borderTop: "none",
-//             backgroundColor: colors.blueAccent[700],
-//           },
-//           "& .MuiCheckbox-root": {
-//             color: `${colors.greenAccent[200]} !important`,
-//           },
-//           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-//             color: `${colors.grey[100]} !important`,
-//           },
+//           "& .MuiDataGrid-columnHeaders": {  backgroundColor: `${colors.blueAccent[700]} !important`, borderBottom: "none", },
+//           "& .MuiDataGrid-virtualScroller": { backgroundColor: colors.primary[400], },
+//           "& .MuiDataGrid-footerContainer": { borderTop: "none", backgroundColor: colors.blueAccent[700], },
+//           "& .MuiCheckbox-root": { color: `${colors.greenAccent[200]} !important`, },
+//           "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important`, },
 //         }}
 //       >
 //         <DataGrid
 //           rows={doctors}
 //           columns={columns}
 //           disableRowSelectionOnClick
-//           slots={{
-//             toolbar: CustomToolbar,
-//           }}
+//           slots={{ toolbar: CustomToolbar }}
 //         />
 //       </Box>
 
@@ -223,8 +198,7 @@
 //             top: "50%",
 //             left: "50%",
 //             transform: "translate(-50%, -50%)",
-//             backgroundColor:
-//               theme.palette.mode === "dark" ? colors.primary[400] : "white",
+//             backgroundColor: theme.palette.mode === "dark" ? colors.primary[400] : "white",
 //             boxShadow: 24,
 //             borderRadius: 2,
 //             maxWidth: 600,
@@ -234,28 +208,14 @@
 //             gap: 2,
 //             "& .MuiTextField-root": {
 //               "& .MuiOutlinedInput-root": {
-//                 "& fieldset": {
-//                   borderColor: colors.grey[500],
-//                 },
-//                 "&.Mui-focused fieldset": {
-//                   borderColor: colors.grey[400],
-//                 },
-//                 "&.Mui-disabled fieldset": {
-//                   borderColor: colors.grey[300],
-//                 },
-//                 "&.Mui-disabled .MuiInputBase-input": {
-//                   WebkitTextFillColor: `${colors.grey[300]} !important`,
-//                 },
+//                 "& fieldset": {borderColor: colors.grey[500],},
+//                 "&.Mui-focused fieldset": { borderColor: colors.grey[400],},
+//                 "&.Mui-disabled fieldset": { borderColor: colors.grey[300], },
+//                 "&.Mui-disabled .MuiInputBase-input": { WebkitTextFillColor: `${colors.grey[300]} !important`, },
 //               },
-//               "& .MuiInputLabel-root": {
-//                 color: colors.grey[200],
-//               },
-//               "& .MuiInputLabel-root.Mui-focused": {
-//                 color: colors.grey[500],
-//               },
-//               "& .MuiInputLabel-root.Mui-disabled": {
-//                 color: colors.grey[300],
-//               },
+//               "& .MuiInputLabel-root": {  color: colors.grey[200], },
+//               "& .MuiInputLabel-root.Mui-focused": { color: colors.grey[500], },
+//               "& .MuiInputLabel-root.Mui-disabled": { color: colors.grey[300], },
 //               mt: 2,
 //             },
 //           }}
@@ -272,11 +232,7 @@
 //               {({ values, handleChange, setFieldValue, errors, touched }) => (
 //                 <Form>
 //                   <Box display="flex" alignItems="center" gap={2}>
-//                     <Avatar
-//                       src={values.photo}
-//                       alt={values.name}
-//                       sx={{ width: 80, height: 80 }}
-//                     />
+//                     <Avatar src={values.photo} alt={values.name} sx={{ width: 80, height: 80 }} />
 //                     <TextField
 //                       label="Name"
 //                       name="name"
@@ -315,11 +271,7 @@
 //                     label="Assigned Date"
 //                     type="date"
 //                     name="assignedDate"
-//                     value={
-//                       values.assignedDate
-//                         ? values.assignedDate.split("T")[0]
-//                         : ""
-//                     }
+//                     value={values.assignedDate ? values.assignedDate.split("T")[0] : ""  }
 //                     onChange={handleChange}
 //                     InputLabelProps={{ shrink: true }}
 //                     fullWidth
@@ -336,9 +288,7 @@
 //                     fullWidth
 //                     size="small"
 //                     disabled={!isAdmin}
-//                     error={
-//                       touched.specialization && Boolean(errors.specialization)
-//                     }
+//                     error={ touched.specialization && Boolean(errors.specialization)}
 //                     helperText={touched.specialization && errors.specialization}
 //                   />
 //                   <Box display="flex" gap={2}>
@@ -350,13 +300,8 @@
 //                       fullWidth
 //                       size="small"
 //                       disabled={!isAdmin}
-//                       error={
-//                         touched.address?.street &&
-//                         Boolean(errors.address?.street)
-//                       }
-//                       helperText={
-//                         touched.address?.street && errors.address?.street
-//                       }
+//                       error={ touched.address?.street && Boolean(errors.address?.street) }
+//                       helperText={ touched.address?.street && errors.address?.street }
 //                     />
 //                     <TextField
 //                       label="House Number"
@@ -366,14 +311,8 @@
 //                       fullWidth
 //                       size="small"
 //                       disabled={!isAdmin}
-//                       error={
-//                         touched.address?.houseNumber &&
-//                         Boolean(errors.address?.houseNumber)
-//                       }
-//                       helperText={
-//                         touched.address?.houseNumber &&
-//                         errors.address?.houseNumber
-//                       }
+//                       error={ touched.address?.houseNumber && Boolean(errors.address?.houseNumber)}
+//                       helperText={ touched.address?.houseNumber && errors.address?.houseNumber }
 //                     />
 //                     <TextField
 //                       label="Zip Code"
@@ -383,13 +322,8 @@
 //                       fullWidth
 //                       size="small"
 //                       disabled={!isAdmin}
-//                       error={
-//                         touched.address?.zipCode &&
-//                         Boolean(errors.address?.zipCode)
-//                       }
-//                       helperText={
-//                         touched.address?.zipCode && errors.address?.zipCode
-//                       }
+//                       error={touched.address?.zipCode &&Boolean(errors.address?.zipCode)}
+//                       helperText={touched.address?.zipCode && errors.address?.zipCode}
 //                     />
 //                   </Box>
 //                   <Autocomplete
@@ -398,9 +332,7 @@
 //                     options={mockTreatmentIds}
 //                     getOptionLabel={(option) => option}
 //                     value={values.treatmentIds}
-//                     onChange={(event, newValue) =>
-//                       setFieldValue("treatmentIds", newValue)
-//                     }
+//                     onChange={(event, newValue) =>setFieldValue("treatmentIds", newValue)}
 //                     renderInput={(params) => (
 //                       <TextField
 //                         {...params}
@@ -408,9 +340,7 @@
 //                         fullWidth
 //                         size="small"
 //                         disabled={!isAdmin}
-//                         error={
-//                           touched.treatmentIds && Boolean(errors.treatmentIds)
-//                         }
+//                         error={touched.treatmentIds && Boolean(errors.treatmentIds)}
 //                         helperText={touched.treatmentIds && errors.treatmentIds}
 //                       />
 //                     )}
@@ -421,9 +351,7 @@
 //                     options={mockPatientIds}
 //                     getOptionLabel={(option) => option}
 //                     value={values.patientIds}
-//                     onChange={(event, newValue) =>
-//                       setFieldValue("patientIds", newValue)
-//                     }
+//                     onChange={(event, newValue) =>setFieldValue("patientIds", newValue)}
 //                     renderInput={(params) => (
 //                       <TextField
 //                         {...params}
@@ -439,20 +367,12 @@
 //                   />
 //                   <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
 //                     {isAdmin && (
-//                       <Button
-//                         type="submit"
-//                         color="secondary"
-//                         variant="contained"
-//                       >
+//                       <Button type="submit" color="secondary" variant="contained" >
 //                         Save
 //                       </Button>
 //                     )}
 //                     <Button
-//                       sx={{
-//                         backgroundColor: colors.grey[600],
-//                       }}
-//                       onClick={handleClose}
-//                     >
+//                       sx={{backgroundColor: colors.grey[600],}} onClick={handleClose} >
 //                       Close
 //                     </Button>
 //                   </Box>
@@ -467,32 +387,10 @@
 //       <Modal open={deleteOpen} onClose={handleDeleteClose}>
 //         <Box
 //           p={4}
-//           sx={{
-//             position: "absolute",
-//             top: "50%",
-//             left: "50%",
-//             transform: "translate(-50%, -50%)",
-//             backgroundColor:
-//               theme.palette.mode === "dark" ? colors.primary[400] : "white",
-//             boxShadow: 24,
-//             borderRadius: 2,
-//             maxWidth: 400,
-//             width: "100%",
-//             display: "flex",
-//             flexDirection: "column",
-//             alignItems: "center",
-//             gap: 2,
-//           }}
-//         >
-//           <Typography
-//             variant="h4"
-//             sx={{
-//               color: colors.redAccent[500],
-//             }}
-//           >
+//           sx={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor:theme.palette.mode === "dark" ? colors.primary[400] : "white", boxShadow: 24, borderRadius: 2, maxWidth: 400, width: "100%", display: "flex", flexDirection: "column", alignItems: "center", gap: 2,}} >
+//           <Typography variant="h4" sx={{color: colors.redAccent[500],}}>
 //             Warning !
 //           </Typography>
-
 //           <Typography variant="h6" align="center" color="text.primary">
 //             Please make sure that this user have been completely removed from
 //             the user authentication system first. Are you sure you want to
@@ -533,7 +431,9 @@
 
 // export default Doctors;
 
+
 //=====================================================================================================================================================================================================================================
+
 
 import React, { useEffect, useState } from "react";
 import {
@@ -560,7 +460,9 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setDoctors,
+  // setDoctors,
+  getDoctors,
+  createNewDoctor,
   updateDoctor,
   deleteDoctor,
   setSelectedDoctor,
@@ -578,23 +480,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  mail: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+  mail: Yup.string().email("Invalid email address").required("Email is required"),
   phone: Yup.string().required("Phone number is required"),
   assignedDate: Yup.date().required("Assigned date is required"),
   specialization: Yup.string().required("Specialization is required"),
-  address: Yup.object().shape({
-    street: Yup.string().required("Street is required"),
-    houseNumber: Yup.string().required("House number is required"),
-    zipCode: Yup.string().required("Zip code is required"),
-  }),
-  treatmentIds: Yup.array()
-    .of(Yup.string())
-    .required("At least one treatment ID is required"),
-  patientIds: Yup.array()
-    .of(Yup.string())
-    .required("At least one patient ID is required"),
+  address: Yup.object().shape({street: Yup.string().required("Street is required"),houseNumber: Yup.string().required("House number is required"),zipCode: Yup.string().required("Zip code is required"),}),
+  treatmentIds: Yup.array().of(Yup.string()).required("At least one treatment ID is required"),
+  patientIds: Yup.array().of(Yup.string()).required("At least one patient ID is required"),
 });
 
 function CustomToolbar() {
@@ -602,9 +494,7 @@ function CustomToolbar() {
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
       <GridToolbarFilterButton />
-      <GridToolbarDensitySelector
-        slotProps={{ tooltip: { title: "Change density" } }}
-      />
+      <GridToolbarDensitySelector slotProps={{ tooltip: { title: "Change density" } }} />
       <Box sx={{ flexGrow: 1 }} />
       <GridToolbarExport slotProps={{ tooltip: { title: "Export data" } }} />
     </GridToolbarContainer>
@@ -615,7 +505,8 @@ const Doctors = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
-  const { doctors, selectedDoctor } = useSelector((state) => state.doctor);
+  // const { doctors, selectedDoctor } = useSelector((state) => state.doctor);
+  const { doctors, selectedDoctor, loading } = useSelector((state) => state.doctor);
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState(false);
@@ -623,9 +514,12 @@ const Doctors = () => {
 
   const isAdmin = true;
 
+  // useEffect(() => {
+  //   dispatch(setDoctors(mockDataDoctors));
+  //   console.log(doctors)
+  // }, [dispatch]);
   useEffect(() => {
-    dispatch(setDoctors(mockDataDoctors));
-    console.log(doctors)
+    dispatch(getDoctors());
   }, [dispatch]);
 
   const handleOpen = (doctor) => {
@@ -724,23 +618,11 @@ const Doctors = () => {
           "& .MuiDataGrid-root": { border: "none" },
           "& .MuiDataGrid-cell": { borderBottom: "none" },
           "& .name-column--cell": { color: colors.greenAccent[300] },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: `${colors.blueAccent[700]} !important`,
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
+          "& .MuiDataGrid-columnHeaders": {  backgroundColor: `${colors.blueAccent[700]} !important`, borderBottom: "none", },
+          "& .MuiDataGrid-virtualScroller": { backgroundColor: colors.primary[400], },
+          "& .MuiDataGrid-footerContainer": { borderTop: "none", backgroundColor: colors.blueAccent[700], },
+          "& .MuiCheckbox-root": { color: `${colors.greenAccent[200]} !important`, },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important`, },
         }}
       >
         <DataGrid
@@ -759,8 +641,7 @@ const Doctors = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor:
-              theme.palette.mode === "dark" ? colors.primary[400] : "white",
+            backgroundColor: theme.palette.mode === "dark" ? colors.primary[400] : "white",
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 600,
@@ -770,28 +651,14 @@ const Doctors = () => {
             gap: 2,
             "& .MuiTextField-root": {
               "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: colors.grey[500],
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: colors.grey[400],
-                },
-                "&.Mui-disabled fieldset": {
-                  borderColor: colors.grey[300],
-                },
-                "&.Mui-disabled .MuiInputBase-input": {
-                  WebkitTextFillColor: `${colors.grey[300]} !important`,
-                },
+                "& fieldset": {borderColor: colors.grey[500],},
+                "&.Mui-focused fieldset": { borderColor: colors.grey[400],},
+                "&.Mui-disabled fieldset": { borderColor: colors.grey[300], },
+                "&.Mui-disabled .MuiInputBase-input": { WebkitTextFillColor: `${colors.grey[300]} !important`, },
               },
-              "& .MuiInputLabel-root": {
-                color: colors.grey[200],
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: colors.grey[500],
-              },
-              "& .MuiInputLabel-root.Mui-disabled": {
-                color: colors.grey[300],
-              },
+              "& .MuiInputLabel-root": {  color: colors.grey[200], },
+              "& .MuiInputLabel-root.Mui-focused": { color: colors.grey[500], },
+              "& .MuiInputLabel-root.Mui-disabled": { color: colors.grey[300], },
               mt: 2,
             },
           }}
@@ -808,11 +675,7 @@ const Doctors = () => {
               {({ values, handleChange, setFieldValue, errors, touched }) => (
                 <Form>
                   <Box display="flex" alignItems="center" gap={2}>
-                    <Avatar
-                      src={values.photo}
-                      alt={values.name}
-                      sx={{ width: 80, height: 80 }}
-                    />
+                    <Avatar src={values.photo} alt={values.name} sx={{ width: 80, height: 80 }} />
                     <TextField
                       label="Name"
                       name="name"
@@ -849,13 +712,11 @@ const Doctors = () => {
                   />
                   <TextField
                     label="Assigned Date"
-                    type="date"
+                    // type="date"
+                    type="datetime-local"
                     name="assignedDate"
-                    value={
-                      values.assignedDate
-                        ? values.assignedDate.split("T")[0]
-                        : ""
-                    }
+                    // value={values.assignedDate ? values.assignedDate.split("T")[0] : ""  }
+                    value={values.assignedDate ? values.assignedDate: ""}
                     onChange={handleChange}
                     InputLabelProps={{ shrink: true }}
                     fullWidth
@@ -872,9 +733,7 @@ const Doctors = () => {
                     fullWidth
                     size="small"
                     disabled={!isAdmin}
-                    error={
-                      touched.specialization && Boolean(errors.specialization)
-                    }
+                    error={ touched.specialization && Boolean(errors.specialization)}
                     helperText={touched.specialization && errors.specialization}
                   />
                   <Box display="flex" gap={2}>
@@ -886,13 +745,8 @@ const Doctors = () => {
                       fullWidth
                       size="small"
                       disabled={!isAdmin}
-                      error={
-                        touched.address?.street &&
-                        Boolean(errors.address?.street)
-                      }
-                      helperText={
-                        touched.address?.street && errors.address?.street
-                      }
+                      error={ touched.address?.street && Boolean(errors.address?.street) }
+                      helperText={ touched.address?.street && errors.address?.street }
                     />
                     <TextField
                       label="House Number"
@@ -902,14 +756,8 @@ const Doctors = () => {
                       fullWidth
                       size="small"
                       disabled={!isAdmin}
-                      error={
-                        touched.address?.houseNumber &&
-                        Boolean(errors.address?.houseNumber)
-                      }
-                      helperText={
-                        touched.address?.houseNumber &&
-                        errors.address?.houseNumber
-                      }
+                      error={ touched.address?.houseNumber && Boolean(errors.address?.houseNumber)}
+                      helperText={ touched.address?.houseNumber && errors.address?.houseNumber }
                     />
                     <TextField
                       label="Zip Code"
@@ -919,24 +767,17 @@ const Doctors = () => {
                       fullWidth
                       size="small"
                       disabled={!isAdmin}
-                      error={
-                        touched.address?.zipCode &&
-                        Boolean(errors.address?.zipCode)
-                      }
-                      helperText={
-                        touched.address?.zipCode && errors.address?.zipCode
-                      }
+                      error={touched.address?.zipCode &&Boolean(errors.address?.zipCode)}
+                      helperText={touched.address?.zipCode && errors.address?.zipCode}
                     />
                   </Box>
                   <Autocomplete
                     multiple
                     disabled={!isAdmin}
                     options={mockTreatmentIds}
-                    getOptionLabel={(option) => option}
+                    getOptionLabel={(option) => (option.toString())}
                     value={values.treatmentIds}
-                    onChange={(event, newValue) =>
-                      setFieldValue("treatmentIds", newValue)
-                    }
+                    onChange={(event, newValue) =>setFieldValue("treatmentIds", newValue)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -944,9 +785,7 @@ const Doctors = () => {
                         fullWidth
                         size="small"
                         disabled={!isAdmin}
-                        error={
-                          touched.treatmentIds && Boolean(errors.treatmentIds)
-                        }
+                        error={touched.treatmentIds && Boolean(errors.treatmentIds)}
                         helperText={touched.treatmentIds && errors.treatmentIds}
                       />
                     )}
@@ -957,9 +796,7 @@ const Doctors = () => {
                     options={mockPatientIds}
                     getOptionLabel={(option) => option}
                     value={values.patientIds}
-                    onChange={(event, newValue) =>
-                      setFieldValue("patientIds", newValue)
-                    }
+                    onChange={(event, newValue) =>setFieldValue("patientIds", newValue)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -975,20 +812,12 @@ const Doctors = () => {
                   />
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
                     {isAdmin && (
-                      <Button
-                        type="submit"
-                        color="secondary"
-                        variant="contained"
-                      >
+                      <Button type="submit" color="secondary" variant="contained" >
                         Save
                       </Button>
                     )}
                     <Button
-                      sx={{
-                        backgroundColor: colors.grey[600],
-                      }}
-                      onClick={handleClose}
-                    >
+                      sx={{backgroundColor: colors.grey[600],}} onClick={handleClose} >
                       Close
                     </Button>
                   </Box>
@@ -1003,32 +832,10 @@ const Doctors = () => {
       <Modal open={deleteOpen} onClose={handleDeleteClose}>
         <Box
           p={4}
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor:
-              theme.palette.mode === "dark" ? colors.primary[400] : "white",
-            boxShadow: 24,
-            borderRadius: 2,
-            maxWidth: 400,
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          <Typography
-            variant="h4"
-            sx={{
-              color: colors.redAccent[500],
-            }}
-          >
+          sx={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", backgroundColor:theme.palette.mode === "dark" ? colors.primary[400] : "white", boxShadow: 24, borderRadius: 2, maxWidth: 400, width: "100%", display: "flex", flexDirection: "column", alignItems: "center", gap: 2,}} >
+          <Typography variant="h4" sx={{color: colors.redAccent[500],}}>
             Warning !
           </Typography>
-
           <Typography variant="h6" align="center" color="text.primary">
             Please make sure that this user have been completely removed from
             the user authentication system first. Are you sure you want to

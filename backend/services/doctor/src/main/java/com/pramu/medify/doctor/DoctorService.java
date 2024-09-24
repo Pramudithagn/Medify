@@ -53,6 +53,9 @@ public class DoctorService {
         if (doctorDTO.photo() != null) {
             doctor.setPhoto(doctorDTO.photo());
         }
+        if (doctorDTO.assignedDate() != null) {
+            doctor.setAssignedDate(doctorDTO.assignedDate());
+        }
         if (doctorDTO.address() != null) {
             doctor.setAddress(doctorDTO.address());
         }
