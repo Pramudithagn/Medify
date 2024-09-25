@@ -144,7 +144,7 @@ const appointmentSlice = createSlice({
 });
 
 export const {
-    setAppointments,
+    // setAppointments,
   } = appointmentSlice.actions;
 
 export default appointmentSlice.reducer;

@@ -60,7 +60,9 @@ export const fetchPatients = createAsyncThunk(
 export const createPatient = createAsyncThunk(
   "patients/createPatient",
   async (newPatient) => {
+    console.log(newPatient)
     const response = await apiCreatePatient(newPatient);
+    console.log(response.data)
     return response.data;
   }
 );
@@ -76,7 +78,7 @@ export const updatePatient = createAsyncThunk(
 
     if (newDoctorIds.length > 0) {
       console.log("New doctorId added:", newDoctorIds[0]);
-      assignDoctorToPatient(selectedPatient.id, newDoctorIds[0]);
+      await assignDoctorToPatient(selectedPatient.id, newDoctorIds[0]);
     }
   // async (updatedPatient) => {
   //   console.log(updatedPatient)

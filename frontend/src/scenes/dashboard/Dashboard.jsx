@@ -292,7 +292,7 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import { useEffect } from "react";
-import { setAppointments } from "../../features/appointmentSlice";
+// import { setAppointments } from "../../features/appointmentSlice";
 import {
   mockDataAppointments,
   mockDataDoctors,
@@ -300,30 +300,89 @@ import {
   mockDataRecords,
   mockDataTreatments,
 } from "../../data/mockData";
-import { setTreatments } from "../../features/treatmentSlice";
-import { setPayments } from "../../features/paymentSlice";
-import { setDoctors } from "../../features/doctorSlice";
-import { setRecords } from "../../features/recordSlice";
+// import { setTreatments } from "../../features/treatmentSlice";
+// import { setPayments } from "../../features/paymentSlice";
+// import { setDoctors } from "../../features/doctorSlice";
+// import { setRecords } from "../../features/recordSlice";
+import { fetchTreatments } from "../../features/treatmentSlice";
+import { fetchPayments } from "../../features/paymentSlice";
+import { getDoctors } from "../../features/doctorSlice";
+import { fetchRecords } from "../../features/recordSlice";
+import { fetchAppointments } from "../../features/appointmentSlice";
+import { useMemo } from "react";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
 
-  const { appointments } = useSelector((state) => state.appointment);
-  const { treatments } = useSelector((state) => state.treatment);
-  const { records } = useSelector((state) => state.record);
-  const { payments } = useSelector((state) => state.payment);
-  const { doctors } = useSelector((state) => state.doctor);
+  // const { appointments } = useSelector((state) => state.appointment);
+  // const { treatments } = useSelector((state) => state.treatment);
+  // const { records } = useSelector((state) => state.record);
+  // const { payments } = useSelector((state) => state.payment);
+  // const { doctors } = useSelector((state) => state.doctor);
+
+  const { appointments, treatments, records, payments, doctors } = useSelector(
+    (state) => ({
+      appointments: state.appointment.appointments,
+      treatments: state.treatment.treatments,
+      records: state.record.records,
+      payments: state.payment.payments,
+      doctors: state.doctor.doctors,
+    })
+  );
 
   useEffect(() => {
-    dispatch(setAppointments(mockDataAppointments));
-    dispatch(setTreatments(mockDataTreatments));
-    dispatch(setPayments(mockDataPayments));
-    dispatch(setDoctors(mockDataDoctors));
-    dispatch(setRecords(mockDataRecords));
+    dispatch(fetchAppointments());
+    dispatch(fetchTreatments());
+    dispatch(fetchPayments());
+    dispatch(getDoctors());
+    dispatch(fetchRecords());
   }, []);
 
+// useMemo(() => dispatch(fetchAppointments()), []);
+// useMemo(() => dispatch(fetchTreatments()), []);
+// useMemo(() => dispatch(fetchPayments()), []);
+// useMemo(() => dispatch(getDoctors()), []);
+// useMemo(() => dispatch(fetchRecords()), []);
+
+  // console.log(appointments)
+  // console.log(treatments)
+  // console.log(records)
+  // console.log(payments)
+  // console.log(doctors)
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     await Promise.all([
+  //       dispatch(fetchAppointments()),
+  //       dispatch(fetchTreatments()),
+  //       dispatch(fetchPayments()),
+  //       dispatch(getDoctors()),
+  //       dispatch(fetchRecords()),
+  //     ]);
+  
+  //     // console.log({
+  //     //   appointments,
+  //     //   treatments,
+  //     //   records,
+  //     //   payments,
+  //     //   doctors
+  //     // });
+  //   };
+  
+  //   fetchData();
+  // }, []);
+  
+  console.log({
+    appointments,
+    treatments,
+    records,
+    payments,
+    doctors
+  });
+
+  
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 

@@ -3,6 +3,7 @@ package com.pramu.medify.patient;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class Patient {
     private String phone;
     private String photo;
     private String gender;
-    private LocalDateTime dob;
+    private LocalDate dob;
     private LocalDateTime assignedDate;
     private String bloodGroup;
     private Integer age;

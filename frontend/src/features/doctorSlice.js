@@ -53,7 +53,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllDoctors,
-  createDoctor,
+  createDoctor as apiCreateDoctor,
   updateDoctor as apiUpdateDoctor,
   deleteDoctor as apiDeleteDoctor,
 } from "../controllers/doctors.controller";
@@ -71,11 +71,11 @@ export const getDoctors = createAsyncThunk(
   }
 );
 
-export const createNewDoctor = createAsyncThunk(
+export const createDoctor = createAsyncThunk(
   "doctors/createDoctor",
   async (doctorData, { rejectWithValue }) => {
     try {
-      const response = await createDoctor(doctorData);
+      const response = await apiCreateDoctor(doctorData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -138,7 +138,7 @@ const doctorSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(createNewDoctor.fulfilled, (state, action) => {
+      .addCase(createDoctor.fulfilled, (state, action) => {
         state.doctors.push(action.payload);
       })
       .addCase(updateDoctor.fulfilled, (state, action) => {

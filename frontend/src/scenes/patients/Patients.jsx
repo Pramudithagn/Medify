@@ -593,7 +593,7 @@
 //=====================================================================================================================================================================================================================================
 
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   DataGrid,
@@ -647,6 +647,7 @@ import {
   mockPaymentIds,
 } from "../../data/mockData";
 import { tokens } from "../../theme";
+import { getDoctors } from "../../features/doctorSlice";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -683,8 +684,10 @@ const Patients = () => {
 
   const dispatch = useDispatch();
   const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled } = useSelector((state) => state.patient);
-  const [open, setOpen] = React.useState(false);
-  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const { doctors } = useSelector((state) => state.doctor);
+  const [open, setOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [doctorIds, setDoctorIds] = useState([]);
 
   const isAdmin = true; // admin non-admin toggle
 
@@ -694,7 +697,14 @@ const Patients = () => {
   // }, [dispatch]);
   useEffect(() => {
     dispatch(fetchPatients());
+    dispatch(getDoctors());
   }, [dispatch]);
+  
+  useEffect(() => {
+    if (doctors.length > 0) {
+      setDoctorIds(doctors.map((doctor) => doctor.id));
+    }
+  }, [doctors]);
 
   console.log(patients)
 
@@ -911,7 +921,8 @@ const Patients = () => {
                     <TextField
                       label="Date of Birth"
                       name="dob"
-                      type="datetime-local"
+                      // type="datetime-local"
+                      type="date"
                       value={values.dob || ""}
                       onChange={handleChange}
                       fullWidth
@@ -1069,10 +1080,11 @@ const Patients = () => {
                   </Box>
                   <Autocomplete
                     multiple
-                    options={mockDoctorIds}
+                    // options={mockDoctorIds}
+                    options={doctorIds}
                     value={values.doctorIds}
                     onChange={(event, newValue) => { setFieldValue("doctorIds", newValue); }}
-                    getOptionLabel={(option) => option}
+                    getOptionLabel={(option) => option.toString()}
                     renderInput={(params) => (
                       <TextField
                         {...params}
