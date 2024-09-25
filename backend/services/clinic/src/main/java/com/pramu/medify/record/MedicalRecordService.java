@@ -82,8 +82,8 @@ public class MedicalRecordService {
 
         clinicKafkaProducer.publishMedicalRecordCreatedEvent(new MedicalRecordCreatedEvent(
                 savedMedicalRecord.getId(),
-                savedMedicalRecord.getPatientId(),
                 savedMedicalRecord.getDoctorId(),
+                savedMedicalRecord.getPatientId(),
                 paymentDTO.id()
         ));
 
