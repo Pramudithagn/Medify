@@ -1,12 +1,16 @@
 package com.pramu.medify.treatment;
 
+import com.pramu.medify.kafka.AssignedDoctorsChangedEvent;
+import com.pramu.medify.kafka.TreatmentKafkaProducer;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,6 +19,7 @@ public class TreatmentService {
 
     private final TreatmentRepository treatmentRepository;
     private final TreatmentMapper treatmentMapper;
+    private final TreatmentKafkaProducer treatmentKafkaProducer;
 
     public List<TreatmentDTO> getAllTreatments() {
         return treatmentRepository.findAll().stream()
@@ -59,7 +64,21 @@ public class TreatmentService {
             treatment.setStatus(treatmentDTO.status());
         }
         if (treatmentDTO.doctorIds() != null) {
-            treatment.setDoctorIds(treatmentDTO.doctorIds());
+            Set<Long> doctorIds = new HashSet<>(treatmentDTO.doctorIds());
+
+            treatmentKafkaProducer.assignedDoctorsChangedEvent(new AssignedDoctorsChangedEvent(
+                    treatmentDTO.id(),
+//                    (List<Long>) treatmentDTO.doctorIds()
+                    doctorIds
+            ));
+//            treatment.setDoctorIds(treatmentDTO.doctorIds());
+            for (Long doctorId : treatmentDTO.doctorIds()) {
+                if (treatment.getDoctorIds().contains(doctorId)) {
+                    treatment.getDoctorIds().remove(doctorId);
+                } else {
+                    treatment.getDoctorIds().add(doctorId);
+                }
+            }
         }
 
         return treatmentRepository.save(treatment);

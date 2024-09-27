@@ -1,6 +1,8 @@
 package com.pramu.medify.doctor;
 
 import com.pramu.medify.kafka.AppointmentCancelledEvent;
+import com.pramu.medify.kafka.DoctorKafkaProducer;
+import com.pramu.medify.kafka.DoctorPatientAssignedEvent;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ public class DoctorService {
 
     private final DoctorRepository doctorRepository;
     private final DoctorMapper doctorMapper;
+    private final DoctorKafkaProducer doctorKafkaProducer;
 
     public List<DoctorDTO> getAllDoctors() {
         return doctorRepository.findAll().stream()
@@ -62,8 +65,24 @@ public class DoctorService {
         if (doctorDTO.specialization() != null) {
             doctor.setSpecialization(doctorDTO.specialization());
         }
+//        if (doctorDTO.patientIds() != null) {
+//            doctor.getPatientIds().addAll(doctorDTO.patientIds());
+//        }
+
         if (doctorDTO.patientIds() != null) {
-            doctor.getPatientIds().addAll(doctorDTO.patientIds());
+            if (doctor.getPatientIds().size() > doctorDTO.patientIds().size()) {
+
+                for (Long patientId : doctor.getPatientIds()) {
+                    if (!doctorDTO.patientIds().contains(patientId)) {
+                        doctorKafkaProducer.publishDoctorPatientRemovedEvent(new DoctorPatientAssignedEvent(
+                                patientId,
+                                doctorDTO.id()
+                        ));
+                    }
+                }
+                doctor.setPatientIds(doctorDTO.patientIds());
+
+            }
         }
         if (doctorDTO.medicalRecordIds() != null) {
             doctor.getMedicalRecordIds().addAll(doctorDTO.medicalRecordIds());
@@ -71,8 +90,18 @@ public class DoctorService {
         if (doctorDTO.appointmentIds() != null) {
             doctor.getAppointmentIds().addAll(doctorDTO.appointmentIds());
         }
+//        if (doctorDTO.treatmentIds() != null) {
+//            doctor.getTreatmentIds().addAll(doctorDTO.treatmentIds());
+//        }
         if (doctorDTO.treatmentIds() != null) {
-            doctor.getTreatmentIds().addAll(doctorDTO.treatmentIds());
+//            doctor.setTreatmentIds(doctorDTO.treatmentIds());
+            for (Long treatmentId : doctorDTO.treatmentIds()) {
+                if (doctor.getTreatmentIds().contains(treatmentId)) {
+                    doctor.getTreatmentIds().remove(treatmentId);
+                } else {
+                    doctor.getTreatmentIds().add(treatmentId);
+                }
+            }
         }
 
         return doctorRepository.save(doctor);
@@ -107,7 +136,6 @@ public class DoctorService {
     }
 
     public Long deleteDoctor(Long id) {
-        //        doctorRepository.deleteById(id);
         Optional<Doctor> optionalDoctor = doctorRepository.findById(id);
         if (optionalDoctor.isEmpty()) {
             throw new EntityNotFoundException("Doctor with ID " + id + " not found.");

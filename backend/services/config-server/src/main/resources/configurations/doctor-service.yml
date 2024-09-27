@@ -21,4 +21,11 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        spring.json.type.mapping: MedicalRecordCreatedEvent:com.pramu.medify.kafka.MedicalRecordCreatedEvent,AppointmentCreatedEvent:com.pramu.medify.kafka.AppointmentCreatedEvent,AppointmentCancelledEvent:com.pramu.medify.kafka.AppointmentCancelledEvent,DoctorPatientAssignedEvent:com.pramu.medify.kafka.DoctorPatientAssignedEvent
+        spring.json.type.mapping: MedicalRecordCreatedEvent:com.pramu.medify.kafka.MedicalRecordCreatedEvent,AppointmentCreatedEvent:com.pramu.medify.kafka.AppointmentCreatedEvent,AppointmentCancelledEvent:com.pramu.medify.kafka.AppointmentCancelledEvent,DoctorPatientAssignedEvent:com.pramu.medify.kafka.DoctorPatientAssignedEvent,AssignedDoctorsChangedEvent:com.pramu.medify.kafka.AssignedDoctorsChangedEvent
+
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: DoctorPatientAssignedEvent:com.pramu.medify.kafka.DoctorPatientAssignedEvent

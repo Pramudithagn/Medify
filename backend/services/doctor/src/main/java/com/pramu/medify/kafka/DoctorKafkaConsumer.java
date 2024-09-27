@@ -92,4 +92,30 @@ public class DoctorKafkaConsumer {
         doctorService.removeAppointment(event);
     }
 
+    @Transactional
+    @KafkaListener(topics = "treatment-doctors-changed")
+    public void consumeAssignedDoctorsChangedEvent(AssignedDoctorsChangedEvent event) {
+
+        Set<Long> treatmentIds = new HashSet<>();
+        treatmentIds.add(event.treatmentId());
+//        Set<Long> doctorIds = new HashSet<>(event.doctorIds());
+        for (Long doctorId : event.doctorIds()) {
+            doctorService.updateDoctor(new DoctorDTO(
+                    doctorId,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    treatmentIds
+            ));
+        }
+    }
+
 }

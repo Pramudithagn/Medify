@@ -87,8 +87,24 @@ public class PatientService {
         }
         if (patientDTO.doctorIds() != null) {
 //            patient.getDoctorIds().addAll(patientDTO.doctorIds());
-            patient.setDoctorIds(patientDTO.doctorIds());
+//            patient.setDoctorIds(patientDTO.doctorIds());
+            if (patient.getDoctorIds().size() < patientDTO.doctorIds().size()) {
+                for (Long doctorId : patientDTO.doctorIds()) {
+                    if (!patient.getDoctorIds().contains(doctorId)) {
+                        patientKafkaProducer.publishDoctorPatientAssignedEvent(new DoctorPatientAssignedEvent(
+                                patientDTO.id(),
+                                doctorId
+                        ));
+                    }
+                }
+                patient.setDoctorIds(patientDTO.doctorIds());
+            }
+            else {
+                patient.getDoctorIds().removeAll(patientDTO.doctorIds());
+            }
         }
+
+
         if (patientDTO.medicalRecordIds() != null) {
             patient.getMedicalRecordIds().addAll(patientDTO.medicalRecordIds());
         }
@@ -102,6 +118,21 @@ public class PatientService {
 
         return patientRepository.save(patient);
     }
+
+//    public void doctorPatientRemoveUpdate(PatientDTO patientDTO) {
+//        Optional<Patient> optionalPatient = patientRepository.findById(patientDTO.id());
+////        if (optionalPatient.isEmpty()) {
+////            throw new EntityNotFoundException("Patient tried to remove has not found. ID :" + patientDTO.id());
+////        }
+//        Patient patient = optionalPatient.get();
+//
+//        if (patientDTO.doctorIds() != null) {
+////            patient.getPatientIds().addAll(patientDTO.doctorIds());
+//            patient.setDoctorIds(patientDTO.doctorIds());
+//        }
+//
+//        patientRepository.save(patient);
+//    }
 
     public void removeAppointment(AppointmentCancelledEvent event) {
         Optional<Patient> optionalPatient = patientRepository.findById(event.patientId());
