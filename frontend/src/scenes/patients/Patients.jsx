@@ -589,9 +589,7 @@
 
 // export default Patients;
 
-
 //=====================================================================================================================================================================================================================================
-
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -619,9 +617,13 @@ import {
   Autocomplete,
   useTheme,
   Switch,
+  Checkbox,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Header from "../../components/Header";
@@ -651,19 +653,34 @@ import { getDoctors } from "../../features/doctorSlice";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  mail: Yup.string().email("Invalid email address").required("Email is required"),
+  mail: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
   phone: Yup.string().required("Phone number is required"),
   assignedDate: Yup.date().required("Assigned date is required"),
   dob: Yup.date().required("Date of Birth is required"),
   bloodGroup: Yup.string().required("Blood group is required"),
   age: Yup.number().required("Age is required").min(0, "Age must be positive"),
-  weight: Yup.number().required("Weight is required").min(0, "Weight must be positive"),
-  height: Yup.number().required("Height is required").min(0, "Height must be positive"),
+  weight: Yup.number()
+    .required("Weight is required")
+    .min(0, "Weight must be positive"),
+  height: Yup.number()
+    .required("Height is required")
+    .min(0, "Height must be positive"),
   allergies: Yup.string().required("Allergies are required"),
   gender: Yup.string().required("Gender is required"),
-  address: Yup.object().shape({street: Yup.string().required("Street is required"),houseNumber: Yup.string().required("House number is required"),city: Yup.string().required("City is required"),zipCode: Yup.string().required("Zip code is required"),}),
-  paymentIds: Yup.array().of(Yup.string()).required("At least one payment ID is required"),
-  doctorIds: Yup.array().of(Yup.string()).required("At least one doctor ID is required"),
+  address: Yup.object().shape({
+    street: Yup.string().required("Street is required"),
+    houseNumber: Yup.string().required("House number is required"),
+    city: Yup.string().required("City is required"),
+    zipCode: Yup.string().required("Zip code is required"),
+  }),
+  paymentIds: Yup.array()
+    .of(Yup.string())
+    .required("At least one payment ID is required"),
+  doctorIds: Yup.array()
+    .of(Yup.string())
+    .required("At least one doctor ID is required"),
 });
 
 function CustomToolbar() {
@@ -671,7 +688,9 @@ function CustomToolbar() {
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
       <GridToolbarFilterButton />
-      <GridToolbarDensitySelector slotProps={{ tooltip: { title: "Change density" } }} />
+      <GridToolbarDensitySelector
+        slotProps={{ tooltip: { title: "Change density" } }}
+      />
       <Box sx={{ flexGrow: 1 }} />
       <GridToolbarExport slotProps={{ tooltip: { title: "Export data" } }} />
     </GridToolbarContainer>
@@ -683,7 +702,8 @@ const Patients = () => {
   const colors = tokens(theme.palette.mode);
 
   const dispatch = useDispatch();
-  const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled } = useSelector((state) => state.patient);
+  const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled } =
+    useSelector((state) => state.patient);
   const { doctors } = useSelector((state) => state.doctor);
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -699,14 +719,14 @@ const Patients = () => {
     dispatch(fetchPatients());
     dispatch(getDoctors());
   }, [dispatch]);
-  
+
   useEffect(() => {
     if (doctors.length > 0) {
       setDoctorIds(doctors.map((doctor) => doctor.id));
     }
   }, [doctors]);
 
-  console.log(patients)
+  console.log(patients);
 
   const handleOpen = (patient) => {
     dispatch(setSelectedPatient(patient));
@@ -717,7 +737,7 @@ const Patients = () => {
     dispatch(setSelectedPatient(null));
   };
   const handleSave = (values) => {
-    console.log(selectedPatient, values)
+    console.log(selectedPatient, values);
     dispatch(updatePatient({ selectedPatient, updatedPatient: values }));
     // dispatch(updatePatient(values));
     handleClose();
@@ -800,11 +820,23 @@ const Patients = () => {
           "& .MuiDataGrid-root": { border: "none" },
           "& .MuiDataGrid-cell": { borderBottom: "none" },
           "& .name-column--cell": { color: colors.greenAccent[300] },
-          "& .MuiDataGrid-columnHeaders": {backgroundColor: `${colors.blueAccent[700]} !important`, borderBottom: "none", },
-          "& .MuiDataGrid-virtualScroller": { backgroundColor: colors.primary[400],},
-          "& .MuiDataGrid-footerContainer": { borderTop: "none", backgroundColor: colors.blueAccent[700], },
-          "& .MuiCheckbox-root": {  color: `${colors.greenAccent[200]} !important`, },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important`, },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: `${colors.blueAccent[700]} !important`,
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: colors.primary[400],
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: colors.blueAccent[700],
+          },
+          "& .MuiCheckbox-root": {
+            color: `${colors.greenAccent[200]} !important`,
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[100]} !important`,
+          },
         }}
       >
         <DataGrid
@@ -825,7 +857,8 @@ const Patients = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor: theme.palette.mode === "dark" ? colors.primary[400] : "white",
+            backgroundColor:
+              theme.palette.mode === "dark" ? colors.primary[400] : "white",
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 600,
@@ -835,13 +868,15 @@ const Patients = () => {
             gap: 2,
             "& .MuiTextField-root, & .MuiFormControl-root": {
               "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: colors.grey[500], },
-                "&.Mui-focused fieldset": {  borderColor: colors.grey[400],},
-                "&.Mui-disabled fieldset": { borderColor: colors.grey[300], },
-                "&.Mui-disabled .MuiInputBase-input": { WebkitTextFillColor: `${colors.grey[300]} !important`, },
+                "& fieldset": { borderColor: colors.grey[500] },
+                "&.Mui-focused fieldset": { borderColor: colors.grey[400] },
+                "&.Mui-disabled fieldset": { borderColor: colors.grey[300] },
+                "&.Mui-disabled .MuiInputBase-input": {
+                  WebkitTextFillColor: `${colors.grey[300]} !important`,
+                },
               },
-              "& .MuiInputLabel-root": { color: colors.grey[200], },
-              "& .MuiInputLabel-root.Mui-focused": { color: colors.grey[500],  },
+              "& .MuiInputLabel-root": { color: colors.grey[200] },
+              "& .MuiInputLabel-root.Mui-focused": { color: colors.grey[500] },
               mt: 2,
             },
           }}
@@ -915,7 +950,9 @@ const Patients = () => {
                       size="small"
                       InputLabelProps={{ shrink: true }}
                       disabled={!isAdmin}
-                      error={touched.assignedDate && Boolean(errors.assignedDate)}
+                      error={
+                        touched.assignedDate && Boolean(errors.assignedDate)
+                      }
                       helperText={touched.assignedDate && errors.assignedDate}
                     />
                     <TextField
@@ -1043,8 +1080,14 @@ const Patients = () => {
                       onChange={handleChange}
                       size="small"
                       disabled={!isAdmin}
-                      error={ touched.address?.houseNumber && Boolean(errors.address?.houseNumber) }
-                      helperText={ touched.address?.houseNumber && errors.address?.houseNumber }
+                      error={
+                        touched.address?.houseNumber &&
+                        Boolean(errors.address?.houseNumber)
+                      }
+                      helperText={
+                        touched.address?.houseNumber &&
+                        errors.address?.houseNumber
+                      }
                     />
                     <TextField
                       label="Street"
@@ -1054,8 +1097,13 @@ const Patients = () => {
                       size="small"
                       //   fullWidth
                       disabled={!isAdmin}
-                      error={ touched.address?.street && Boolean(errors.address?.street) }
-                      helperText={ touched.address?.street && errors.address?.street }
+                      error={
+                        touched.address?.street &&
+                        Boolean(errors.address?.street)
+                      }
+                      helperText={
+                        touched.address?.street && errors.address?.street
+                      }
                     />
                     <TextField
                       label="City"
@@ -1064,8 +1112,13 @@ const Patients = () => {
                       onChange={handleChange}
                       size="small"
                       disabled={!isAdmin}
-                      error={ touched.address?.zipCode && Boolean(errors.address?.zipCode) }
-                      helperText={ touched.address?.zipCode && errors.address?.zipCode }
+                      error={
+                        touched.address?.zipCode &&
+                        Boolean(errors.address?.zipCode)
+                      }
+                      helperText={
+                        touched.address?.zipCode && errors.address?.zipCode
+                      }
                     />
                     <TextField
                       label="Zip Code"
@@ -1074,11 +1127,16 @@ const Patients = () => {
                       onChange={handleChange}
                       size="small"
                       disabled={!isAdmin}
-                      error={ touched.address?.zipCode && Boolean(errors.address?.zipCode) }
-                      helperText={ touched.address?.zipCode && errors.address?.zipCode }
+                      error={
+                        touched.address?.zipCode &&
+                        Boolean(errors.address?.zipCode)
+                      }
+                      helperText={
+                        touched.address?.zipCode && errors.address?.zipCode
+                      }
                     />
                   </Box>
-                  <Autocomplete
+                  {/* <Autocomplete
                     multiple
                     // options={mockDoctorIds}
                     options={doctorIds}
@@ -1096,12 +1154,79 @@ const Patients = () => {
                       />
                     )}
                     disabled={!isAdmin}
+                  /> */}
+                  <Autocomplete
+                    multiple
+                    // options={doctorIds}
+                    // getOptionLabel={(option) => option.toString()}
+                    // value={values.doctorIds}
+                    options={values.doctorIds
+                      .map((id) => doctors.find((p) => p.id === id))
+                      .filter(Boolean)}
+                    getOptionLabel={(option) => option.name.toString()}
+                    value={values.doctorIds.map(
+                      (id) => doctors.find((p) => p.id === id) || ""
+                    )}
+
+                    onChange={(event, newValue) => {
+                      const existingDoctorIds = selectedPatient.doctorIds;
+                      const newDoctorIds = newValue.filter(
+                        (id) => !existingDoctorIds.includes(id)
+                      );
+                      setFieldValue("doctorIds", [
+                        ...existingDoctorIds,
+                        ...newDoctorIds,
+                      ]);
+                    }}
+                    isOptionEqualToValue={(option, value) => option === value}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Doctors"
+                        size="small"
+                        error={touched.doctorIds && Boolean(errors.doctorIds)}
+                        helperText={touched.doctorIds && errors.doctorIds}
+                        fullWidth
+                      />
+                    )}
+                    disableCloseOnSelect // Keep dropdown open to allow multiple selections
+                    // renderOption={(props, option, { selected }) => (
+                    //   <li {...props}>
+                    //     <Checkbox
+                    //       icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                    //       checkedIcon={<CheckBoxIcon fontSize="small" />}
+                    //       style={{ marginRight: 8 }}
+                    //       checked={
+                    //         selected ||
+                    //         selectedPatient.doctorIds.includes(option)
+                    //       }
+                    //     />
+                    //     {option}
+                    //   </li>
+                    // )}
+                    disableClearable
                   />
+                  <Box display="flex" alignItems="center" mt={1} ml={1}>
+                    <ErrorOutlineIcon
+                      sx={{ color: "red", fontSize: 16, mr: 0.5 }}
+                    />
+                    <Typography
+                      variant="caption"
+                      fontSize={10}
+                      sx={{ color: colors.redAccent[300] }}
+                    >
+                      You can only add one at a time
+                    </Typography>
+                  </Box>
+
                   <Autocomplete
                     multiple
                     options={mockPaymentIds}
                     value={values.paymentIds}
-                    onChange={(event, newValue) => { setFieldValue("paymentIds", newValue); }}
+                    onChange={(event, newValue) => {
+                      setFieldValue("paymentIds", newValue);
+                    }}
                     getOptionLabel={(option) => option}
                     renderInput={(params) => (
                       <TextField
@@ -1152,7 +1277,8 @@ const Patients = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor: theme.palette.mode === "dark" ? colors.primary[400] : "white",
+            backgroundColor:
+              theme.palette.mode === "dark" ? colors.primary[400] : "white",
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 400,
@@ -1196,7 +1322,7 @@ const Patients = () => {
             </Button>
             <Button
               onClick={handleDeleteClose}
-              sx={{  backgroundColor: colors.grey[600], }}
+              sx={{ backgroundColor: colors.grey[600] }}
               variant="contained"
             >
               Cancel

@@ -27,7 +27,6 @@
 
 //=================================================================================================================================================
 
-// src/features/notificationSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getNotificationsForUser, markNotificationAsRead } from "../controllers/notifications.controller";
 

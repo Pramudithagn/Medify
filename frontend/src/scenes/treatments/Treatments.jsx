@@ -469,6 +469,7 @@ import {
   createTreatment,
   updateTreatment,
 } from "../../features/treatmentSlice";
+import { getDoctors } from "../../features/doctorSlice";
 import { Formik, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 import { getAllTreatments } from "../../controllers/treatments.controller";
@@ -509,6 +510,9 @@ export const Treatments = () => {
   const dispatch = useDispatch();
   const { treatments, selectedTreatment, isCreating, editModelOpen } =
     useSelector((state) => state.treatment);
+  const { doctors} = useSelector((state) => state.doctor);
+
+    const [originalDoctorIds, setOriginalDoctorIds] = React.useState([]);
 
   // const fetchTreatments = async () => {
   //   try {
@@ -547,6 +551,8 @@ export const Treatments = () => {
 
   useEffect(() => {
     dispatch(fetchTreatments());
+    dispatch(getDoctors());
+
   }, [dispatch]);
 
   console.log(treatments);
@@ -559,6 +565,8 @@ export const Treatments = () => {
   const handleEditOpen = (treatment) => {
     dispatch(setSelectedTreatment(treatment));
     console.log(selectedTreatment);
+    setOriginalDoctorIds(treatment.doctorIds || []);
+
     dispatch(setEditModelOpen(true));
   };
 
@@ -570,6 +578,7 @@ export const Treatments = () => {
   const handleEditClose = () => {
     dispatch(setSelectedTreatment(null));
     dispatch(setEditModelOpen(false));
+    setOriginalDoctorIds([])
   };
 
   const handleEditSave = () => {
@@ -577,7 +586,49 @@ export const Treatments = () => {
     // dispatch(editTreatment(selectedTreatment));
     // editTreatment(selectedTreatment)
     // dispatch(updateTreatment(selectedTreatment));
-    dispatch(updateTreatment(selectedTreatment));
+
+    let addedDoctorIds = null
+    let removedDoctorIds = null
+    // Find added doctor IDs
+    addedDoctorIds = selectedTreatment.doctorIds.filter(
+      (id) => !originalDoctorIds.includes(id)
+    );
+    // Find removed doctor IDs
+    removedDoctorIds = originalDoctorIds.filter(
+      (id) => !selectedTreatment.doctorIds.includes(id)
+    );
+
+    console.log("addedDoctorIds" + addedDoctorIds.length)
+    console.log("removedDoctorIds" + removedDoctorIds)
+
+    let updatedDoctorIds = [];
+
+    if(addedDoctorIds.length > 0){
+      console.log("addedDoctorIds" + addedDoctorIds)
+      // dispatch(setSelectedTreatment({
+      //   ...selectedTreatment,
+      //   doctorIds: addedDoctorIds,
+      // }))
+      updatedDoctorIds = addedDoctorIds;
+    }
+    else if (removedDoctorIds.length > 0){
+      console.log("removedDoctorIds" + removedDoctorIds)
+      // dispatch(setSelectedTreatment({
+      //   ...selectedTreatment,
+      //   doctorIds: removedDoctorIds,
+      // }))
+      updatedDoctorIds = removedDoctorIds;
+    }
+
+    dispatch(updateTreatment({
+      ...selectedTreatment,
+      doctorIds: updatedDoctorIds
+    }));
+
+    // console.log("Updated Treatment Data:", selectedTreatment);
+    // dispatch(updateTreatment(selectedTreatment));
+    dispatch(setSelectedTreatment(null));
+    setOriginalDoctorIds([]);
     handleEditClose();
   };
 
@@ -753,12 +804,32 @@ export const Treatments = () => {
           />
           <Autocomplete
             multiple
-            options={mockDoctorIds}
-            getOptionLabel={(option) => option}
-            value={selectedTreatment?.doctorIds || []}
-            onChange={handleDoctorIdsChange}
+            // options={mockDoctorIds}
+            // getOptionLabel={(option) => option.toString()}
+            // value={selectedTreatment?.doctorIds || []}
+            // onChange={handleDoctorIdsChange}
+            options={doctors}
+            getOptionLabel={(option) => {
+              if (typeof option === 'string') return option;
+              return option.name || ''; 
+            }}
+            value={
+              selectedTreatment?.doctorIds.map((id) => 
+                doctors.find((doctor) => doctor.id === id) || id
+              ) || []
+            }
+            isOptionEqualToValue={(option, value) => option.id === value || option.id === value.id}
+            onChange={(event, value) => {
+              const selectedDoctorIds = value.map((option) => (option.id ? option.id : option));
+              dispatch(
+                setSelectedTreatment({
+                  ...selectedTreatment,
+                  doctorIds: selectedDoctorIds,
+                })
+              );
+            }}
             renderInput={(params) => (
-              <TextField {...params} label="Doctor IDs" />
+              <TextField {...params} label="Doctors" />
             )}
           />
           <Box
@@ -879,7 +950,7 @@ export const Treatments = () => {
                 <Autocomplete
                   multiple
                   options={mockDoctorIds}
-                  getOptionLabel={(option) => option}
+                  getOptionLabel={(option) => option.toString()}
                   value={values.doctorIds}
                   onChange={(event, newValue) =>
                     setFieldValue("doctorIds", newValue)
