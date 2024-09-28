@@ -650,6 +650,7 @@ import {
 } from "../../data/mockData";
 import { tokens } from "../../theme";
 import { getDoctors } from "../../features/doctorSlice";
+import { fetchPayments } from "../../features/paymentSlice";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -705,6 +706,7 @@ const Patients = () => {
   const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled } =
     useSelector((state) => state.patient);
   const { doctors } = useSelector((state) => state.doctor);
+  const { payments } = useSelector((state) => state.payment);
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [doctorIds, setDoctorIds] = useState([]);
@@ -718,6 +720,7 @@ const Patients = () => {
   useEffect(() => {
     dispatch(fetchPatients());
     dispatch(getDoctors());
+    dispatch(fetchPayments());
   }, [dispatch]);
 
   useEffect(() => {
@@ -1190,7 +1193,7 @@ const Patients = () => {
                         fullWidth
                       />
                     )}
-                    disableCloseOnSelect // Keep dropdown open to allow multiple selections
+                    disableCloseOnSelect
                     // renderOption={(props, option, { selected }) => (
                     //   <li {...props}>
                     //     <Checkbox
@@ -1216,11 +1219,11 @@ const Patients = () => {
                       fontSize={10}
                       sx={{ color: colors.redAccent[300] }}
                     >
-                      You can only add one at a time
+                      You can only add one doctor at a time
                     </Typography>
                   </Box>
 
-                  <Autocomplete
+                  {/* <Autocomplete
                     multiple
                     options={mockPaymentIds}
                     value={values.paymentIds}
@@ -1239,7 +1242,24 @@ const Patients = () => {
                       />
                     )}
                     disabled={!isAdmin}
-                  />
+                  /> */}
+                  <TextField
+                      label="Payment IDs"
+                      name="paymentIds"
+                      value={values.paymentIds}
+                      // value={values.paymentIds.join(", ")}
+                      onChange={handleChange}
+                      size="small"
+                      fullWidth
+                      disabled={true}
+                      error={
+                        touched.address?.zipCode &&
+                        Boolean(errors.address?.zipCode)
+                      }
+                      helperText={
+                        touched.address?.zipCode && errors.address?.zipCode
+                      }
+                    />
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
                     {isAdmin && (
                       <Button

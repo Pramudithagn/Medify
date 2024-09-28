@@ -112,8 +112,8 @@ public class PatientService {
             patient.getAppointmentIds().addAll(patientDTO.appointmentIds());
         }
         if (patientDTO.paymentIds() != null) {
-//            patient.getPaymentIds().addAll(patientDTO.paymentIds());
-            patient.setPaymentIds(patientDTO.paymentIds());
+            patient.getPaymentIds().addAll(patientDTO.paymentIds());
+//            patient.setPaymentIds(patientDTO.paymentIds());
         }
 
         return patientRepository.save(patient);

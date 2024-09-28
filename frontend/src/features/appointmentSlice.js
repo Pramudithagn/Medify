@@ -76,6 +76,7 @@ export const createAppointment = createAsyncThunk(
   async (appointmentData, { rejectWithValue }) => {
     try {
       const response = await createAppointmentApi(appointmentData);
+      console.log(response.data)
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

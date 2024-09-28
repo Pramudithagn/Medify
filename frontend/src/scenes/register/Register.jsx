@@ -56,37 +56,7 @@ const Register = () => {
   const [userType, setUserType] = useState("patient");
   const dispatch = useDispatch();
   const [treatmentIds, setTreatmentIds] = useState([]);
-  // const [doctorIds, setDoctorIds] = useState([]);
-
-  // const { treatments, doctors } = useSelector(
-  //   (state) => ({
-  //     treatments: state.treatment.treatments,
-  //     doctors: state.doctor.doctors,
-  //   })
-  // );
   const { treatments } = useSelector((state) => state.treatment);
-  // const { doctors } = useSelector((state) => state.doctor);
-
-  // React.useEffect(() => {
-  //   dispatch(fetchTreatments());
-  //   dispatch(getDoctors());
-  // }, []);
-
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     // await Promise.all([dispatch(fetchTreatments()), dispatch(getDoctors())]);
-  //     dispatch(fetchTreatments());
-  //     dispatch(getDoctors());
-
-  //     const extractedTreatmentIds = treatments.map((treatment) => treatment.id);
-  //     const extractedDoctorIds = doctors.map((doctor) => doctor.id);
-
-  //     setTreatmentIds(extractedTreatmentIds);
-  //     setDoctorIds(extractedDoctorIds);
-  //   };
-
-  //   fetchData();
-  // }, [dispatch, treatments, doctors]);
 
   React.useEffect(() => {
     dispatch(fetchTreatments());
@@ -98,12 +68,6 @@ const Register = () => {
       setTreatmentIds(treatments.map((treatment) => treatment.id));
     }
   }, [treatments]);
-
-  // React.useEffect(() => {
-  //   if (doctors.length > 0) {
-  //     setDoctorIds(doctors.map((doctor) => doctor.id));
-  //   }
-  // }, [doctors]);
 
   const handleToggleChange = (event, newType) => {
     setUserType(newType);
@@ -463,26 +427,7 @@ const Register = () => {
                         helperText: touched.dob && errors.dob,
                       },
                     }}
-                    // renderInput={(params) => (
-                    //   <TextField {...params} fullWidth />
-                    // )}
                   />
-                  // <TextField
-                  //   label="Date of Birth"
-                  //   type="date"
-                  //   value={values.dob || ""}
-                  //   onChange={(event) =>
-                  //     setFieldValue("dob", event.target.value)
-                  //   }
-                  //   size="small"
-                  //   variant="filled"
-                  //   fullWidth
-                  //   InputLabelProps={{
-                  //     shrink: true,
-                  //   }}
-                  //   error={touched.dob && Boolean(errors.dob)}
-                  //   helperText={touched.dob && errors.dob}
-                  // />
                 )}
                 <DateTimePicker
                   label="Assigned Date"
@@ -501,49 +446,33 @@ const Register = () => {
                   }}
                   // renderInput={(params) => <TextField {...params} fullWidth />}
                 />
-                {/* <TextField
-                  label="Assigned Date"
-                  type="datetime-local"
-                  value={values.assignedDate || ""}
-                  // onChange={(event) => setFieldValue("assignedDate", event.target.value)}
-                  onChange={handleChange}
-                  size="small"
-                  variant="filled"
-                  fullWidth
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  error={touched.assignedDate && Boolean(errors.assignedDate)}
-                  helperText={touched.assignedDate && errors.assignedDate}
-                /> */}
               </Box>
 
-              {values.userType === "doctor" && (
+              {/* {values.userType === "doctor" && (
                 <Autocomplete
-                  id="treatmentIds"
-                  multiple
-                  // options={treatments}
-                  options={treatmentIds}
-                  getOptionLabel={(option) => `${option}`}
-                  value={values.treatmentIds}
-                  onChange={(event, value) =>
-                    setFieldValue("treatmentIds", value)
-                  }
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Treatments"
-                      size="small"
-                      // margin="normal"
-                      variant="filled"
-                      error={
-                        touched.treatmentIds && Boolean(errors.treatmentIds)
-                      }
-                      helperText={touched.treatmentIds && errors.treatmentIds}
-                    />
-                  )}
-                />
-              )}
+                multiple
+                id="treatments"
+                options={treatments}
+                getOptionLabel={(option) => option.name}
+                value={treatments.filter((treatment) =>
+                  values.treatmentIds.includes(treatment.id)
+                )}
+                size="small"
+                onChange={(event, value) => {
+                  const ids = value.map((treatment) => treatment.id);
+                  setFieldValue("treatmentIds", ids);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Treatments"
+                    variant="filled"
+                    error={touched.treatmentIds && Boolean(errors.treatmentIds)}
+                    helperText={touched.treatmentIds && errors.treatmentIds}
+                  />
+                )}
+              />
+              )} */}
               {values.userType === "patient" && (
                 <>
                   <TextField
@@ -560,29 +489,6 @@ const Register = () => {
                     helperText={touched.allergies && errors.allergies}
                     // margin="normal"
                   />
-
-                  {/* <Autocomplete
-                    id="doctorIds"
-                    multiple
-                    // options={doctors}
-                    options={doctorIds}
-                    getOptionLabel={(option) => `Dr. ${option}`}
-                    value={values.doctorIds}
-                    onChange={(event, value) =>
-                      setFieldValue("doctorIds", value)
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Doctors"
-                        size="small"
-                        // margin="normal"
-                        variant="filled"
-                        error={touched.doctorIds && Boolean(errors.doctorIds)}
-                        helperText={touched.doctorIds && errors.doctorIds}
-                      />
-                    )}
-                  /> */}
                 </>
               )}
 

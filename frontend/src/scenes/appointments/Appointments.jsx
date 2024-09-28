@@ -2639,10 +2639,6 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  // setAppointments,
-  // addAppointment,
-  // deleteAppointment,
-  // updateAppointment,
   fetchAppointments,
   createAppointment,
   deleteAppointment,
@@ -2654,6 +2650,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import SearchIcon from "@mui/icons-material/Search";
 import Header from "../../components/Header";
 import { mockDataAppointments } from "../../data/mockData";
+import { getDoctors } from "../../features/doctorSlice";
+import { fetchPatients } from "../../features/patientSlice";
 
 const mockPatients = [
   { id: 3, name: "John Doe" },
@@ -2672,8 +2670,9 @@ const Appointments = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
-  // const { appointments } = useSelector((state) => state.appointment);
   const { appointments, status } = useSelector((state) => state.appointment);
+  const { patients } = useSelector((state) => state.patient);
+  const { doctors } = useSelector((state) => state.doctor);
 
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -2693,12 +2692,16 @@ const Appointments = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   // useEffect(() => {
-  //   dispatch(setAppointments(mockDataAppointments));
-  // }, [dispatch]);
+  //   if (status === "idle") {
+  //     dispatch(fetchAppointments());
+  //   }
+  // }, [dispatch, status]);
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchAppointments());
     }
+    dispatch(fetchPatients());
+    dispatch(getDoctors());
   }, [dispatch, status]);
 
   console.log(appointments);
@@ -2760,8 +2763,6 @@ const Appointments = () => {
       dispatch(
         updateAppointment({
           ...updatedAppointment,
-          // start: updatedAppointment.dateTime,
-          // end: endTime,
         })
       );
       setUpdatedAppointment(null);
@@ -2792,6 +2793,14 @@ const Appointments = () => {
   const filteredAppointments = appointments.filter((appointment) =>
     appointment.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const doctorsForSelectedPatient = patients.find(
+    (patient) => patient.id === newAppointment.patientId
+  )
+    ? patients
+        .find((patient) => patient.id === newAppointment.patientId)
+        .doctorIds.map((doctorId) => doctors.find((doc) => doc.id === doctorId))
+    : [];
 
   return (
     <Box m="20px">
@@ -2889,7 +2898,8 @@ const Appointments = () => {
               }
             />
             <Autocomplete
-              options={mockPatients}
+              // options={mockPatients}
+              options={patients}
               getOptionLabel={(option) => option.name}
               onChange={(e, value) =>
                 handleNewAppointmentChange("patientId", value?.id)
@@ -2903,7 +2913,7 @@ const Appointments = () => {
                 />
               )}
             />
-            <Autocomplete
+            {/* <Autocomplete
               options={
                 newAppointment.patientId
                   ? mockDoctors[newAppointment.patientId]
@@ -2922,7 +2932,23 @@ const Appointments = () => {
                 />
               )}
               disabled={!newAppointment.patientId}
-            />
+            /> */}
+            <Autocomplete
+            options={doctorsForSelectedPatient}
+            getOptionLabel={(option) => option.name}
+            onChange={(e, value) =>
+              handleNewAppointmentChange("doctorId", value?.id)
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Doctor"
+                margin="dense"
+                fullWidth
+              />
+            )}
+            disabled={!newAppointment.patientId}
+          />
             <TextField
               label="Duration (in minutes)"
               type="number"

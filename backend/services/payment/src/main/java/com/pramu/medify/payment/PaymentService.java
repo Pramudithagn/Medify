@@ -36,7 +36,7 @@ public class PaymentService {
         Payment savedPayment = paymentRepository.save(payment);
 
         paymentKafkaProducer.publishPaymentCreatedEvent(new PaymentCreatedEvent(
-                payment.getId(),
+                savedPayment.getId(),
                 payment.getPatientId(),
                 payment.getAmount()
         ));

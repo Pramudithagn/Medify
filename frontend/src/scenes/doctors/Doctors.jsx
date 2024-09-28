@@ -831,7 +831,7 @@ const Doctors = () => {
                       }
                     />
                   </Box>
-                  <Autocomplete
+                  {/* <Autocomplete
                     multiple
                     disabled={true}
                     // options={mockTreatmentIds}
@@ -862,7 +862,22 @@ const Doctors = () => {
                         helperText={touched.treatmentIds && errors.treatmentIds}
                       />
                     )}
+                  /> */}
+                  <TextField
+                    label="Treatment"
+                    name="treatmentName"
+                    value={values.treatmentIds
+                      .map(
+                        (id) =>
+                          treatments.find((treatment) => treatment.id === id)
+                            ?.name || ""
+                      )
+                      .join(", ")}
+                    fullWidth
+                    size="small"
+                    disabled={true}
                   />
+
                   {/* <Autocomplete
                     multiple
                     disabled={!isAdmin}

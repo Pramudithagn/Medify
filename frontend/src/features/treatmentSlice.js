@@ -121,6 +121,7 @@ export const fetchTreatments = () => async (dispatch) => {
 
 export const createTreatment = (treatmentData) => async (dispatch) => {
   try {
+    console.log(treatmentData);
     const response = await createTreatmentApi(treatmentData);
     console.log(response);
     dispatch(addTreatment(response.data));

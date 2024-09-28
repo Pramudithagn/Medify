@@ -513,42 +513,6 @@ export const Treatments = () => {
   const { doctors} = useSelector((state) => state.doctor);
 
     const [originalDoctorIds, setOriginalDoctorIds] = React.useState([]);
-
-  // const fetchTreatments = async () => {
-  //   try {
-  //     const response = await getAllTreatments();
-
-  //     if (response && response.data) {
-  //       dispatch(setTreatments(response.data));
-  //     }
-  //   } catch (error) {
-  //     console.log('Error fetching treatments:', error);
-  //   }
-  // };
-
-  // const editTreatment = async (selectedTreatment) => {
-  //   try {
-  //     const response = await updateTreatment(selectedTreatment);
-
-  //     if (response && response.data) {
-  //       dispatch(editTreatment(response.data));
-  //     }
-  //   } catch (error) {
-  //     console.log('Error updating treatments:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //     fetchTreatments();
-  //   }, [dispatch]);
-
-  // useCallback(async () => {
-  //   fetchTreatments();
-  // }, []);
-  // useMemo(async () => {
-  //   fetchTreatments();
-  // }, [dispatch]);
-
   useEffect(() => {
     dispatch(fetchTreatments());
     dispatch(getDoctors());
@@ -605,18 +569,10 @@ export const Treatments = () => {
 
     if(addedDoctorIds.length > 0){
       console.log("addedDoctorIds" + addedDoctorIds)
-      // dispatch(setSelectedTreatment({
-      //   ...selectedTreatment,
-      //   doctorIds: addedDoctorIds,
-      // }))
       updatedDoctorIds = addedDoctorIds;
     }
     else if (removedDoctorIds.length > 0){
       console.log("removedDoctorIds" + removedDoctorIds)
-      // dispatch(setSelectedTreatment({
-      //   ...selectedTreatment,
-      //   doctorIds: removedDoctorIds,
-      // }))
       updatedDoctorIds = removedDoctorIds;
     }
 
@@ -625,7 +581,6 @@ export const Treatments = () => {
       doctorIds: updatedDoctorIds
     }));
 
-    // console.log("Updated Treatment Data:", selectedTreatment);
     // dispatch(updateTreatment(selectedTreatment));
     dispatch(setSelectedTreatment(null));
     setOriginalDoctorIds([]);
@@ -634,16 +589,21 @@ export const Treatments = () => {
 
   const handleSave = (values) => {
     console.log(values);
-    const data = {};
+    // const data = {};
+    // Object.keys(values).forEach((key) => {
+    //   data[key] = values[key];
+    // });
+    // console.log(data);
 
-    Object.keys(values).forEach((key) => {
-      data[key] = values[key];
-    });
+    const updatedValues = {
+      ...values,
+      doctorIds: values.doctorIds.map((doctor) => doctor.id),
+    };
+    console.log(updatedValues);
 
-    // Object.defineProperty(data, "id", {value:treatments.length + 1});
-    console.log(data);
     // dispatch(addTreatment(data));
-    dispatch(createTreatment(data));
+    // dispatch(createTreatment(data));
+    dispatch(createTreatment(updatedValues));
     handleClose();
   };
 
@@ -949,12 +909,19 @@ export const Treatments = () => {
                 />
                 <Autocomplete
                   multiple
-                  options={mockDoctorIds}
-                  getOptionLabel={(option) => option.toString()}
-                  value={values.doctorIds}
-                  onChange={(event, newValue) =>
-                    setFieldValue("doctorIds", newValue)
-                  }
+                  // options={mockDoctorIds}
+                  // getOptionLabel={(option) => option.toString()}
+                  // value={values.doctorIds}
+                  // onChange={(event, newValue) =>
+                  //   setFieldValue("doctorIds", newValue)
+                  // }
+                  options={doctors}
+  getOptionLabel={(option) => option.name || ""}
+  value={values.doctorIds || []}
+  isOptionEqualToValue={(option, value) => option.id === value.id}
+  onChange={(event, value) => {
+    setFieldValue("doctorIds", value);
+  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}

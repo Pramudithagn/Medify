@@ -1279,7 +1279,6 @@
 
 //===============================================================================================================================================
 
-
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -1326,7 +1325,14 @@ import {
   setCurrentPage,
   setRecordsPerPage,
 } from "../../features/recordSlice";
-import { mockDataRecords, mockPatientIds, mockTreatmentIds } from "../../data/mockData";
+import {
+  mockDataRecords,
+  mockPatientIds,
+  mockTreatmentIds,
+} from "../../data/mockData";
+import { fetchTreatments } from "../../features/treatmentSlice";
+import { fetchPatients } from "../../features/patientSlice";
+import { getDoctors } from "../../features/doctorSlice";
 
 const modalStyle = {
   position: "absolute",
@@ -1369,9 +1375,15 @@ const Records = () => {
     loading,
     error,
   } = useSelector((state) => state.record);
+  const { treatments } = useSelector((state) => state.treatment);
+  const { patients } = useSelector((state) => state.patient);
+  const { doctors } = useSelector((state) => state.doctor);
 
   React.useEffect(() => {
     dispatch(fetchRecords());
+    dispatch(fetchTreatments());
+    dispatch(fetchPatients());
+    dispatch(getDoctors());
   }, [dispatch]);
 
   const handleEditOpen = (record) => {
@@ -1421,7 +1433,7 @@ const Records = () => {
   };
 
   const handleCreateRecord = (values, { resetForm }) => {
-    dispatch(addRecord({...values, doctorId: "4"}))
+    dispatch(addRecord({ ...values, doctorId: "4" }))
       .unwrap()
       .then(() => {
         resetForm();
@@ -1493,8 +1505,8 @@ const Records = () => {
           </Box>
         </Box>
 
-        {/* Record List */}
-        <Box sx={{ overflowY: "auto", maxHeight: "55vh" }}>
+        {/* Record List and Detials*/}
+        {/* <Box sx={{ overflowY: "auto", maxHeight: "55vh" }}>
           {paginatedRecords.map((record) => (
             <Card
               key={record.id}
@@ -1513,7 +1525,6 @@ const Records = () => {
                   maxHeight: "23vh",
                 }}
               >
-                {/* Record detials */}
                 <Box sx={{ width: "90%", pt: 2 }}>
                   <Grid
                     container
@@ -1581,6 +1592,126 @@ const Records = () => {
               </CardContent>
             </Card>
           ))}
+        </Box> */}
+        <Box sx={{ overflowY: "auto", maxHeight: "55vh" }}>
+          {paginatedRecords.map((record) => {
+            // patient name find
+            const patient = patients.find((p) => p.id === record.patientId);
+            const patientName = patient ? patient.name : "Unknown";
+
+            // doctor name find
+            const doctor = doctors.find((d) => d.id === record.doctorId);
+            const doctorName = doctor ? doctor.name : "Unknown";
+
+            //treatment names find
+            const treatmentNames = record.treatmentIds
+              .map((treatmentId) => {
+                const treatment = treatments.find((t) => t.id === treatmentId);
+                return treatment ? treatment.name : "Unknown";
+              })
+              .join(", ");
+
+            return (
+              <Card
+                key={record.id}
+                sx={{
+                  mr: 2,
+                  mb: 2,
+                  p: 2,
+                  borderRadius: 2,
+                  backgroundColor: colors.primary[400],
+                }}
+              >
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    maxHeight: "23vh",
+                  }}
+                >
+                  {/* Record Details */}
+                  <Box sx={{ width: "90%", pt: 2 }}>
+                    <Grid
+                      container
+                      rowSpacing={1}
+                      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                    >
+                      <Grid size={12}>
+                        {/* <Typography variant="h5">Diagnosis: {record.diagnosis}</Typography> */}
+                        <Typography variant="h5">
+                          <strong>Diagnosis:</strong>{" "}
+                          <em>{record.diagnosis}</em>
+                        </Typography>
+                      </Grid>
+                      <Grid size={12}>
+                        {/* <Typography variant="h5">Prescription: {record.prescription}</Typography> */}
+                        <Typography variant="h5">
+                          <strong>Prescription:</strong>{" "}
+                          <em>{record.prescription}</em>
+                        </Typography>
+                      </Grid>
+                      <Grid size={12}>
+                        {/* <Typography variant="h5">Treatments: {treatmentNames}</Typography> */}
+                        <Typography variant="h5">
+                          <strong>Treatments:</strong> <em>{treatmentNames}</em>
+                        </Typography>
+                      </Grid>
+                      <Grid size={6}>
+                        {/* <Typography variant="h5">Doctor: {doctorName}</Typography> */}
+                        <Typography variant="h5">
+                          <strong>Doctor:</strong> <em>{doctorName}</em>
+                        </Typography>
+                      </Grid>
+                      <Grid size={6}>
+                        {/* <Typography variant="h5">Patient: {patientName}</Typography> */}
+                        <Typography variant="h5">
+                          <strong>Patient:</strong> <em>{patientName}</em>
+                        </Typography>
+                      </Grid>
+                      <Grid size={12}>
+                        <Divider sx={{ width: "65%" }} />
+                      </Grid>
+                      <Grid size={6}>
+                        {/* <Typography variant="h5">Price: {record.price}</Typography> */}
+                        <Typography variant="h5">
+                          <strong>Price:</strong> <em>{record.price}</em>
+                        </Typography>
+                      </Grid>
+                      <Grid size={6}>
+                        {/* <Typography variant="h5">
+                  Date: {dayjs(record.assignDate).format("MM-DD-YYYY")}
+                </Typography> */}
+                        <Typography variant="h5">
+                          <strong>Date:</strong>{" "}
+                          <em>
+                            {dayjs(record.assignDate).format("MM-DD-YYYY")}
+                          </em>
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                  <Box sx={{ width: "10%" }}>
+                    <Tooltip title="Edit">
+                      <IconButton
+                        onClick={() => handleEditOpen(record)}
+                        color="secondary"
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton
+                        onClick={() => handleDeleteOpen(record)}
+                        color="error"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </CardContent>
+              </Card>
+            );
+          })}
         </Box>
 
         {/* Pagination */}
@@ -1691,7 +1822,6 @@ const Records = () => {
                   fullWidth
                   sx={{ marginBottom: 2 }}
                 />
-
                 <FormControl fullWidth sx={{ marginBottom: 2 }}>
                   <InputLabel id="patient-select-label">Patient</InputLabel>
                   <Select
@@ -1701,10 +1831,16 @@ const Records = () => {
                     value={values.patientId}
                     onChange={handleChange}
                     error={touched.patientId && Boolean(errors.patientId)}
+                    renderValue={(selected) => {
+                      const selectedPatient = patients.find(
+                        (patient) => patient.id === selected
+                      );
+                      return selectedPatient ? selectedPatient.name : "";
+                    }}
                   >
-                    {mockPatientIds.map((record) => (
-                      <MenuItem key={record} value={record}>
-                        {record}
+                    {patients.map((patient) => (
+                      <MenuItem key={patient.id} value={patient.id}>
+                        {patient.name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -1715,16 +1851,21 @@ const Records = () => {
 
                 <Autocomplete
                   multiple
-                  options={mockTreatmentIds}
-                  getOptionLabel={(option)=>(option.toString()?option.toString():'')}
-                  value={values.treatmentIds}
+                  options={treatments}
+                  getOptionLabel={(option) => option.name.toString()}
+                  value={values.treatmentIds.map(
+                    (id) => treatments.find((t) => t.id === id) || ""
+                  )}
                   onChange={(event, newValue) => {
-                    setFieldValue("treatmentIds", newValue);
+                    const selectedTreatmentIds = newValue.map(
+                      (treatment) => treatment.id
+                    );
+                    setFieldValue("treatmentIds", selectedTreatmentIds);
                   }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Treatment IDs"
+                      label="Treatments"
                       placeholder="Select treatments"
                       error={
                         touched.treatmentIds && Boolean(errors.treatmentIds)
@@ -1778,10 +1919,7 @@ const Records = () => {
                   diagnosis: selectedRecord.diagnosis || "",
                   prescription: selectedRecord.prescription || "",
                   price: selectedRecord.price || "",
-                  // doctorId: selectedRecord.doctorId || "",
-                  // patientId: selectedRecord.patientId || "",
                   treatmentIds: selectedRecord.treatmentIds || [],
-                  // assignDate: selectedRecord.assignDate || "",
                 }
               }
               validationSchema={recordValidationSchema}
@@ -1833,6 +1971,10 @@ const Records = () => {
                     fullWidth
                     margin="normal"
                   />
+                  <Typography variant="h6" mt={1}>
+                    Treatments
+                  </Typography>
+                  <Divider sx={{ mt: 1, mb: 1 }} />
                   <FieldArray name="treatmentIds">
                     {() => (
                       <Box
@@ -1845,11 +1987,13 @@ const Records = () => {
                           marginBottom: 2,
                         }}
                       >
-                        {mockTreatmentIds.map((treatmentId) => (
+                        {/* {mockTreatmentIds.map((treatmentId) => ( */}
+                        {treatments.map((treatment) => (
                           <Box
-                            key={treatmentId}
+                            key={treatment}
                             sx={{
-                              width: "calc(33.33% - 16px)",
+                              // width: "calc(33.33% - 16px)",
+                              width: "calc(45% - 16px)",
                               display: "flex",
                               alignItems: "center",
                             }}
@@ -1858,15 +2002,18 @@ const Records = () => {
                               control={
                                 <Checkbox
                                   checked={values.treatmentIds.includes(
-                                    treatmentId
+                                    treatment.id
                                   )}
                                   onChange={() => {
                                     const newTreatmentIds =
-                                      values.treatmentIds.includes(treatmentId)
+                                      values.treatmentIds.includes(treatment.id)
                                         ? values.treatmentIds.filter(
-                                            (id) => id !== treatmentId
+                                            (id) => id !== treatment.id
                                           )
-                                        : [...values.treatmentIds, treatmentId];
+                                        : [
+                                            ...values.treatmentIds,
+                                            treatment.id,
+                                          ];
                                     setFieldValue(
                                       "treatmentIds",
                                       newTreatmentIds
@@ -1874,7 +2021,7 @@ const Records = () => {
                                   }}
                                 />
                               }
-                              label={treatmentId}
+                              label={treatment.name}
                             />
                           </Box>
                         ))}

@@ -35,8 +35,18 @@ public class TreatmentService {
 
     public Treatment createTreatment(TreatmentDTO treatmentDTO) {
         Treatment treatment = treatmentMapper.toEntity(treatmentDTO);
-        return treatmentRepository.save(treatment);
-    }
+        Treatment savedTreatment = treatmentRepository.save(treatment);
+
+        Set<Long> doctorIds = new HashSet<>(treatmentDTO.doctorIds());
+
+        treatmentKafkaProducer.assignedDoctorsChangedEvent(new AssignedDoctorsChangedEvent(
+//                treatmentDTO.id(),
+                savedTreatment.getId(),
+//                    (List<Long>) treatmentDTO.doctorIds()
+                doctorIds
+        ));
+        return savedTreatment;
+    };
 
     public Treatment updateTreatment(TreatmentDTO treatmentDTO) {
         Optional<Treatment> optionalTreatment = treatmentRepository.findById(treatmentDTO.id());
