@@ -1,6 +1,12 @@
 server:
   port: 9000
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9098/realms/medify-realm
+          jwk-set-uri: http://localhost:9098/realms/medify-realm/protocol/openid-connect/certs
   cloud:
     gateway:
       discovery:
@@ -27,8 +33,12 @@ spring:
           uri: lb://CLINIC-SERVICE
           predicates:
             - Path=/api/v1/medical-records/**, /api/v1/appointments/**
-#            - Path=/api/v1/appointments/**
         - id: notification-service
           uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/api/v1/notifications/**
+
+keycloak:
+  resource:
+    access:
+      clientid: medify-client

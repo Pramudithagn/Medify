@@ -43,6 +43,18 @@ services:
     networks:
       - microservices-net
 
+  keycloak:
+    container_name: keycloak-ms
+    image: quay.io/keycloak/keycloak
+    ports:
+      - 9098:8080
+    environment:
+      KEYCLOAK_ADMIN: root
+      KEYCLOAK_ADMIN_PASSWORD: 1234
+    networks:
+      - microservices-net
+    command:
+      - "start-dev"
 
 
 networks:
