@@ -9,13 +9,13 @@ export const getPaymentById = async (id) => {
 };
 
 export const createPayment = async (paymentData) => {
-    return await api.post('/payments', paymentData);
+    return await api.post('/payments/create', paymentData);
 };
 
 export const updatePayment = async (paymentData) => {
-    return await api.put('/payments', paymentData);
+    return await api.put('/payments/edit', paymentData);
 };
 
 export const deletePayment = async (id) => {
-    return await api.delete(`/payments/${id}`);
+    return await api.delete(`/payments/delete/${id}`);
 };

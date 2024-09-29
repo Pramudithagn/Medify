@@ -9,18 +9,18 @@ export const getPatientById = async (id) => {
 };
 
 export const createPatient = async (patientData) => {
-    return await api.post('/patients', patientData);
+    return await api.post('/patients/create', patientData);
 };
 
 export const updatePatient = async (patientData) => {
     console.log(patientData)
-    return await api.put('/patients', patientData);
+    return await api.put('/patients/edit', patientData);
 };
 
 export const assignDoctorToPatient = async (patientId, doctorId) => {
-    return await api.put(`/patients/${patientId}/assign-doctor/${doctorId}`);
+    return await api.put(`/patients/edit/${patientId}/assign-doctor/${doctorId}`);
 };
 
 export const deletePatient = async (id) => {
-    return await api.delete(`/patients/${id}`);
+    return await api.delete(`/patients/delete/${id}`);
 };

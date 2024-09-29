@@ -28,12 +28,12 @@ public class TreatmentController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Treatment> createTreatment(@RequestBody TreatmentDTO treatmentDTO) {
         return new ResponseEntity<>(treatmentService.createTreatment(treatmentDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     public ResponseEntity<Treatment> updateTreatment(@RequestBody TreatmentDTO treatmentDTO) {
         Treatment updatedTreatment = treatmentService.updateTreatment(treatmentDTO);
 //        if (updatedTreatment != null) {
@@ -42,12 +42,12 @@ public class TreatmentController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/change-status/{id}")
+    @PutMapping("/edit/change-status/{id}")
     public Treatment changeStatus(@PathVariable Long id) {
         return treatmentService.changeStatus(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deleteTreatment(@PathVariable Long id) {
         return new ResponseEntity<>(treatmentService.deleteTreatment(id), HttpStatus.OK);
     }

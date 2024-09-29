@@ -9,13 +9,13 @@ export const getMedicalRecordById = async (id) => {
 };
 
 export const createMedicalRecord = async (recordData) => {
-    return await api.post('/medical-records', recordData);
+    return await api.post('/medical-records/create', recordData);
 };
 
 export const updateMedicalRecord = async (recordData) => {
-    return await api.put('/medical-records', recordData);
+    return await api.put('/medical-records/edit', recordData);
 };
 
 export const deleteMedicalRecord = async (id) => {
-    return await api.delete(`/medical-records/${id}`);
+    return await api.delete(`/medical-records/delete/${id}`);
 };

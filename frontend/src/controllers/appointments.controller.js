@@ -9,13 +9,13 @@ export const getAppointmentById = async (id) => {
 };
 
 export const createAppointment = async (appointmentData) => {
-    return await api.post('/appointments', appointmentData);
+    return await api.post('/appointments/create', appointmentData);
 };
 
 export const updateAppointment = async (appointmentData) => {
-    return await api.put('/appointments', appointmentData);
+    return await api.put('/appointments/edit', appointmentData);
 };
 
 export const deleteAppointment = async (id) => {
-    return await api.delete(`/appointments/${id}`);
+    return await api.delete(`/appointments/delete/${id}`);
 };

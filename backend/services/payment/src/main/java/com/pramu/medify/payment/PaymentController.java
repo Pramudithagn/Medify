@@ -28,12 +28,12 @@ public class PaymentController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Payment> createPayment(@RequestBody PaymentDTO paymentDTO) {
         return new ResponseEntity<>(paymentService.createPayment(paymentDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     public ResponseEntity<Payment> updatePayment(@RequestBody PaymentDTO paymentDTO) {
         Payment updatedPayment = paymentService.updatePayment(paymentDTO);
 //        if (updatedPayment != null) {
@@ -42,7 +42,7 @@ public class PaymentController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deletePayment(@PathVariable Long id) {
         return new ResponseEntity<>(paymentService.deletePayment(id), HttpStatus.OK);
     }

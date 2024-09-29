@@ -28,7 +28,7 @@ public class AppointmentController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
 //        try {
             return new ResponseEntity<>(appointmentService.createAppointment(appointmentDTO), HttpStatus.CREATED);
@@ -37,7 +37,7 @@ public class AppointmentController {
 //        }
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     public ResponseEntity<Appointment> updateAppointment(@RequestBody AppointmentDTO appointmentDTO) {
 //        try {
             Appointment updatedAppointment = appointmentService.updateAppointment(appointmentDTO);
@@ -50,7 +50,7 @@ public class AppointmentController {
 //        }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deleteAppointment(@PathVariable Long id) {
         return new ResponseEntity<>(appointmentService.deleteAppointment(id), HttpStatus.OK);
     }

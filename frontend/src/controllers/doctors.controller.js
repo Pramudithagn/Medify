@@ -9,14 +9,14 @@ export const getDoctorById = async (id) => {
 };
 
 export const createDoctor = async (doctorData) => {
-    return await api.post('/doctors', doctorData);
+    return await api.post('/doctors/create', doctorData);
 };
 
 export const updateDoctor = async (doctorData) => {
     console.log(doctorData)
-    return await api.put('/doctors', doctorData);
+    return await api.put('/doctors/edit', doctorData);
 };
 
 export const deleteDoctor = async (id) => {
-    return await api.delete(`/doctors/${id}`);
+    return await api.delete(`/doctors/delete/${id}`);
 };

@@ -28,12 +28,12 @@ public class MedicalRecordController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO) {
         return new ResponseEntity<>(medicalRecordService.createMedicalRecord(medicalRecordDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO) {
         MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(medicalRecordDTO);
 //        if (updatedMedicalRecord != null) {
@@ -42,7 +42,7 @@ public class MedicalRecordController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deleteMedicalRecord(@PathVariable Long id) {
 
         return new ResponseEntity<>(medicalRecordService.deleteMedicalRecord(id), HttpStatus.OK);

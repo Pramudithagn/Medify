@@ -484,7 +484,7 @@ const Dashboard = () => {
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {appointment.startTime}
+                      {appointment.dateTime}
                     </TimelineOppositeContent>
                     <TimelineSeparator>
                       <TimelineDot />

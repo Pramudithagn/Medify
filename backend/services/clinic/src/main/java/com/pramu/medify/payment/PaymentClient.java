@@ -13,6 +13,6 @@ import java.util.Optional;
 )
 public interface PaymentClient {
 
-    @PostMapping()
+    @PostMapping("/create")
     Optional<PaymentDTO> createPayment(PaymentDTO paymentDTO);
 }

@@ -28,12 +28,12 @@ public class PatientController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Patient> createPatient(@RequestBody PatientDTO patientDTO) {
         return new ResponseEntity<>(patientService.createPatient(patientDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     public ResponseEntity<Patient> updatePatient(@RequestBody PatientDTO patientDTO) {
         Patient updatedPatient = patientService.updatePatient(patientDTO);
 //        if (updatedPatient != null) {
@@ -42,7 +42,7 @@ public class PatientController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{patientId}/assign-doctor/{doctorId}")
+    @PutMapping("/edit/{patientId}/assign-doctor/{doctorId}")
     public ResponseEntity<PatientDTO> assignDoctorToPatient(@PathVariable Long patientId, @PathVariable Long doctorId) {
 //        try {
             return new ResponseEntity<>(patientService.assignDoctorToPatient(patientId, doctorId), HttpStatus.OK);
@@ -53,7 +53,7 @@ public class PatientController {
 //            return new ResponseEntity<>(HttpStatus.CONFLICT);
 //        }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deletePatient(@PathVariable Long id) {
         return new ResponseEntity<>(patientService.deletePatient(id), HttpStatus.OK);
     }
