@@ -60,14 +60,14 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchange -> exchange
                     .pathMatchers("/api/v1/medical-records/create", "/api/v1/medical-records/edit", "/api/v1/medical-records/delete/**").hasAnyRole("ADMIN","DOCTOR")
                     .pathMatchers("/api/v1/appointments/create", "/api/v1/appointments/edit", "/api/v1/appointments/delete/**").hasRole("ADMIN")
-
-//                    .pathMatchers("/api/v1/patients/**").hasRole("PATIENT")
-                    .pathMatchers("/api/v1/doctors/**").hasAnyRole("ADMIN","DOCTOR")
-                    .pathMatchers("/api/**").hasRole("ADMIN")
+                    .pathMatchers("/api/v1/treatments/create", "/api/v1/treatments/edit").hasRole("ADMIN")
+                    .pathMatchers("/api/v1/payments/edit").hasAnyRole("ADMIN","PATIENT")
+                    .pathMatchers("/api/v1/doctors/create", "/api/v1/doctors/edit", "/api/v1/doctors/delete/**").hasRole("ADMIN")
+                    .pathMatchers("/api/v1/patients/create", "/api/v1/patients/edit", "/api/v1/patients/delete/**").hasRole("ADMIN")
                     .anyExchange().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2

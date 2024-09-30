@@ -28,6 +28,12 @@ public class DoctorController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/uuid/{uuid}")
+    public ResponseEntity<DoctorDTO> getDoctorByUuid(@PathVariable String uuid) {
+        DoctorDTO doctorDTO = doctorService.getDoctorByUuid(uuid);
+        return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Doctor> createDoctor(@RequestBody DoctorDTO doctorDTO) {
         return new ResponseEntity<>(doctorService.createDoctor(doctorDTO), HttpStatus.CREATED);

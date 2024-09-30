@@ -33,6 +33,13 @@ public class PatientService {
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found with ID:: " + id));
     }
 
+    public PatientDTO getPatientByUuid(String uuid) {
+        Optional<Patient> patient = patientRepository.findByUuid(uuid);
+        return patient.map(patientMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found with UUID: " + uuid));
+    }
+
+
     public Patient createPatient(PatientDTO patientDTO) {
         Patient patient = patientMapper.toEntity(patientDTO);
         return patientRepository.save(patient);

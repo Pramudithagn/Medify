@@ -22,11 +22,15 @@ public class PatientController {
     @GetMapping("/{id}")
     public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
         PatientDTO patientDTO = patientService.getPatientById(id);
-//        if (patientDTO != null) {
             return new ResponseEntity<>(patientDTO, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/uuid/{uuid}")
+    public ResponseEntity<PatientDTO> getPatientByUuid(@PathVariable String uuid) {
+        PatientDTO patientDTO = patientService.getPatientByUuid(uuid);
+        return new ResponseEntity<>(patientDTO, HttpStatus.OK);
+    }
+
 
     @PostMapping("/create")
     public ResponseEntity<Patient> createPatient(@RequestBody PatientDTO patientDTO) {
@@ -36,22 +40,13 @@ public class PatientController {
     @PutMapping("/edit")
     public ResponseEntity<Patient> updatePatient(@RequestBody PatientDTO patientDTO) {
         Patient updatedPatient = patientService.updatePatient(patientDTO);
-//        if (updatedPatient != null) {
             return new ResponseEntity<>(updatedPatient, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/edit/{patientId}/assign-doctor/{doctorId}")
     public ResponseEntity<PatientDTO> assignDoctorToPatient(@PathVariable Long patientId, @PathVariable Long doctorId) {
-//        try {
             return new ResponseEntity<>(patientService.assignDoctorToPatient(patientId, doctorId), HttpStatus.OK);
-//        } catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//        catch (IllegalStateException e) {
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deletePatient(@PathVariable Long id) {

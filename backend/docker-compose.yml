@@ -53,6 +53,8 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: 1234
     networks:
       - microservices-net
+    volumes:
+      - keycloak:/opt/keycloak/data
     command:
       - "start-dev"
 
@@ -63,3 +65,4 @@ networks:
 
 volumes:
   postgres:
+  keycloak:

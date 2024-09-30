@@ -31,6 +31,12 @@ public class DoctorService {
                 .orElseThrow(() -> new EntityNotFoundException("Doctor not found with ID:: " + id));
     }
 
+    public DoctorDTO getDoctorByUuid(String uuid) {
+        Optional<Doctor> doctor = doctorRepository.findByUuid(uuid);
+        return doctor.map(doctorMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Doctor not found with UUID: " + uuid));
+    }
+
     public Doctor createDoctor(DoctorDTO doctorDTO) {
         Doctor doctor = doctorMapper.toEntity(doctorDTO);
         return doctorRepository.save(doctor);
