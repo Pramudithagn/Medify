@@ -28,4 +28,4 @@ const renderApp = function () {
   );
 };
 
-keyCloakService.CallLogin(renderApp);
+keyCloakService.callLogin(renderApp);

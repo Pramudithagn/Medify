@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -15,6 +15,9 @@ import PaidIcon from "@mui/icons-material/Paid";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import HealingIcon from "@mui/icons-material/Healing";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import keyCloakService from "../../auth/keycloakService";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserDetails } from "../../features/authSlice";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -40,6 +43,28 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  // const {userRole, userName, photo} = keyCloakService.getUser();
+  const [userDetails, setUserDetails] = useState({
+    userRole: "",
+    userName: "",
+    photo: "",
+  });
+
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      const { userRole, userName, photo } = await keyCloakService.getUser();
+      console.log(photo)
+      setUserDetails({
+        userRole,
+        userName,
+        photo, 
+      });
+    };
+
+    fetchUserData();
+  }, []);
+
+  console.log(userDetails.userRole)
 
   return (
     <Box
@@ -96,7 +121,8 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/user.png`}
+                  // src={`../../assets/user.png`}
+                  src={userDetails.photo}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -107,10 +133,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  User Name
+                  {userDetails.userName}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Admin
+                  {userDetails.userRole?.toString()}
                 </Typography>
               </Box>
             </Box>
@@ -190,13 +216,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
-              title="Profile"
-              to="/profile"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
 
             <Typography
               variant="h6"

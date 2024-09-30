@@ -1783,7 +1783,7 @@ const Records = () => {
             initialValues={{
               diagnosis: "",
               prescription: "",
-              price: null,
+              price: "",
               doctorId: "",
               patientId: "",
               treatmentIds: [],

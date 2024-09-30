@@ -8,6 +8,10 @@ export const getDoctorById = async (id) => {
     return await api.get(`/doctors/${id}`);
 };
 
+export const getDoctorByUuid = async (uuid) => {
+    return await api.get(`/doctors/uuid/${uuid}`);
+};
+
 export const createDoctor = async (doctorData) => {
     return await api.post('/doctors/create', doctorData);
 };

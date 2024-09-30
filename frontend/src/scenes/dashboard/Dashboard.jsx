@@ -309,28 +309,27 @@ import { fetchPayments } from "../../features/paymentSlice";
 import { getDoctors } from "../../features/doctorSlice";
 import { fetchRecords } from "../../features/recordSlice";
 import { fetchAppointments } from "../../features/appointmentSlice";
-import { useMemo } from "react";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
 
-  // const { appointments } = useSelector((state) => state.appointment);
-  // const { treatments } = useSelector((state) => state.treatment);
-  // const { records } = useSelector((state) => state.record);
-  // const { payments } = useSelector((state) => state.payment);
-  // const { doctors } = useSelector((state) => state.doctor);
+  const { appointments } = useSelector((state) => state.appointment);
+  const { treatments } = useSelector((state) => state.treatment);
+  const { records } = useSelector((state) => state.record);
+  const { payments } = useSelector((state) => state.payment);
+  const { doctors } = useSelector((state) => state.doctor);
 
-  const { appointments, treatments, records, payments, doctors } = useSelector(
-    (state) => ({
-      appointments: state.appointment.appointments,
-      treatments: state.treatment.treatments,
-      records: state.record.records,
-      payments: state.payment.payments,
-      doctors: state.doctor.doctors,
-    })
-  );
+  // const { appointments, treatments, records, payments, doctors } = useSelector(
+  //   (state) => ({
+  //     appointments: state.appointment.appointments,
+  //     treatments: state.treatment.treatments,
+  //     records: state.record.records,
+  //     payments: state.payment.payments,
+  //     doctors: state.doctor.doctors,
+  //   })
+  // );
 
   useEffect(() => {
     dispatch(fetchAppointments());
@@ -656,7 +655,6 @@ const Dashboard = () => {
           />
         </Box>
 
-        {/* ROW 3 */}
       </Box>
     </Box>
   );

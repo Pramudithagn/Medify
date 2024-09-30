@@ -12,7 +12,7 @@ const api = axios.create({
 // add token
 api.interceptors.request.use(
     async (config) => {
-        const token = keyCloakService.GetAccessToken();
+        const token = keyCloakService.getAccessToken();
 
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;

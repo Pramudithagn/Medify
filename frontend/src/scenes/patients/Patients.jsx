@@ -902,12 +902,15 @@ const Patients = () => {
                 values,
               }) => (
                 <Form>
-                  <Box display="flex" alignItems="center" gap={2}>
+                  <Box display="flex" alignItems="center" gap={4}>
+                    <Box display="flex" flexDirection="column" alignItems="center">
                     <Avatar
                       src={values.photo}
                       alt={values.name}
                       sx={{ width: 80, height: 80 }}
                     />
+                    </Box>
+                    <Box display="flex" flexDirection="column" flexGrow={1}>
                     <TextField
                       label="Name"
                       name="name"
@@ -919,8 +922,7 @@ const Patients = () => {
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
                     />
-                  </Box>
-                  <TextField
+                    <TextField
                     label="Email"
                     name="mail"
                     value={values.mail}
@@ -931,6 +933,9 @@ const Patients = () => {
                     error={touched.mail && Boolean(errors.mail)}
                     helperText={touched.mail && errors.mail}
                   />
+                  </Box>
+                  </Box>
+
                   <TextField
                     label="Phone"
                     name="phone"
@@ -1158,7 +1163,10 @@ const Patients = () => {
                     )}
                     disabled={!isAdmin}
                   /> */}
-                  <Autocomplete
+
+
+
+                  {/* <Autocomplete
                     multiple
                     // options={doctorIds}
                     // getOptionLabel={(option) => option.toString()}
@@ -1209,7 +1217,34 @@ const Patients = () => {
                     //   </li>
                     // )}
                     disableClearable
+                  /> */}
+
+                <Autocomplete
+                    multiple
+                    id="doctorIds"
+                    options={doctors}
+                    getOptionLabel={(option) => option.name} 
+                    value={values.doctorIds.map((id) =>
+                      doctors.find((doctor) => doctor.id === id)
+                    )} 
+                    onChange={(event, newValue) => {
+                      const selectedDoctorIds = newValue.map((doctor) => doctor.id);
+                      setFieldValue("doctorIds", selectedDoctorIds);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Select Doctors"
+                        placeholder="Choose doctors"
+                        size="small"
+                        error={touched.doctorIds && Boolean(errors.doctorIds)}
+                        helperText={touched.doctorIds && errors.doctorIds}
+                        disabled={!isAdmin}
+                      />
+                    )}
                   />
+  
                   <Box display="flex" alignItems="center" mt={1} ml={1}>
                     <ErrorOutlineIcon
                       sx={{ color: "red", fontSize: 16, mr: 0.5 }}

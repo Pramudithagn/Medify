@@ -11,14 +11,22 @@ import {
   Box,
   useTheme,
   Divider,
+  IconButton,
+  Avatar,
+  CircularProgress,
 } from "@mui/material";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import { PhotoCamera } from "@mui/icons-material";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { createPatient } from "../../features/patientSlice";
 import { createDoctor, getDoctors } from "../../features/doctorSlice";
 import { fetchTreatments } from "../../features/treatmentSlice";
+import axios from "axios";
+import { uploadToCloudinary } from "../../controllers/register.controller";
 
 // const treatments = [1, 2, 3, 4];
 // const doctors = [1, 3, 4, 101, 102, 103];
@@ -57,6 +65,10 @@ const Register = () => {
   const dispatch = useDispatch();
   const [treatmentIds, setTreatmentIds] = useState([]);
   const { treatments } = useSelector((state) => state.treatment);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [cloudinaryImageId, setCloudinaryImageId] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   React.useEffect(() => {
     dispatch(fetchTreatments());
@@ -99,6 +111,11 @@ const Register = () => {
     }
     resetForm();
   };
+
+
+
+
+
 
   const validationSchema = Yup.object().shape({
     uuid: Yup.string().required("Uuid is required"),
@@ -151,6 +168,24 @@ const Register = () => {
     doctorIds: Yup.array().notRequired(),
     treatmentIds: Yup.array().notRequired(),
   });
+
+
+  const handleImageUpload = async (event, setFieldValue) => {
+    const file = event.target.files[0];
+    if (file) {
+      setUploadingImage(true);
+      try {
+        const imageUrl = await uploadToCloudinary(file);
+        // const imageUrl = "dsfdsfdsfdsdsfdsfdsf";
+        setFieldValue("photo", imageUrl); // Update the formik value for 'photo'
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      } finally {
+        setUploadingImage(false);
+      }
+    }
+  };
+
 
   return (
     <Box m="20px">
@@ -212,7 +247,7 @@ const Register = () => {
                 </ToggleButtonGroup>
               </Box>
               <Divider />
-              <TextField
+              {/* <TextField
                 fullWidth
                 id="uuid"
                 name="uuid"
@@ -239,7 +274,75 @@ const Register = () => {
                 error={touched.name && Boolean(errors.name)}
                 helperText={touched.name && errors.name}
                 // margin="normal"
-              />
+              /> */}
+
+              <Box display="flex" alignItems="center" gap={2}>
+              {/* Avatar and Photo Upload */}
+              <Box display="flex" flexDirection="column" alignItems="center">
+
+              <input
+                  type="file"
+                  accept="image/*"
+                  id="fileUpload"
+                  style={{ display: "none" }}
+                  onChange={(e) => handleImageUpload(e, setFieldValue)}
+                />
+                <label htmlFor="fileUpload">
+                  <IconButton component="span">
+                    {values.photo ? (
+                      <Avatar
+                        alt="User Photo"
+                        src={values.photo}
+                        sx={{ width: 120, height: 120 }}
+                      />
+                    ) : (
+                      <Avatar
+                        sx={{
+                          width: 120,
+                          height: 120,
+                          backgroundColor: "#E0E0E0",
+                        }}
+                      >
+                        <AddPhotoAlternateIcon />
+                      </Avatar>
+                    )}
+                  </IconButton>
+                </label>
+                {uploadingImage && <CircularProgress />}
+              </Box>
+
+              {/* UUID and Name Fields */}
+              <Box display="flex" flexDirection="column" flexGrow={1}>
+                <TextField
+                  fullWidth
+                  id="uuid"
+                  name="uuid"
+                  label="UUID"
+                  size="small"
+                  variant="filled"
+                  value={values.uuid}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.uuid && Boolean(errors.uuid)}
+                  helperText={touched.uuid && errors.uuid}
+                  sx={{ marginBottom: 2 }}
+                />
+                <TextField
+                  fullWidth
+                  id="name"
+                  name="name"
+                  label="Name"
+                  size="small"
+                  variant="filled"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={touched.name && Boolean(errors.name)}
+                  helperText={touched.name && errors.name}
+                />
+              </Box>
+            </Box>
+
 
               <Box display="flex" justifyContent="space-between" gap={2}>
                 <TextField
@@ -272,7 +375,7 @@ const Register = () => {
                 />
               </Box>
 
-              <TextField
+              {/* <TextField
                 fullWidth
                 id="photo"
                 name="photo"
@@ -283,7 +386,7 @@ const Register = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 // margin="normal"
-              />
+              /> */}
               {values.userType === "doctor" && (
                 <TextField
                   fullWidth

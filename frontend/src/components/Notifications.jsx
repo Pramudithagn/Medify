@@ -251,7 +251,7 @@ const Notifications = () => {
                     >
                       <ListItemText
                         primary={notification.message}
-                        secondary={dayjs(notification.createdDate).format(
+                        secondary={dayjs(notification.createdAt).format(
                           "MMMM D, YYYY h:mm A"
                         )}
                       />

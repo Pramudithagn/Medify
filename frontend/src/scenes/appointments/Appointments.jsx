@@ -2683,7 +2683,7 @@ const Appointments = () => {
     title: "",
     patientId: null,
     doctorId: null,
-    duration: null,
+    duration: "",
     // startTime: "",
     dateTime: "",
   });
@@ -2824,7 +2824,7 @@ const Appointments = () => {
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <TextField
-              label="Appointments List"
+              label="Search..."
               fullWidth
               size="small"
               margin="dense"

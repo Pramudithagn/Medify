@@ -712,12 +712,15 @@ const Doctors = () => {
             >
               {({ values, handleChange, setFieldValue, errors, touched }) => (
                 <Form>
-                  <Box display="flex" alignItems="center" gap={2}>
+                <Box display="flex" alignItems="center" gap={4}>
+                <Box display="flex" flexDirection="column" alignItems="center">
                     <Avatar
                       src={values.photo}
                       alt={values.name}
                       sx={{ width: 80, height: 80 }}
                     />
+                    </Box>
+                  <Box display="flex" flexDirection="column" flexGrow={1}>
                     <TextField
                       label="Name"
                       name="name"
@@ -729,8 +732,7 @@ const Doctors = () => {
                       error={touched.name && Boolean(errors.name)}
                       helperText={touched.name && errors.name}
                     />
-                  </Box>
-                  <TextField
+                    <TextField
                     label="Email"
                     name="mail"
                     value={values.mail}
@@ -741,6 +743,8 @@ const Doctors = () => {
                     error={touched.mail && Boolean(errors.mail)}
                     helperText={touched.mail && errors.mail}
                   />
+                  </Box>
+                </Box>
                   <TextField
                     label="Phone"
                     name="phone"
