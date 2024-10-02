@@ -317,6 +317,8 @@ const Payment = () => {
   const payments = useSelector((state) => state.payment.payments);
   const selectedPayment = useSelector((state) => state.payment.selectedPayment);
   const [selectedMethod, setSelectedMethod] = useState("");
+  const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT";
 
   useEffect(() => {
     // dispatch(setPayments(mockDataPayments));
@@ -409,35 +411,68 @@ const Payment = () => {
       headerAlign: "left",
       align: "left",
     },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      renderCell: (params) => (
-        <FormControl variant="standard" sx={{ minWidth: 120 }}>
-          <Select
-            value={params.row.status}
-            onChange={(e) => handleStatusChange(params.row, e)}
-            sx={{
-              paddingTop: 1,
-              color:
-                params.value === "paid"
-                  ? colors.greenAccent[500]
-                  : params.value === "unpaid"
-                  ? colors.redAccent[300]
-                  : params.value === "reviewing"
-                  ? colors.blueAccent[500]
-                  : colors.redAccent[500],
-            }}
-          >
-            <MenuItem value="paid">Paid</MenuItem>
-            <MenuItem value="unpaid">Unpaid</MenuItem>
-            <MenuItem value="reviewing">Reviewing</MenuItem>
-            <MenuItem value="failed">Failed</MenuItem>
-          </Select>
-        </FormControl>
-      ),
-    },
+    // {
+    //   field: "status",
+    //   headerName: "Status",
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <FormControl variant="standard" sx={{ minWidth: 120 }}>
+    //       <Select
+    //         value={params.row.status}
+    //         onChange={(e) => handleStatusChange(params.row, e)}
+    //         sx={{
+    //           paddingTop: 1,
+    //           color:
+    //             params.value === "paid"
+    //               ? colors.greenAccent[500]
+    //               : params.value === "unpaid"
+    //               ? colors.redAccent[300]
+    //               : params.value === "reviewing"
+    //               ? colors.blueAccent[500]
+    //               : colors.redAccent[500],
+    //         }}
+    //       >
+    //         <MenuItem value="paid">Paid</MenuItem>
+    //         <MenuItem value="unpaid">Unpaid</MenuItem>
+    //         <MenuItem value="reviewing">Reviewing</MenuItem>
+    //         <MenuItem value="failed">Failed</MenuItem>
+    //       </Select>
+    //     </FormControl>
+    //   ),
+    // },
+
+    ...(userRole === "ADMIN"
+      ? [{
+        field: "status",
+        headerName: "Status",
+        flex: 1,
+        renderCell: (params) => (
+          <FormControl variant="standard" sx={{ minWidth: 120 }}>
+            <Select
+              value={params.row.status}
+              onChange={(e) => handleStatusChange(params.row, e)}
+              sx={{
+                paddingTop: 1,
+                color:
+                  params.value === "paid"
+                    ? colors.greenAccent[500]
+                    : params.value === "unpaid"
+                    ? colors.redAccent[300]
+                    : params.value === "reviewing"
+                    ? colors.blueAccent[500]
+                    : colors.redAccent[500],
+              }}
+            >
+              <MenuItem value="paid">Paid</MenuItem>
+              <MenuItem value="unpaid">Unpaid</MenuItem>
+              <MenuItem value="reviewing">Reviewing</MenuItem>
+              <MenuItem value="failed">Failed</MenuItem>
+            </Select>
+          </FormControl>
+        ),
+      }]
+      : []),
+
     {
       field: "action",
       headerName: "Action",

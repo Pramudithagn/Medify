@@ -292,7 +292,6 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import { useEffect } from "react";
-// import { setAppointments } from "../../features/appointmentSlice";
 import {
   mockDataAppointments,
   mockDataDoctors,
@@ -300,10 +299,6 @@ import {
   mockDataRecords,
   mockDataTreatments,
 } from "../../data/mockData";
-// import { setTreatments } from "../../features/treatmentSlice";
-// import { setPayments } from "../../features/paymentSlice";
-// import { setDoctors } from "../../features/doctorSlice";
-// import { setRecords } from "../../features/recordSlice";
 import { fetchTreatments } from "../../features/treatmentSlice";
 import { fetchPayments } from "../../features/paymentSlice";
 import { getDoctors } from "../../features/doctorSlice";
@@ -321,16 +316,6 @@ const Dashboard = () => {
   const { payments } = useSelector((state) => state.payment);
   const { doctors } = useSelector((state) => state.doctor);
 
-  // const { appointments, treatments, records, payments, doctors } = useSelector(
-  //   (state) => ({
-  //     appointments: state.appointment.appointments,
-  //     treatments: state.treatment.treatments,
-  //     records: state.record.records,
-  //     payments: state.payment.payments,
-  //     doctors: state.doctor.doctors,
-  //   })
-  // );
-
   useEffect(() => {
     dispatch(fetchAppointments());
     dispatch(fetchTreatments());
@@ -338,40 +323,6 @@ const Dashboard = () => {
     dispatch(getDoctors());
     dispatch(fetchRecords());
   }, []);
-
-// useMemo(() => dispatch(fetchAppointments()), []);
-// useMemo(() => dispatch(fetchTreatments()), []);
-// useMemo(() => dispatch(fetchPayments()), []);
-// useMemo(() => dispatch(getDoctors()), []);
-// useMemo(() => dispatch(fetchRecords()), []);
-
-  // console.log(appointments)
-  // console.log(treatments)
-  // console.log(records)
-  // console.log(payments)
-  // console.log(doctors)
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await Promise.all([
-  //       dispatch(fetchAppointments()),
-  //       dispatch(fetchTreatments()),
-  //       dispatch(fetchPayments()),
-  //       dispatch(getDoctors()),
-  //       dispatch(fetchRecords()),
-  //     ]);
-  
-  //     // console.log({
-  //     //   appointments,
-  //     //   treatments,
-  //     //   records,
-  //     //   payments,
-  //     //   doctors
-  //     // });
-  //   };
-  
-  //   fetchData();
-  // }, []);
   
   console.log({
     appointments,
@@ -380,7 +331,6 @@ const Dashboard = () => {
     payments,
     doctors
   });
-
   
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -390,9 +340,9 @@ const Dashboard = () => {
     new Date(b.startTime) - new Date(a.startTime);
 
   // Filteri sort
-  const weeklyAppointments = appointments
+  const weeklyAppointments = appointments? appointments
     .filter((appointment) => new Date(appointment.startTime) >= oneWeekAgo)
-    .sort(sortByDateTime);
+    .sort(sortByDateTime) : [];
 
   // Filtersort
   const weeklyNewDoctors = doctors
@@ -400,33 +350,37 @@ const Dashboard = () => {
     .sort((a, b) => new Date(b.assignedDate) - new Date(a.assignedDate));
 
   // Sort
-  const latestTreatments = treatments
+  const latestTreatments = treatments? treatments
     .slice()
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 7);
+    .slice(0, 7)
+    :[];
 
-  const latestRecords = records
+  const latestRecords = records? records
     .slice()
     .sort((a, b) => new Date(b.assignDate) - new Date(a.assignDate))
     .reverse()
-    .slice(0, 7);
+    .slice(0, 7)
+    :[];
 
-  const latestPayments = payments
+  const latestPayments = payments? payments
     .slice()
     .sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate))
     .reverse()
-    .slice(0, 7);
+    .slice(0, 7)
+    :[];
 
-  const latestAppointments = appointments
+  const latestAppointments = appointments? appointments
     .slice()
     .sort(sortByDateTime)
-    .slice(0, 4);
+    .slice(0, 4)
+    :[];
 
   return (
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Header title="DASHBOARD" subtitle="Quick insights on recent activity" />
       </Box>
 
       {/* GRID */}
@@ -436,7 +390,7 @@ const Dashboard = () => {
         gridAutoRows="140px"
         gap="20px"
       >
-        {/* ROW 2 */}
+        {/* Upcoming Appointments */}
         <Box
           gridColumn="span 4"
           gridRow="span 3"
@@ -462,6 +416,7 @@ const Dashboard = () => {
                 Upcoming Appointments
               </Typography>
               <Divider sx={{ mt: 2, backgroundColor: colors.grey[500] }} />
+              {latestAppointments.length > 0 ? (
               <Timeline
                 sx={{
                   width: "100%",
@@ -504,6 +459,11 @@ const Dashboard = () => {
                   </TimelineItem>
                 ))}
               </Timeline>
+              ) : (
+          <Typography color={colors.grey[300]} mt={2}>
+            No upcoming appointments available.
+          </Typography>
+        )}
             </Box>
           </Box>
         </Box>
@@ -527,7 +487,8 @@ const Dashboard = () => {
               Recent Treatments
             </Typography>
           </Box>
-          {latestRecords.map((record, i) => (
+          {latestRecords.length > 0 ? (
+            latestRecords.map((record, i) => (
             <Box
               key={`${record.id}-${i}`}
               display="flex"
@@ -556,7 +517,12 @@ const Dashboard = () => {
                 ${record.price}
               </Box>
             </Box>
-          ))}
+          )) 
+          ) : (
+            <Typography color={colors.grey[300]} p={2}>
+              No recent treatments available.
+            </Typography>
+          )}
         </Box>
 
         {/* Recent Payments */}
@@ -578,7 +544,9 @@ const Dashboard = () => {
               Recent Payments
             </Typography>
           </Box>
-          {latestPayments.map((payment, i) => (
+          
+          {latestPayments.length > 0 ? (
+            latestPayments.map((payment, i) => (
             <Box
               key={`${payment.id}-${i}`}
               display="flex"
@@ -610,7 +578,11 @@ const Dashboard = () => {
                 ${payment.amount}
               </Box>
             </Box>
-          ))}
+          )) ) : (
+            <Typography color={colors.grey[300]} p={2}>
+              No recent payments available.
+            </Typography>
+          )}
         </Box>
 
         {/* Weekly Consultations */}
@@ -622,9 +594,9 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title={weeklyAppointments.length.toString()}
+            title={weeklyAppointments.length?.toString()}
             subtitle="Weekly Consultations"
-            progress={weeklyAppointments.length / appointments.length}
+            progress={weeklyAppointments.length / appointments?.length}
             increase="+5%"
             icon={
               <PersonAddIcon

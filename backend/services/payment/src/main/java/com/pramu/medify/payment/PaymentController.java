@@ -28,6 +28,11 @@ public class PaymentController {
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PaymentDTO>> getPaymentsByUserId(@PathVariable Long userId) {
+        return new ResponseEntity<>(paymentService.getPaymentsByUserId(userId), HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Payment> createPayment(@RequestBody PaymentDTO paymentDTO) {
         return new ResponseEntity<>(paymentService.createPayment(paymentDTO), HttpStatus.CREATED);

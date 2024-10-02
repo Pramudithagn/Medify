@@ -701,8 +701,9 @@ function CustomToolbar() {
 const Patients = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   const dispatch = useDispatch();
+  const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT";
   const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled } =
     useSelector((state) => state.patient);
   const { doctors } = useSelector((state) => state.doctor);
@@ -711,7 +712,8 @@ const Patients = () => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [doctorIds, setDoctorIds] = useState([]);
 
-  const isAdmin = true; // admin non-admin toggle
+  // const isAdmin = true; // admin non-admin toggle
+  const isAdmin = userRole === "ADMIN";
 
   // useEffect(() => {
   //   dispatch(setPatients(mockDataPatients));
@@ -765,7 +767,8 @@ const Patients = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.25 },
+    ...(userRole === "ADMIN" ? [{ field: "id", headerName: "ID", flex: 0.25 }] : []),
+    // { field: "id", headerName: "ID", flex: 0.25 },
     {
       field: "name",
       headerName: "Name",
@@ -801,13 +804,15 @@ const Patients = () => {
           >
             <VisibilityIcon />
           </IconButton>
-          <IconButton
+          {userRole === "ADMIN" && (
+            <IconButton
             aria-label="delete"
             onClick={() => handleDeleteOpen(params.row)}
             sx={{ color: colors.grey[400] }}
           >
             <DeleteIcon />
           </IconButton>
+          )}
         </Box>
       ),
     },
@@ -851,7 +856,6 @@ const Patients = () => {
       </Box>
 
       {/* Edit Modal */}
-
       <Modal open={open} onClose={handleClose}>
         <Box
           p={4}
@@ -1219,7 +1223,7 @@ const Patients = () => {
                     disableClearable
                   /> */}
 
-                <Autocomplete
+                {/* <Autocomplete
                     multiple
                     id="doctorIds"
                     options={doctors}
@@ -1256,6 +1260,67 @@ const Patients = () => {
                     >
                       You can only add one doctor at a time
                     </Typography>
+                  </Box> */}
+                  <Box>
+                    {isAdmin ? (
+                      <Autocomplete
+                        multiple
+                        disabled={!isAdmin}
+                        id="doctorIds"
+                    options={doctors}
+                    getOptionLabel={(option) => option.name} 
+                    value={values.doctorIds.map((id) =>
+                      doctors.find((doctor) => doctor.id === id)
+                    )} 
+                    onChange={(event, newValue) => {
+                      const selectedDoctorIds = newValue.map((doctor) => doctor.id);
+                      setFieldValue("doctorIds", selectedDoctorIds);
+                    }}
+                        renderInput={(params) => (
+                          <TextField
+                          {...params}
+                          variant="outlined"
+                          label="Doctors"
+                          placeholder="Choose doctors"
+                          size="small"
+                          error={touched.doctorIds && Boolean(errors.doctorIds)}
+                          helperText={touched.doctorIds && errors.doctorIds}
+                          disabled={!isAdmin}
+                          />
+                        )}
+                      />
+                    ) : (
+                      <TextField
+                        label="Doctors"
+                        name="doctorIds"
+                        value={values.doctorIds
+                          .map(
+                            (id) =>
+                              doctors?.find((doctor) => doctor.id === id)
+                                ?.name || ""
+                          )
+                          .join(", ")}
+                        fullWidth
+                        size="small"
+                        disabled={true}
+                        error={touched.doctorIds && Boolean(errors.doctorIds)}
+                        helperText={touched.doctorIds && errors.doctorIds}
+                      />
+                    )}
+                    {isAdmin && (
+                      <Box display="flex" alignItems="center" mt={1} ml={1}>
+                      <ErrorOutlineIcon
+                        sx={{ color: "red", fontSize: 16, mr: 0.5 }}
+                      />
+                      <Typography
+                        variant="caption"
+                        fontSize={10}
+                        sx={{ color: colors.redAccent[300] }}
+                      >
+                        You can only add one doctor at a time
+                      </Typography>
+                    </Box>
+                    )}
                   </Box>
 
                   {/* <Autocomplete

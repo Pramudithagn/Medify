@@ -100,6 +100,7 @@ public class DoctorKafkaConsumer {
         treatmentIds.add(event.treatmentId());
 //        Set<Long> doctorIds = new HashSet<>(event.doctorIds());
         for (Long doctorId : event.doctorIds()) {
+
             doctorService.updateDoctor(new DoctorDTO(
                     doctorId,
                     null,

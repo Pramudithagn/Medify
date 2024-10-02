@@ -1,5 +1,6 @@
 package com.pramu.medify.appointment;
 
+import com.pramu.medify.doctor.DoctorDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,19 @@ public class AppointmentController {
             return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
 //        }
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByDoctorId(@PathVariable Long doctorId) {
+//        List<AppointmentDTO> appointmentDTOs = appointmentService.getAppointmentByDoctorId(doctorId);
+//        return new ResponseEntity<>(appointmentService.getAppointmentsByDoctorId(doctorId), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.getAppointmentsByUserId(doctorId, "doctor"), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByPatientId(@PathVariable Long patientId) {
+        return new ResponseEntity<>(appointmentService.getAppointmentsByUserId(patientId, "patient"), HttpStatus.OK);
     }
 
     @PostMapping("/create")

@@ -2669,6 +2669,8 @@ const mockDoctors = {
 const Appointments = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT";
   const dispatch = useDispatch();
   const { appointments, status } = useSelector((state) => state.appointment);
   const { patients } = useSelector((state) => state.patient);
@@ -2697,12 +2699,13 @@ const Appointments = () => {
   //   }
   // }, [dispatch, status]);
   useEffect(() => {
-    if (status === "idle") {
+    // if (status === "idle") {
       dispatch(fetchAppointments());
-    }
+    // }
     dispatch(fetchPatients());
     dispatch(getDoctors());
-  }, [dispatch, status]);
+  // }, [dispatch, status]);
+  }, []);
 
   console.log(appointments);
 
@@ -2783,18 +2786,18 @@ const Appointments = () => {
   };
   const closeUpdateModal = () => setUpdateModalOpen(false);
 
-  const appointmentEvents = appointments.map((appointment) => ({
+  const appointmentEvents = appointments?.map((appointment) => ({
     id: appointment.id,
     title: appointment.title,
     start: appointment.dateTime,
     end: calculateEndTime(appointment.dateTime, appointment.duration),
   }));
 
-  const filteredAppointments = appointments.filter((appointment) =>
+  const filteredAppointments = appointments?.filter((appointment) =>
     appointment.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const doctorsForSelectedPatient = patients.find(
+  const doctorsForSelectedPatient = patients?.find(
     (patient) => patient.id === newAppointment.patientId
   )
     ? patients
@@ -2804,8 +2807,9 @@ const Appointments = () => {
 
   return (
     <Box m="20px">
-      <Header title="Appointments" subtitle="Manage your appointments here" />
+      <Header title="Appointments" subtitle="Manage your appointments" />
 
+      {userRole === "ADMIN" && (
       <Button
         variant="contained"
         color="primary"
@@ -2814,6 +2818,7 @@ const Appointments = () => {
       >
         Create Appointment
       </Button>
+      )}
 
       <Box display="flex" justifyContent="space-between">
         <Box
@@ -2836,11 +2841,12 @@ const Appointments = () => {
           <Divider sx={{ mt: 1, backgroundColor: colors.grey[500] }} />
           <List
             sx={{
-              maxHeight: "400px",
+              // maxHeight: "400px",
+              maxHeight: "70vh",
               overflowY: "auto",
             }}
           >
-            {filteredAppointments.map((appointment) => (
+            {filteredAppointments?.map((appointment) => (
               <ListItem
                 key={appointment.id}
                 sx={{
@@ -2853,12 +2859,17 @@ const Appointments = () => {
                   primary={appointment.title}
                   secondary={`Duration: ${appointment.duration} mins`}
                 />
+                {userRole === "ADMIN" && (
+                <Box>
                 <IconButton onClick={() => openUpdateModal(appointment)}>
                   <EditIcon />
                 </IconButton>
                 <IconButton onClick={() => openDeleteModal(appointment)}>
                   <DeleteIcon />
                 </IconButton>
+                </Box>
+                )}
+                
               </ListItem>
             ))}
           </List>

@@ -12,8 +12,23 @@ const keycloakInstance = new Keycloak();
 const Login = (onAuthenticatedCallback) => {
   keycloakInstance
     .init({ onLoad: "login-required", pkceMethod: 'S256' })
-    .then((authenticated) => {
+    // .then((authenticated) => {
+    //   if (authenticated) {
+    //     onAuthenticatedCallback();
+    //     console.log("Token after authentication:", keycloakInstance.token);
+    //   } else {
+    //     alert("Non authenticated");
+    //   }
+    // })
+    // .catch((e) => {
+    //   console.dir(e);
+    //   console.log(`Keycloak init exception: ${e}`);
+    // });
+    .then(async (authenticated) => {
       if (authenticated) {
+        const user = await getUser();
+        localStorage.setItem("userDetails", JSON.stringify(user));
+
         onAuthenticatedCallback();
         console.log("Token after authentication:", keycloakInstance.token);
       } else {
@@ -29,6 +44,7 @@ const Login = (onAuthenticatedCallback) => {
 const Logout = () => {
   if (keycloakInstance) {
     keycloakInstance.logout();
+    localStorage.removeItem('userDetails')
   }
 };
 

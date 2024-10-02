@@ -33,9 +33,9 @@ import { getNotificationsForUser, markNotificationAsRead } from "../controllers/
 // Async thunk actions
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchNotifications",
-  async ({ userId, userType }, { rejectWithValue }) => {
+  async ({ id, userRole }, { rejectWithValue }) => {
     try {
-      const response = await getNotificationsForUser(userId, userType);
+      const response = await getNotificationsForUser(id, userRole);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

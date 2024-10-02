@@ -1361,6 +1361,10 @@ const recordValidationSchema = Yup.object().shape({
 const Records = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT"
+  console.log("userrr",JSON.parse(localStorage.getItem("userDetails")))
+  console.log("idddddddd  " +id)
 
   const dispatch = useDispatch();
   const {
@@ -1433,7 +1437,9 @@ const Records = () => {
   };
 
   const handleCreateRecord = (values, { resetForm }) => {
-    dispatch(addRecord({ ...values, doctorId: "4" }))
+    console.log("idddddddd  " +id)
+
+    dispatch(addRecord({ ...values, doctorId: id }))
       .unwrap()
       .then(() => {
         resetForm();
@@ -1444,7 +1450,7 @@ const Records = () => {
       });
   };
 
-  const filteredRecords = records.filter(
+  const filteredRecords = records?.filter(
     (record) =>
       record.diagnosis?.toLowerCase().includes(filterText.toLowerCase()) ||
       record.prescription?.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -1455,12 +1461,12 @@ const Records = () => {
       record.assignDate?.toString().includes(filterText)
   );
 
-  const paginatedRecords = filteredRecords.slice(
+  const paginatedRecords = filteredRecords?.slice(
     (currentPage - 1) * recordsPerPage,
     currentPage * recordsPerPage
   );
 
-  const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+  const totalPages = Math.ceil(filteredRecords?.length / recordsPerPage);
 
   return (
     <Box m="20px">
@@ -1484,7 +1490,7 @@ const Records = () => {
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <TextField
-              label="Filter records"
+              label="Search records"
               variant="outlined"
               size="small"
               value={filterText}
@@ -1494,6 +1500,7 @@ const Records = () => {
             <SearchIcon sx={{ marginLeft: 1 }} />
           </Box>
           <Box>
+          {userRole !== "PATIENT" && (
             <Button
               type="submit"
               variant="contained"
@@ -1502,6 +1509,7 @@ const Records = () => {
             >
               + Create Record
             </Button>
+          )}
           </Box>
         </Box>
 
@@ -1594,7 +1602,7 @@ const Records = () => {
           ))}
         </Box> */}
         <Box sx={{ overflowY: "auto", maxHeight: "55vh" }}>
-          {paginatedRecords.map((record) => {
+          {paginatedRecords?.map((record) => {
             // patient name find
             const patient = patients.find((p) => p.id === record.patientId);
             const patientName = patient ? patient.name : "Unknown";
@@ -1690,6 +1698,7 @@ const Records = () => {
                       </Grid>
                     </Grid>
                   </Box>
+                  {userRole !== "PATIENT" && (
                   <Box sx={{ width: "10%" }}>
                     <Tooltip title="Edit">
                       <IconButton
@@ -1708,6 +1717,7 @@ const Records = () => {
                       </IconButton>
                     </Tooltip>
                   </Box>
+                  )}
                 </CardContent>
               </Card>
             );

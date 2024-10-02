@@ -1,8 +1,8 @@
-const upload_preset = "presettt"
-const cloud_name = "your cloud namezzz"
+const upload_preset = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
+const cloud_name = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
 
 export const uploadToCloudinary = async (pics) => {
-    
+      
     if (pics) {
   
       const data = new FormData();
@@ -18,7 +18,7 @@ export const uploadToCloudinary = async (pics) => {
       })
         
         const fileData=await res.json();
-        console.log("url : ", fileData);
+        // console.log("url : ", fileData);
         return fileData.url
   
     } else {

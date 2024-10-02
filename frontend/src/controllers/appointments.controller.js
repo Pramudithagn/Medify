@@ -1,7 +1,24 @@
 import api from "../config/api";
+const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
 
 export const getAllAppointments = async () => {
-    return await api.get('/appointments');
+// const id = 4
+    // const appointments = userRole === "DOCTOR"? await api.get(`/appointments/doctor/${id}`): []
+    let appointments = []
+    if(userRole === "DOCTOR"){
+        appointments = await api.get(`/appointments/doctor/${id}`)
+    }
+    else if(userRole === "PATIENT"){
+        appointments = await api.get(`/appointments/patient/${id}`)
+    }
+    else if(userRole === "ADMIN"){
+        appointments = await api.get('/appointments')
+    }
+    console.log(appointments);
+    return appointments;
+
+    // return await api.get('/appointments');
+
 };
 
 export const getAppointmentById = async (id) => {

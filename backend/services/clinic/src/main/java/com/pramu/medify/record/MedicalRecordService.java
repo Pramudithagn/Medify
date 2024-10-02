@@ -1,5 +1,6 @@
 package com.pramu.medify.record;
 
+import com.pramu.medify.appointment.AppointmentDTO;
 import com.pramu.medify.doctor.DoctorClient;
 import com.pramu.medify.exception.BusinessException;
 import com.pramu.medify.exception.ResourceNotFoundException;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,6 +45,21 @@ public class MedicalRecordService {
         Optional<MedicalRecord> medicalRecord = medicalRecordRepository.findById(id);
         return medicalRecord.map(medicalRecordMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("MedicalRecord not found with id " + id));
+    }
+
+    public List<MedicalRecordDTO> getMedicalRecordsByUserId(Long userId, String userType) {
+        List<MedicalRecordDTO> allMedicalRecords =  new ArrayList<>();
+        if(Objects.equals(userType, "doctor")) {
+            allMedicalRecords = getAllMedicalRecords()
+                    .stream().filter(medicalRecord -> Objects.equals(medicalRecord.doctorId(), userId))
+                    .toList();
+        } else if (Objects.equals(userType, "patient")) {
+            allMedicalRecords = getAllMedicalRecords()
+                    .stream().filter(medicalRecord -> Objects.equals(medicalRecord.patientId(), userId))
+                    .toList();
+        }
+        System.out.println(allMedicalRecords);
+        return allMedicalRecords;
     }
 
     public MedicalRecord createMedicalRecord(MedicalRecordDTO medicalRecordDTO) {

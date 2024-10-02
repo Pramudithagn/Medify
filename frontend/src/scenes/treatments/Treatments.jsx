@@ -507,6 +507,8 @@ const validationSchema = Yup.object().shape({
 export const Treatments = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT";
   const dispatch = useDispatch();
   const { treatments, selectedTreatment, isCreating, editModelOpen } =
     useSelector((state) => state.treatment);
@@ -626,7 +628,8 @@ export const Treatments = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    // { field: "id", headerName: "ID", flex: 0.5 },
+    ...(userRole === "ADMIN" ? [{ field: "id", headerName: "ID", flex: 0.5 }] : []),
     {
       field: "name",
       headerName: "Name",
@@ -634,33 +637,52 @@ export const Treatments = () => {
       cellClassName: "name-column--cell",
     },
     { field: "description", headerName: "Description", flex: 2 },
-    { field: "price", headerName: "Price", type: "number", flex: 1 },
+    { field: "price", headerName: "Price", type: "number", flex: 0.5 },
     {
       field: "status",
       headerName: "Status",
       flex: 1,
       renderCell: (params) => (params.row.status ? "Available" : "Unavailable"),
     },
-    {
-      field: "doctorIds",
-      headerName: "Doctor Actions",
-      flex: 1,
-      renderCell: (params) => (
-        <Button
-          sx={{ backgroundColor: colors.grey[700] }}
-          variant="contained"
-          size="small"
-          onClick={() => handleEditOpen(params.row)}
-        >
-          ...
-        </Button>
-      ),
-    },
+    // userRole === "ADMIN" && {
+    //   // {userRole === "ADMIN" && (
+
+    //   field: "doctorIds",
+    //   headerName: "Actions",
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <Button
+    //       sx={{ backgroundColor: colors.grey[700] }}
+    //       variant="contained"
+    //       size="small"
+    //       onClick={() => handleEditOpen(params.row)}
+    //     >
+    //       ...
+    //     </Button>
+    //   ),
+    // },
+    ...(userRole === "ADMIN"
+      ? [{
+          field: "doctorIds",
+          headerName: "Actions",
+          flex: 1,
+          renderCell: (params) => (
+            <Button
+              sx={{ backgroundColor: colors.grey[700] }}
+              variant="contained"
+              size="small"
+              onClick={() => handleEditOpen(params.row)}
+            >
+              ...
+            </Button>
+          ),
+        }]
+      : []),
   ];
 
   return (
     <Box m="20px">
-      <Header title="TREATMENTS" subtitle="List of provided treatments" />
+      <Header title="TREATMENTS" subtitle="Provided treatments by facility" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -972,7 +994,7 @@ export const Treatments = () => {
         </Box>
       </Modal>
 
-      <Fab
+      {/* <Fab
         color="primary"
         aria-label="add"
         onClick={() => {
@@ -981,7 +1003,20 @@ export const Treatments = () => {
         sx={{ position: "fixed", bottom: 20, right: 20 }}
       >
         <AddIcon />
-      </Fab>
+      </Fab> */}
+      {userRole === "ADMIN" && (
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => {
+            dispatch(setIsCreating(true));
+          }}
+          sx={{ position: "fixed", bottom: 20, right: 20 }}
+        >
+          <AddIcon />
+        </Fab>
+      )}
+
     </Box>
   );
 };

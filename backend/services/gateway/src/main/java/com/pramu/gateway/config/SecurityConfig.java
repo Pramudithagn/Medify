@@ -44,10 +44,9 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
@@ -56,6 +55,12 @@ import reactor.core.publisher.Mono;
 @EnableWebFluxSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+//    private final ServiceRequestFilter serviceRequestFilter;
+//
+//    public SecurityConfig(ServiceRequestFilter serviceRequestFilter) {
+//        this.serviceRequestFilter = serviceRequestFilter;
+//    }
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
@@ -75,27 +80,13 @@ public class SecurityConfig {
                             .jwtAuthenticationConverter(grantedAuthoritiesExtractor())
                     )
             );
-        System.out.println("keycloakkkkk ");
+//                .addFilterBefore(serviceRequestFilter, SecurityWebFilterChain.class);
+//                .addFilterBefore(serviceRequestFilter, SecurityWebFiltersOrder.AUTHORIZATION);
 
         return http.build();
     }
-
-//    @Bean
-//    public Converter<Jwt, Mono<AbstractAuthenticationToken>> grantedAuthoritiesExtractor() {
-//        JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-//        grantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
-//        grantedAuthoritiesConverter.setAuthoritiesClaimName("realm_access.roles");
-//
-//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-//        System.out.println("keycloakkkkk " + grantedAuthoritiesConverter);
-//
-//        return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
-//    }
-
     @Bean
     public Converter<Jwt, Mono<AbstractAuthenticationToken>> grantedAuthoritiesExtractor() {
         return new ReactiveJwtAuthenticationConverterAdapter(new KeycloakJwtAuthenticationConverter());
     }
-
 }

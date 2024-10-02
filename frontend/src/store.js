@@ -7,7 +7,7 @@ import appointmentReducer from "./features/appointmentSlice";
 import paymentReducer from "./features/paymentSlice";
 import treatmentReducer from "./features/treatmentSlice";
 import notificationsReducer from "./features/notificationSlice";
-// import authReducer from "./features/authSlice";
+import authReducer from "./features/authSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +18,7 @@ export const store = configureStore({
     payment: paymentReducer,
     treatment: treatmentReducer,
     notification: notificationsReducer,
-    // auth: authReducer
+    auth: authReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

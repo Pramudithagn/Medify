@@ -1,8 +1,29 @@
 import api from "../config/api";
+const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
 
 export const getAllMedicalRecords = async () => {
-    return await api.get('/medical-records');
+// const id = 4
+    // const appointments = userRole === "DOCTOR"? await api.get(`/appointments/doctor/${id}`): []
+    let records = []
+    if(userRole === "DOCTOR"){
+        records = await api.get(`/medical-records/doctor/${id}`)
+    }
+    else if(userRole === "PATIENT"){
+        records = await api.get(`/medical-records/patient/${id}`)
+    }
+    else if(userRole === "ADMIN"){
+        records = await api.get('/medical-records')
+    }
+    console.log(records);
+    return records;
+
+    // return await api.get('/medical-records');
+
 };
+
+// export const getAllMedicalRecords = async () => {
+//     return await api.get('/medical-records');
+// };
 
 export const getMedicalRecordById = async (id) => {
     return await api.get(`/medical-records/${id}`);

@@ -7,7 +7,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,17 @@ public class PaymentService {
         Optional<Payment> payment = paymentRepository.findById(id);
         return payment.map(paymentMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Payment entry not found with ID:: " + id));
+    }
+
+    public List<PaymentDTO> getPaymentsByUserId(Long userId) {
+//        List<PaymentDTO> allAppointments =  new ArrayList<>();
+//            allAppointments =
+        return getAllPayments()
+                .stream().filter(payment -> Objects.equals(payment.patientId(), userId))
+                .toList();
+
+//        System.out.println(allAppointments);
+//        return allAppointments;
     }
 
     public Payment createPayment(PaymentDTO paymentDTO) {

@@ -157,6 +157,8 @@ const Notifications = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
+  const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT";
 
   const notifications = useSelector(
     (state) => state.notification.notifications
@@ -166,14 +168,15 @@ const Notifications = () => {
 
   // const userId = useSelector((state) => state.auth.user.id);
   // const userType = useSelector((state) => state.auth.user.type);
-  const userId = 3;
-  const userType = "patient";
+
+  // const userId = 3;
+  // const userType = "patient";
 
   const dropdownRef = useRef(null);
   const iconRef = useRef(null);
 
-  const handleMarkAsRead = (id) => {
-    dispatch(markNotificationRead(id));
+  const handleMarkAsRead = (notificationId) => {
+    dispatch(markNotificationRead(notificationId));
   };
 
   const handleClickOutside = (event) => {
@@ -197,8 +200,12 @@ const Notifications = () => {
   }, [isOpen]);
 
   useEffect(() => {
-    if (userId && userType) {
-      dispatch(fetchNotifications({ userId, userType }));
+    // if (userId && userType) {
+    //   dispatch(fetchNotifications({ userId, userType }));
+    // }
+    if (id && userRole) {
+      console.log(id)
+      dispatch(fetchNotifications({ id, userRole }));
     }
     // }, [dispatch, userId, userType]);
   }, [dispatch]);

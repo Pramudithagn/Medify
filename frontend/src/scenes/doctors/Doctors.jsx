@@ -518,6 +518,8 @@ const Doctors = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
+  const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT";
   // const { doctors, selectedDoctor } = useSelector((state) => state.doctor);
   const { doctors, selectedDoctor, loading } = useSelector(
     (state) => state.doctor
@@ -531,7 +533,8 @@ const Doctors = () => {
   const [availablePatients, setAvailablePatients] = useState([]);
   const [initialPatientIds, setInitialPatientIds] = useState([]);
 
-  const isAdmin = true;
+  // const isAdmin = true;
+  const isAdmin = userRole === "ADMIN";
 
   useEffect(() => {
     dispatch(getDoctors());
@@ -582,8 +585,11 @@ const Doctors = () => {
     setDeleteButtonEnabled(!!event.target.checked);
   };
 
+  console.log(doctors)
+
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.25 },
+    ...(userRole === "ADMIN" ? [{ field: "id", headerName: "ID", flex: 0.25 }] : []),
+    // { field: "id", headerName: "ID", flex: 0.25 },
     {
       field: "name",
       headerName: "Name",
@@ -619,13 +625,15 @@ const Doctors = () => {
           >
             <VisibilityIcon />
           </IconButton>
-          <IconButton
+          {userRole === "ADMIN" && (
+            <IconButton
             aria-label="delete"
             onClick={() => handleDeleteOpen(params.row)}
             sx={{ color: colors.grey[400] }}
           >
             <DeleteIcon />
           </IconButton>
+          )}
         </Box>
       ),
     },
@@ -668,6 +676,7 @@ const Doctors = () => {
         />
       </Box>
 
+      {/* Details Modal */}
       <Modal open={open} onClose={handleClose}>
         <Box
           p={4}
@@ -835,38 +844,6 @@ const Doctors = () => {
                       }
                     />
                   </Box>
-                  {/* <Autocomplete
-                    multiple
-                    disabled={true}
-                    // options={mockTreatmentIds}
-                    options={treatments}
-                    // getOptionLabel={(option) => (option.toString())}
-                    getOptionLabel={(option) => option.name.toString()}
-                    // value={values.treatmentIds}
-                    value={values.treatmentIds.map(
-                      (id) => treatments.find((t) => t.id === id) || ""
-                    )}
-                    // onChange={(event, newValue) =>setFieldValue("treatmentIds", newValue)}
-                    onChange={(event, newValue) => {
-                      const selectedTreatmentIds = newValue.map(
-                        (treatment) => treatment.id
-                      );
-                      setFieldValue("treatmentIds", selectedTreatmentIds);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Treatments"
-                        fullWidth
-                        size="small"
-                        disabled={!isAdmin}
-                        error={
-                          touched.treatmentIds && Boolean(errors.treatmentIds)
-                        }
-                        helperText={touched.treatmentIds && errors.treatmentIds}
-                      />
-                    )}
-                  /> */}
                   <TextField
                     label="Treatment"
                     name="treatmentName"
@@ -881,42 +858,14 @@ const Doctors = () => {
                     size="small"
                     disabled={true}
                   />
-
-                  {/* <Autocomplete
-                    multiple
-                    disabled={!isAdmin}
-                    // options={mockPatientIds}
-                    options={patients}
-                    // getOptionLabel={(option) => option}
-                    getOptionLabel={(option) => option.name.toString()}
-                    // value={values.patientIds}
-                    value={values.patientIds.map((id) => patients.find(t => t.id === id) || "")}
-                    // onChange={(event, newValue) =>setFieldValue("patientIds", newValue)}
-                    onChange={(event, newValue) => {
-                      const selectedpatientIds = newValue.map((patient) => patient.id);
-                      setFieldValue("patientIds", selectedpatientIds);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Patient IDs"
-                        placeholder="Select Patients"
-                        fullWidth
-                        size="small"
-                        disabled={!isAdmin}
-                        error={touched.patientIds && Boolean(errors.patientIds)}
-                        helperText={touched.patientIds && errors.patientIds}
-                      />
-                    )}
-                  /> */}
-                  <Box>
+                  {/* <Box>
                     <Autocomplete
                       multiple
                       disabled={!isAdmin}
                       options={values.patientIds
                         .map((id) => patients.find((p) => p.id === id))
                         .filter(Boolean)}
-                      getOptionLabel={(option) => option.name.toString()}
+                      getOptionLabel={(option) => option.name?.toString()}
                       value={values.patientIds.map(
                         (id) => patients.find((p) => p.id === id) || ""
                       )}
@@ -955,7 +904,76 @@ const Doctors = () => {
                         You can only remove one at a time
                       </Typography>
                     </Box>
+                  </Box> */}
+                  <Box>
+                    {isAdmin ? (
+                      <Autocomplete
+                        multiple
+                        disabled={!isAdmin}
+                        options={values.patientIds
+                          .map((id) => patients.find((p) => p.id === id))
+                          .filter(Boolean)}
+                        getOptionLabel={(option) => option.name?.toString()}
+                        value={values.patientIds.map(
+                          (id) => patients.find((p) => p.id === id) || ""
+                        )}
+                        onChange={(event, newValue) => {
+                          const selectedPatientIds = newValue.map(
+                            (patient) => patient.id
+                          );
+                          setFieldValue("patientIds", selectedPatientIds);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Patients"
+                            fullWidth
+                            size="small"
+                            disabled={!isAdmin}
+                            error={
+                              touched.patientIds && Boolean(errors.patientIds)
+                            }
+                            helperText={touched.patientIds && errors.patientIds}
+                          />
+                        )}
+                        isOptionEqualToValue={(option, value) =>
+                          option.id === value.id
+                        }
+                      />
+                    ) : (
+                      <TextField
+                        label="Patients"
+                        name="patientIds"
+                        value={values.patientIds
+                          .map(
+                            (id) =>
+                              patients.find((patient) => patient.id === id)
+                                ?.name || ""
+                          )
+                          .join(", ")}
+                        fullWidth
+                        size="small"
+                        disabled={true}
+                        error={touched.patientIds && Boolean(errors.patientIds)}
+                        helperText={touched.patientIds && errors.patientIds}
+                      />
+                    )}
+                    {isAdmin && (
+                      <Box display="flex" alignItems="center" mt={1} ml={1}>
+                        <ErrorOutlineIcon
+                          sx={{ color: "red", fontSize: 16, mr: 0.5 }}
+                        />
+                        <Typography
+                          variant="caption"
+                          fontSize={10}
+                          sx={{ color: colors.redAccent[300] }}
+                        >
+                          You can only remove one at a time
+                        </Typography>
+                      </Box>
+                    )}
                   </Box>
+
 
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
                     {isAdmin && (

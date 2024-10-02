@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
@@ -43,28 +43,9 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  // const {userRole, userName, photo} = keyCloakService.getUser();
-  const [userDetails, setUserDetails] = useState({
-    userRole: "",
-    userName: "",
-    photo: "",
-  });
 
-  React.useEffect(() => {
-    const fetchUserData = async () => {
-      const { userRole, userName, photo } = await keyCloakService.getUser();
-      console.log(photo)
-      setUserDetails({
-        userRole,
-        userName,
-        photo, 
-      });
-    };
-
-    fetchUserData();
-  }, []);
-
-  console.log(userDetails.userRole)
+  const { userRole, userName, photo } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  // const userRole = "PATIENT"
 
   return (
     <Box
@@ -117,14 +98,19 @@ const Sidebar = () => {
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
+                {userRole !== "ADMIN" ? 
+                (<img
+                  alt={"profile-user"}
                   width="100px"
                   height="100px"
                   // src={`../../assets/user.png`}
-                  src={userDetails.photo}
+                  src={photo}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
+                />):
+                (<Avatar sx={{ width: 100, height: 100, bgcolor: colors.grey[500] }}>
+                  {userName ? userName.charAt(0).toUpperCase() : "A"}
+                </Avatar>)
+}
               </Box>
               <Box textAlign="center">
                 <Typography
@@ -133,10 +119,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {userDetails.userName}
+                  {userName?userName:"Unknown User"}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {userDetails.userRole?.toString()}
+                  {userRole?.toString()}
                 </Typography>
               </Box>
             </Box>
@@ -180,13 +166,22 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
               title="Payments "
               to="/payments "
               icon={<PaidIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
+            {userRole !== "DOCTOR" && (
+              <Item
+                title="Payments "
+                to="/payments "
+                icon={<PaidIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            )}
 
             <Typography
               variant="h6"
@@ -202,20 +197,39 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
+              title="Patients"
+              to="/patients"
+              icon={<HealingIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            /> */}
+            {userRole !== "PATIENT" && (
+              <Item
               title="Patients"
               to="/patients"
               icon={<HealingIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            )}
+
+            {/* <Item
               title="Register"
               to="/register"
               icon={<PersonAddAltIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
+            {userRole === "ADMIN" && (
+              <Item
+                title="Register"
+                to="/register"
+                icon={<PersonAddAltIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+            )}
 
             <Typography
               variant="h6"

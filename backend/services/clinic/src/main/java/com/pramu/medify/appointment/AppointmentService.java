@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,21 @@ public class AppointmentService {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         return appointment.map(appointmentMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Appointment not found with ID:: " + id));
+    }
+
+    public List<AppointmentDTO> getAppointmentsByUserId(Long userId, String userType) {
+        List<AppointmentDTO> allAppointments =  new ArrayList<>();
+        if(Objects.equals(userType, "doctor")) {
+            allAppointments = getAllAppointments()
+                    .stream().filter(appointment -> Objects.equals(appointment.doctorId(), userId))
+                    .toList();
+        } else if (Objects.equals(userType, "patient")) {
+            allAppointments = getAllAppointments()
+                    .stream().filter(appointment -> Objects.equals(appointment.patientId(), userId))
+                    .toList();
+        }
+        System.out.println(allAppointments);
+        return allAppointments;
     }
 
     public Appointment createAppointment(AppointmentDTO appointmentDTO) {

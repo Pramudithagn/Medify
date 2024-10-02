@@ -55,9 +55,9 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
     public List<Notification> getNotificationsForUser(Long userId, String userType) {
-        String userTypeUpperCase = userType.toUpperCase();
+//        String userTypeUpperCase = userType.toUpperCase();
 //        return notificationRepository.findByUserIdAndUserType(userId, userType);
-        return notificationRepository.findByUserIdAndUserType(userId, userTypeUpperCase);
+        return notificationRepository.findByUserIdAndUserType(userId, userType);
     }
 
     public List<Notification> getAllNotifications() {

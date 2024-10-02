@@ -14,21 +14,6 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class GlobalCorsConfig {
-
-//    @Bean
-//    public CorsWebFilter corsWebFilter(GlobalCorsProperties globalCorsProperties) {
-//        CorsConfiguration corsConfig = new CorsConfiguration();
-//        corsConfig.addAllowedOriginPattern("*");
-//        corsConfig.addAllowedMethod("*");
-//        corsConfig.addAllowedHeader("*");
-//        corsConfig.setAllowCredentials(true);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", corsConfig);
-//
-//        return new CorsWebFilter(source);
-
-
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
