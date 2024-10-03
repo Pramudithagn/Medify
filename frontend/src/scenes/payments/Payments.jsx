@@ -10,6 +10,7 @@ import {
   InputLabel,
   FormControl,
   Typography,
+  Skeleton,
 } from "@mui/material";
 import {
   DataGrid,
@@ -61,6 +62,8 @@ const Payment = () => {
   const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
   // const userRole = "PATIENT";
 
+  const isLoading = useSelector((state) => state.payment.isLoading);
+
   useEffect(() => {
     // dispatch(setPayments(mockDataPayments));
     dispatch(fetchPayments({userRole, id}));
@@ -89,24 +92,6 @@ const Payment = () => {
   };
 
   const handlePay = async () => {
-    // dispatch(
-    //   updatePaymentMethod(
-    //     //   {
-    //     //   id: selectedPayment.id,
-    //     //   method: selectedMethod,
-    //     // }
-    //     selectedPayment
-    //   )
-    // );
-    // dispatch(
-    //   updatePaymentStatus({
-    //     id: selectedPayment.id,
-    //     status: "reviewing",
-    //   })
-    // );
-
-    // Call backend process payment
-    // setSelectedMethod("");
     const updatedPayment = await dispatch(
       updatePaymentMethod(selectedPayment)
     ).unwrap();
@@ -187,38 +172,6 @@ const Payment = () => {
     
     },
 
-    // ...(userRole === "ADMIN"
-    //   ? [{
-    //     field: "status",
-    //     headerName: "Status",
-    //     flex: 1,
-    //     renderCell: (params) => (
-    //       <FormControl variant="standard" sx={{ minWidth: 120 }}>
-    //         <Select
-    //           value={params.row.status}
-    //           onChange={(e) => handleStatusChange(params.row, e)}
-    //           sx={{
-    //             paddingTop: 1,
-    //             color:
-    //               params.value === "paid"
-    //                 ? colors.greenAccent[500]
-    //                 : params.value === "unpaid"
-    //                 ? colors.redAccent[300]
-    //                 : params.value === "reviewing"
-    //                 ? colors.blueAccent[500]
-    //                 : colors.redAccent[500],
-    //           }}
-    //         >
-    //           <MenuItem value="paid">Paid</MenuItem>
-    //           <MenuItem value="unpaid">Unpaid</MenuItem>
-    //           <MenuItem value="reviewing">Reviewing</MenuItem>
-    //           <MenuItem value="failed">Failed</MenuItem>
-    //         </Select>
-    //       </FormControl>
-    //     ),
-    //   }]
-    //   : []),
-
     {
       field: "action",
       headerName: "Action",
@@ -266,14 +219,22 @@ const Payment = () => {
           },
         }}
       >
-        <DataGrid
-          rows={payments}
-          columns={columns}
-          disableRowSelectionOnClick
-          slots={{
-            toolbar: CustomToolbar,
-          }}
-        />
+        {isLoading ? (
+          <Box>
+          {[...Array(8)].map((_, index) => (
+           <Skeleton key={index} height={50} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+         ))}
+       </Box>
+        ) : (
+          <DataGrid
+            rows={payments}
+            columns={columns}
+            disableRowSelectionOnClick
+            slots={{
+              toolbar: CustomToolbar,
+            }}
+          />
+        )}
       </Box>
 
       {/* Modal for Payment */}

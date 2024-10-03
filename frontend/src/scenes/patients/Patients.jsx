@@ -25,6 +25,7 @@ import {
   useTheme,
   Switch,
   Checkbox,
+  Skeleton,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
@@ -111,7 +112,7 @@ const Patients = () => {
   const dispatch = useDispatch();
   const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
   // const userRole = "PATIENT";
-  const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled } =
+  const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled, loading } =
     useSelector((state) => state.patient);
   const { doctors } = useSelector((state) => state.doctor);
   const { payments } = useSelector((state) => state.payment);
@@ -254,12 +255,27 @@ const Patients = () => {
           },
         }}
       >
-        <DataGrid
+        {/* <DataGrid
+          rows={patients}
+          columns={columns}
+          disableRowSelectionOnClick
+          slots={{ toolbar: CustomToolbar }}
+        /> */}
+        {loading ? (
+          // Skeleton loading state
+          <Box>
+            {[...Array(8)].map((_, index) => (
+              <Skeleton key={index} height={50} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+            ))}
+          </Box>
+        ) : (
+          <DataGrid
           rows={patients}
           columns={columns}
           disableRowSelectionOnClick
           slots={{ toolbar: CustomToolbar }}
         />
+        )}
       </Box>
 
       {/* Edit Modal */}

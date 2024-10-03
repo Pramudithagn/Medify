@@ -3,6 +3,7 @@ import {
   Divider,
   Typography,
   useTheme,
+  Skeleton,
 } from "@mui/material";
 import { tokens } from "../../theme";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -36,12 +37,17 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { userRole, id  } = JSON.parse(localStorage.getItem("userDetails")) || {};
 
-  const { appointments } = useSelector((state) => state.appointment);
-  const { treatments } = useSelector((state) => state.treatment);
-  const { records } = useSelector((state) => state.record);
-  const { payments } = useSelector((state) => state.payment);
-  const { doctors } = useSelector((state) => state.doctor);
-
+  // const { appointments } = useSelector((state) => state.appointment);
+  // const { treatments } = useSelector((state) => state.treatment);
+  // const { records } = useSelector((state) => state.record);
+  // const { payments } = useSelector((state) => state.payment);
+  // const { doctors } = useSelector((state) => state.doctor);
+  const { appointments, status: appointmentStatus } = useSelector((state) => state.appointment);
+  const { treatments, loading: treatmentStatus } = useSelector((state) => state.treatment);
+  const { records, loading: recordStatus } = useSelector((state) => state.record);
+  const { payments, isLoading: paymentStatus } = useSelector((state) => state.payment);
+  const { doctors, loading: doctorStatus } = useSelector((state) => state.doctor);
+  
   React.useEffect(() => {
     dispatch(fetchAppointments({ userRole, id }));
     dispatch(fetchTreatments());
@@ -49,58 +55,28 @@ const Dashboard = () => {
     dispatch(getDoctors());
     dispatch(fetchRecords({ userRole, id }));
   }, []);
-  
-  console.log({
-    appointments,
-    treatments,
-    records,
-    payments,
-    doctors
-  });
+
+  const isLoading = 
+  appointmentStatus === "loading" || 
+  treatmentStatus === "true" || 
+  recordStatus === "true" || 
+  paymentStatus === "true" || 
+  doctorStatus === "true";
   
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
   // Sort by newest entries first
-  const sortByDateTime = (a, b) =>
-    new Date(b.startTime) - new Date(a.startTime);
-
+  const sortByDateTime = (a, b) => new Date(b.startTime) - new Date(a.startTime);
   // Filteri sort
-  const weeklyAppointments = appointments? appointments
-    .filter((appointment) => new Date(appointment.startTime) >= oneWeekAgo)
-    .sort(sortByDateTime) : [];
-
+  const weeklyAppointments = appointments? appointments.filter((appointment) => new Date(appointment.startTime) >= oneWeekAgo).sort(sortByDateTime) : [];
   // Filtersort
-  const weeklyNewDoctors = doctors
-    .filter((doctor) => new Date(doctor.assignedDate) >= oneWeekAgo)
-    .sort((a, b) => new Date(b.assignedDate) - new Date(a.assignedDate));
-
+  const weeklyNewDoctors = doctors.filter((doctor) => new Date(doctor.assignedDate) >= oneWeekAgo).sort((a, b) => new Date(b.assignedDate) - new Date(a.assignedDate));
   // Sort
-  const latestTreatments = treatments? treatments
-    .slice()
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 7)
-    :[];
-
-  const latestRecords = records? records
-    .slice()
-    .sort((a, b) => new Date(b.assignDate) - new Date(a.assignDate))
-    .reverse()
-    .slice(0, 7)
-    :[];
-
-  const latestPayments = payments? payments
-    .slice()
-    .sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate))
-    .reverse()
-    .slice(0, 7)
-    :[];
-
-  const latestAppointments = appointments? appointments
-    .slice()
-    .sort(sortByDateTime)
-    .slice(0, 4)
-    :[];
+  const latestTreatments = treatments? treatments.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 7) :[];
+  const latestRecords = records? records.slice().sort((a, b) => new Date(b.assignDate) - new Date(a.assignDate)).reverse().slice(0, 7) :[];
+  const latestPayments = payments? payments.slice().sort((a, b) => new Date(b.dueDate) - new Date(a.dueDate)).reverse().slice(0, 7) :[];
+  const latestAppointments = appointments? appointments.slice().sort(sortByDateTime).slice(0, 4):[];
 
   return (
     <Box m="20px">
@@ -142,28 +118,19 @@ const Dashboard = () => {
                 Upcoming Appointments
               </Typography>
               <Divider sx={{ mt: 2, backgroundColor: colors.grey[500] }} />
-              {latestAppointments.length > 0 ? (
-              <Timeline
-                sx={{
-                  width: "100%",
-                  height: "50vh",
-                  gap: 2,
-                  overflowY: "auto",
-                }}
-                position="alternate"
-              >
+
+              {isLoading ? (
+                // <Skeleton variant="rectangular" height={100} />
+                <Box>
+                {[...Array(3)].map((_, index) => (
+                  <Skeleton key={index} height={100} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+                ))}
+              </Box>
+              ) : latestAppointments.length > 0 ? (
+              <Timeline sx={{ width: "100%", height: "50vh", gap: 2, overflowY: "auto", }} position="alternate" >
                 {latestAppointments.map((appointment, i) => (
                   <TimelineItem key={i}>
-                    <TimelineOppositeContent
-                      sx={{
-                        fontSize: 12,
-                        color: "text.secondary",
-                        maxWidth: "50%",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
+                    <TimelineOppositeContent sx={{ fontSize: 12, color: "text.secondary", maxWidth: "50%", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", }} >
                       {appointment.dateTime}
                     </TimelineOppositeContent>
                     <TimelineSeparator>
@@ -171,36 +138,24 @@ const Dashboard = () => {
                       <TimelineConnector />
                     </TimelineSeparator>
                     <TimelineContent
-                      sx={{
-                        color: colors.greenAccent[500],
-                        fontSize: 15,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        maxWidth: "100%",
-                      }}
-                    >
+                      sx={{ color: colors.greenAccent[500], fontSize: 15, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "100%", }} >
                       {appointment.title}
                     </TimelineContent>
                   </TimelineItem>
                 ))}
               </Timeline>
               ) : (
-          <Typography color={colors.grey[300]} mt={2}>
-            No upcoming appointments available.
-          </Typography>
-        )}
+              <Typography color={colors.grey[300]} mt={2}>
+                No upcoming appointments available.
+              </Typography>
+            )}
+            
             </Box>
           </Box>
         </Box>
 
         {/* Recent Treatments */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
-        >
+        <Box gridColumn="span 4" gridRow="span 2" backgroundColor={colors.primary[400]} overflow="auto" >
           <Box
             display="flex"
             justifyContent="space-between"
@@ -213,7 +168,14 @@ const Dashboard = () => {
               Recent Diagnostics
             </Typography>
           </Box>
-          {latestRecords.length > 0 ? (
+          {isLoading ? (
+            // <Skeleton variant="rectangular" height={100} />
+            <Box>
+                {[...Array(2)].map((_, index) => (
+                  <Skeleton key={index} height={100} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+                ))}
+              </Box>
+          ) : latestRecords.length > 0 ? (
             latestRecords.map((record, i) => (
             <Box
               key={`${record.id}-${i}`}
@@ -224,22 +186,14 @@ const Dashboard = () => {
               p="15px"
             >
               <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
+                <Typography color={colors.greenAccent[500]} variant="h5" fontWeight="600" >
                   {record.diagnosis}
                 </Typography>
                 <Typography color={colors.grey[100]}>
                   {record.description}
                 </Typography>
               </Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
+              <Box backgroundColor={colors.greenAccent[500]} p="5px 10px" borderRadius="4px" >
                 ${record.price}
               </Box>
             </Box>
@@ -252,11 +206,7 @@ const Dashboard = () => {
         </Box>
 
         {/* Recent Payments */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
+        <Box gridColumn="span 4" gridRow="span 2"  backgroundColor={colors.primary[400]} overflow="auto"
         >
           <Box
             display="flex"
@@ -271,7 +221,14 @@ const Dashboard = () => {
             </Typography>
           </Box>
           
-          {latestPayments.length > 0 ? (
+          {isLoading ? (
+            // <Skeleton variant="rectangular" height={100} />
+            <Box>
+                {[...Array(2)].map((_, index) => (
+                  <Skeleton key={index} height={100} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+                ))}
+              </Box>
+          ) : latestPayments.length > 0 ? (
             latestPayments.map((payment, i) => (
             <Box
               key={`${payment.id}-${i}`}
@@ -282,11 +239,7 @@ const Dashboard = () => {
               p="15px"
             >
               <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
+                <Typography color={colors.greenAccent[500]} variant="h5" fontWeight="600" >
                   {payment.status}
                 </Typography>
                 <Typography color={colors.grey[100]}>
@@ -324,14 +277,9 @@ const Dashboard = () => {
             subtitle="Weekly Consultations"
             progress={weeklyAppointments.length / appointments?.length}
             increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
+            icon={ <PersonAddIcon sx={{ color: colors.greenAccent[600], fontSize: "26px" }} /> }
           />
         </Box>
-
         {/* New Users */}
         <Box
           gridColumn="span 4"
@@ -345,14 +293,9 @@ const Dashboard = () => {
             subtitle="New Users"
             progress={weeklyNewDoctors.length / doctors.length}
             increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
+            icon={ <PersonAddIcon sx={{ color: colors.greenAccent[600], fontSize: "26px" }} /> }
           />
         </Box>
-
       </Box>
     </Box>
   );

@@ -20,6 +20,7 @@ import {
   Autocomplete,
   IconButton,
   useTheme,
+  Skeleton,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -240,7 +241,12 @@ const Appointments = () => {
               overflowY: "auto",
             }}
           >
-            {filteredAppointments?.map((appointment) => (
+            {status === "loading" ? (
+              Array.from(new Array(5)).map((_, index) => (
+                <Skeleton key={index} variant="rectangular" height={60} sx={{ margin: "10px 0", borderRadius: "2px" }} />
+              ))
+            ) : (
+              filteredAppointments?.map((appointment) => (
               <ListItem
                 key={appointment.id}
                 sx={{
@@ -265,7 +271,8 @@ const Appointments = () => {
                 )}
                 
               </ListItem>
-            ))}
+            ))
+            )}
           </List>
         </Box>
 

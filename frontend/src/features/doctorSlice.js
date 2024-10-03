@@ -55,12 +55,7 @@ export const deleteDoctor = createAsyncThunk(
   }
 );
 
-const initialState = {
-  doctors: [],
-  selectedDoctor: null,
-  loading: false,
-  error: null,
-};
+const initialState = { doctors: [],selectedDoctor: null, loading: false, error: null,};
 
 const doctorSlice = createSlice({
   name: "doctor",
@@ -105,8 +100,7 @@ const doctorSlice = createSlice({
   },
 });
 
-export const { addDoctor, setDoctors, setSelectedDoctor, clearSelectedDoctor } =
-  doctorSlice.actions;
+export const { addDoctor, setDoctors, setSelectedDoctor, clearSelectedDoctor } = doctorSlice.actions;
 export default doctorSlice.reducer;
 
 //=====================================================================================================================================================================================================================================

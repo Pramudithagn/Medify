@@ -9,6 +9,7 @@ import {
   Autocomplete,
   Fab,
   Typography,
+  Skeleton,
 } from "@mui/material";
 import {
   DataGrid,
@@ -28,19 +29,13 @@ import {
   setSelectedTreatment,
   setIsCreating,
   setEditModelOpen,
-  addTreatment,
-  editTreatment,
-  deleteTreatment,
-  setTreatments,
   fetchTreatments,
-  updateTreatmentThunk,
   createTreatment,
   updateTreatment,
 } from "../../features/treatmentSlice";
 import { getDoctors } from "../../features/doctorSlice";
-import { Formik, Form, FieldArray } from "formik";
+import { Formik} from "formik";
 import * as Yup from "yup";
-import { getAllTreatments } from "../../controllers/treatments.controller";
 
 function CustomToolbar() {
   return (
@@ -52,10 +47,7 @@ function CustomToolbar() {
       />
       <Box sx={{ flexGrow: 1 }} />
       <GridToolbarExport
-        slotProps={{
-          tooltip: { title: "Export data" },
-          button: { variant: "outlined" },
-        }}
+        slotProps={{ tooltip: { title: "Export data" }, button: { variant: "outlined" }, }}
       />
     </GridToolbarContainer>
   );
@@ -64,9 +56,7 @@ function CustomToolbar() {
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   description: Yup.string().required("Description is required"),
-  price: Yup.number()
-    .required("Price is required")
-    .positive("Price must be positive"),
+  price: Yup.number().required("Price is required").positive("Price must be positive"),
   // doctorIds: Yup.array().min(1, "At least one doctor must be selected"),
   doctorIds: Yup.array().notRequired(),
   status: Yup.boolean(),
@@ -78,7 +68,7 @@ export const Treatments = () => {
   const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
   // const userRole = "PATIENT";
   const dispatch = useDispatch();
-  const { treatments, selectedTreatment, isCreating, editModelOpen } =
+  const { treatments, selectedTreatment, isCreating, editModelOpen, loading  } =
     useSelector((state) => state.treatment);
   const { doctors} = useSelector((state) => state.doctor);
 
@@ -147,10 +137,7 @@ export const Treatments = () => {
       updatedDoctorIds = removedDoctorIds;
     }
 
-    dispatch(updateTreatment({
-      ...selectedTreatment,
-      doctorIds: updatedDoctorIds
-    }));
+    dispatch(updateTreatment({ ...selectedTreatment, doctorIds: updatedDoctorIds }));
 
     // dispatch(updateTreatment(selectedTreatment));
     dispatch(setSelectedTreatment(null));
@@ -166,10 +153,7 @@ export const Treatments = () => {
     // });
     // console.log(data);
 
-    const updatedValues = {
-      ...values,
-      doctorIds: values.doctorIds.map((doctor) => doctor.id),
-    };
+    const updatedValues = { ...values, doctorIds: values.doctorIds.map((doctor) => doctor.id), };
     console.log(updatedValues);
 
     // dispatch(addTreatment(data));
@@ -179,20 +163,12 @@ export const Treatments = () => {
   };
 
   const handleStatusChange = (event) => {
-    dispatch(
-      setSelectedTreatment({
-        ...selectedTreatment,
-        status: event.target.checked,
-      })
-    );
+    dispatch( setSelectedTreatment({ ...selectedTreatment, status: event.target.checked, }) );
   };
 
   const handleDoctorIdsChange = (event, value) => {
     dispatch(
-      setSelectedTreatment({
-        ...selectedTreatment,
-        doctorIds: value,
-      })
+      setSelectedTreatment({ ...selectedTreatment, doctorIds: value,})
     );
   };
 
@@ -236,12 +212,8 @@ export const Treatments = () => {
           headerName: "Actions",
           flex: 1,
           renderCell: (params) => (
-            <Button
-              sx={{ backgroundColor: colors.grey[700] }}
-              variant="contained"
-              size="small"
-              onClick={() => handleEditOpen(params.row)}
-            >
+            <Button sx={{ backgroundColor: colors.grey[700] }}  variant="contained" size="small"
+              onClick={() => handleEditOpen(params.row)} >
               ...
             </Button>
           ),
@@ -259,32 +231,34 @@ export const Treatments = () => {
           "& .MuiDataGrid-root": { border: "none" },
           "& .MuiDataGrid-cell": { borderBottom: "none" },
           "& .name-column--cell": { color: colors.greenAccent[300] },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: `${colors.blueAccent[700]}  !important`,
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
+          "& .MuiDataGrid-columnHeaders": { backgroundColor: `${colors.blueAccent[700]}  !important`, borderBottom: "none", },
+          "& .MuiDataGrid-virtualScroller": { backgroundColor: colors.primary[400], },
+          "& .MuiDataGrid-footerContainer": { borderTop: "none", backgroundColor: colors.blueAccent[700],},
+          "& .MuiCheckbox-root": { color: `${colors.greenAccent[200]} !important`, },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important`, },
           "& .MuiButtonBase-root": { color: `${colors.grey[100]} !important` },
         }}
       >
-        <DataGrid
+        {/* <DataGrid
           rows={treatments}
           columns={columns}
           disableRowSelectionOnClick
           slots={{ toolbar: CustomToolbar }}
-        />
+        /> */}
+        {loading ? (
+          <Box>
+             {[...Array(8)].map((_, index) => (
+              <Skeleton key={index} height={50} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+            ))}
+          </Box>
+        ) : (
+          <DataGrid
+            rows={treatments}
+            columns={columns}
+            disableRowSelectionOnClick
+            slots={{ toolbar: CustomToolbar }}
+          />
+        )}
       </Box>
 
       {/* Modal  editing treatment */}
@@ -304,13 +278,8 @@ export const Treatments = () => {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            "& .MuiSwitch-switchBase.Mui-checked": {
-              color: `${colors.greenAccent[600]} !important`,
-              "&:hover": {},
-            },
-            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-              backgroundColor: grey[600],
-            },
+            "& .MuiSwitch-switchBase.Mui-checked": { color: `${colors.greenAccent[600]} !important`, "&:hover": {}, },
+            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: grey[600], },
           }}
         >
           <Typography variant="h2" padding={3} align="center">
@@ -320,12 +289,7 @@ export const Treatments = () => {
             label="Name"
             value={selectedTreatment?.name || ""}
             onChange={(e) =>
-              dispatch(
-                setSelectedTreatment({
-                  ...selectedTreatment,
-                  name: e.target.value,
-                })
-              )
+              dispatch( setSelectedTreatment({ ...selectedTreatment, name: e.target.value, }) )
             }
           />
           <TextField
@@ -333,10 +297,7 @@ export const Treatments = () => {
             value={selectedTreatment?.description || ""}
             onChange={(e) =>
               dispatch(
-                setSelectedTreatment({
-                  ...selectedTreatment,
-                  description: e.target.value,
-                })
+                setSelectedTreatment({ ...selectedTreatment, description: e.target.value, })
               )
             }
           />
@@ -346,10 +307,7 @@ export const Treatments = () => {
             value={selectedTreatment?.price || ""}
             onChange={(e) =>
               dispatch(
-                setSelectedTreatment({
-                  ...selectedTreatment,
-                  price: e.target.value,
-                })
+                setSelectedTreatment({ ...selectedTreatment, price: e.target.value, })
               )
             }
           />
@@ -373,10 +331,7 @@ export const Treatments = () => {
             onChange={(event, value) => {
               const selectedDoctorIds = value.map((option) => (option.id ? option.id : option));
               dispatch(
-                setSelectedTreatment({
-                  ...selectedTreatment,
-                  doctorIds: selectedDoctorIds,
-                })
+                setSelectedTreatment({ ...selectedTreatment, doctorIds: selectedDoctorIds, })
               );
             }}
             renderInput={(params) => (
@@ -397,18 +352,10 @@ export const Treatments = () => {
             />
           </Box>
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <Button
-              variant="contained"
-              onClick={handleEditSave}
-              sx={{ backgroundColor: colors.greenAccent[600] }}
-            >
+            <Button variant="contained" onClick={handleEditSave} sx={{ backgroundColor: colors.greenAccent[600] }} >
               Save Changes
             </Button>
-            <Button
-              variant="contained"
-              onClick={handleEditClose}
-              sx={{ backgroundColor: colors.redAccent[600] }}
-            >
+            <Button variant="contained" onClick={handleEditClose} sx={{ backgroundColor: colors.redAccent[600] }} >
               Cancel
             </Button>
           </Box>
@@ -433,12 +380,8 @@ export const Treatments = () => {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            "& .MuiSwitch-switchBase.Mui-checked": {
-              color: `${colors.greenAccent} !important`,
-              "&:hover": {},
-            },
-            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-              backgroundColor: grey[600],
+            "& .MuiSwitch-switchBase.Mui-checked": { color: `${colors.greenAccent} !important`, "&:hover": {}, },
+            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: grey[600],
             },
           }}
         >
@@ -510,9 +453,7 @@ export const Treatments = () => {
   getOptionLabel={(option) => option.name || ""}
   value={values.doctorIds || []}
   isOptionEqualToValue={(option, value) => option.id === value.id}
-  onChange={(event, value) => {
-    setFieldValue("doctorIds", value);
-  }}
+  onChange={(event, value) => { setFieldValue("doctorIds", value);}}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -535,9 +476,7 @@ export const Treatments = () => {
                   </Typography>
                   <Switch
                     checked={values.status}
-                    onChange={(event) =>
-                      setFieldValue("status", event.target.checked)
-                    }
+                    onChange={(event) => setFieldValue("status", event.target.checked) }
                     name="status"
                   />
                 </Box>
@@ -577,9 +516,7 @@ export const Treatments = () => {
         <Fab
           color="primary"
           aria-label="add"
-          onClick={() => {
-            dispatch(setIsCreating(true));
-          }}
+          onClick={() => { dispatch(setIsCreating(true)); }}
           sx={{ position: "fixed", bottom: 20, right: 20 }}
         >
           <AddIcon />

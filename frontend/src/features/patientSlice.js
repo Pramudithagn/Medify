@@ -13,9 +13,7 @@ export const fetchPatients = createAsyncThunk(
 export const createPatient = createAsyncThunk(
   "patients/createPatient",
   async (newPatient) => {
-    console.log(newPatient)
     const response = await apiCreatePatient(newPatient);
-    console.log(response.data)
     return response.data;
   }
 );
@@ -23,18 +21,6 @@ export const createPatient = createAsyncThunk(
 export const updatePatient = createAsyncThunk(
   "patients/updatePatient",
   async ({ selectedPatient, updatedPatient }) => {
-    console.log(selectedPatient.doctorIds, updatedPatient)
-      
-    // const newDoctorIds = updatedPatient.doctorIds?.filter(
-    //   (id) => !selectedPatient.doctorIds?.includes(id)
-    // );
-
-    // if (newDoctorIds.length > 0) {
-    //   console.log("New doctorId added:", newDoctorIds[0]);
-    //   await assignDoctorToPatient(selectedPatient.id, newDoctorIds[0]);
-    // }
-  // async (updatedPatient) => {
-  //   console.log(updatedPatient)
     const response = await apiUpdatePatient(updatedPatient);
     return response.data;
   }
@@ -97,13 +83,7 @@ const patientSlice = createSlice({
   },
 });
 
-export const {
-  addPatient,
-  setSelectedPatient,
-  setIsUuidDeleted,
-  setDeleteButtonEnabled,
-} = patientSlice.actions;
-
+export const { addPatient, setSelectedPatient, setIsUuidDeleted, setDeleteButtonEnabled,} = patientSlice.actions;
 export default patientSlice.reducer;
 
 //=====================================================================================================================================================================================================================================

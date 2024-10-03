@@ -4,12 +4,7 @@ import {
   updatePayment,
 } from "../controllers/payments.controller";
 
-const initialState = {
-  payments: [],
-  selectedPayment: null,
-  isCreating: false,
-  isLoading: false,
-};
+const initialState = { payments: [], selectedPayment: null, isCreating: false, isLoading: false,};
 
 export const fetchPayments = createAsyncThunk(
   "payment/fetchPayments",
@@ -18,7 +13,6 @@ export const fetchPayments = createAsyncThunk(
     return response.data;
   }
 );
-
 export const updatePaymentStatus = createAsyncThunk(
   "payment/updatePaymentStatus",
   async (payment) => {
@@ -26,7 +20,6 @@ export const updatePaymentStatus = createAsyncThunk(
     return response.data;
   }
 );
-
 export const updatePaymentMethod = createAsyncThunk(
   "payment/updatePaymentMethod",
   async (payment) => {
@@ -39,17 +32,16 @@ const paymentSlice = createSlice({
   name: "payment",
   initialState,
   reducers: {
-    setSelectedPayment: (state, action) => {
-      state.selectedPayment = action.payload;
-    },
-    setPayments: (state, action) => {
-      //       state.payments = action.payload;
-    },
+    setSelectedPayment: (state, action) => { state.selectedPayment = action.payload; },
   },
   extraReducers: (builder) => {
     builder
+    .addCase(fetchPayments.pending, (state) => {
+      state.isLoading = true;
+    })
       .addCase(fetchPayments.fulfilled, (state, action) => {
         state.payments = action.payload;
+        state.isLoading = false;
       })
       .addCase(updatePaymentStatus.fulfilled, (state, action) => {
         const { id, status } = action.payload;
@@ -57,12 +49,6 @@ const paymentSlice = createSlice({
           payment.id === id ? { ...payment, status } : payment
         );
       })
-      // .addCase(updatePaymentMethod.fulfilled, (state, action) => {
-      //   const { id, method } = action.payload;
-      //   state.payments = state.payments.map((payment) =>
-      //     payment.id === id ? { ...payment, method } : payment
-      //   );
-      // });
       .addCase(updatePaymentMethod.fulfilled, (state, action) => {
         const updatedPayment = action.payload;
         state.payments = state.payments.map((payment) =>
@@ -71,12 +57,12 @@ const paymentSlice = createSlice({
         if (state.selectedPayment?.id === updatedPayment.id) {
           state.selectedPayment = updatedPayment;
         }
+      })
+      .addCase(fetchPayments.rejected, (state) => {
+        state.isLoading = false;
       });
   },
 });
 
 export const { setSelectedPayment, setPayments } = paymentSlice.actions;
-
 export default paymentSlice.reducer;
-
-//=====================================================================================================================================================================================================================================

@@ -10,6 +10,7 @@ import {
   IconButton,
   Switch,
   Typography,
+  Skeleton,
 } from "@mui/material";
 import {
   DataGrid,
@@ -46,23 +47,13 @@ import { fetchPatients } from "../../features/patientSlice";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  mail: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+  mail: Yup.string().email("Invalid email address").required("Email is required"),
   phone: Yup.string().required("Phone number is required"),
   assignedDate: Yup.date().required("Assigned date is required"),
   specialization: Yup.string().required("Specialization is required"),
-  address: Yup.object().shape({
-    street: Yup.string().required("Street is required"),
-    houseNumber: Yup.string().required("House number is required"),
-    zipCode: Yup.string().required("Zip code is required"),
-  }),
-  treatmentIds: Yup.array()
-    .of(Yup.string())
-    .required("At least one treatment ID is required"),
-  patientIds: Yup.array()
-    .of(Yup.string())
-    .required("At least one patient ID is required"),
+  address: Yup.object().shape({street: Yup.string().required("Street is required"),houseNumber: Yup.string().required("House number is required"),zipCode: Yup.string().required("Zip code is required"),}),
+  treatmentIds: Yup.array().of(Yup.string()).required("At least one treatment ID is required"),
+  patientIds: Yup.array().of(Yup.string()).required("At least one patient ID is required"),
 });
 
 function CustomToolbar() {
@@ -95,8 +86,6 @@ const Doctors = () => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteButtonEnabled, setDeleteButtonEnabled] = useState(false);
   const [isUuidDeleted, setIsUuidDeleted] = useState(false);
-  const [availablePatients, setAvailablePatients] = useState([]);
-  const [initialPatientIds, setInitialPatientIds] = useState([]);
 
   // const isAdmin = true;
   const isAdmin = userRole === "ADMIN";
@@ -109,18 +98,12 @@ const Doctors = () => {
 
   const handleOpen = (doctor) => {
     dispatch(setSelectedDoctor(doctor));
-    setInitialPatientIds(doctor.patientIds);
-    setAvailablePatients(
-      patients.filter((patient) => !doctor.patientIds.includes(patient.id))
-    );
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
     dispatch(clearSelectedDoctor());
-    setInitialPatientIds([]);
-    setAvailablePatients([]);
   };
 
   const handleSave = (values) => {
@@ -149,8 +132,6 @@ const Doctors = () => {
     setIsUuidDeleted(!!event.target.checked);
     setDeleteButtonEnabled(!!event.target.checked);
   };
-
-  console.log(doctors)
 
   const columns = [
     ...(userRole === "ADMIN" ? [{ field: "id", headerName: "ID", flex: 0.25 }] : []),
@@ -214,31 +195,34 @@ const Doctors = () => {
           "& .MuiDataGrid-root": { border: "none" },
           "& .MuiDataGrid-cell": { borderBottom: "none" },
           "& .name-column--cell": { color: colors.greenAccent[300] },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: `${colors.blueAccent[700]} !important`,
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
+          "& .MuiDataGrid-columnHeaders": { backgroundColor: `${colors.blueAccent[700]} !important`,borderBottom: "none",},
+          "& .MuiDataGrid-virtualScroller": { backgroundColor: colors.primary[400], },
+          "& .MuiDataGrid-footerContainer": { borderTop: "none", backgroundColor: colors.blueAccent[700], },
+          "& .MuiCheckbox-root": { color: `${colors.greenAccent[200]} !important`,},
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": { color: `${colors.grey[100]} !important`,},
         }}
       >
-        <DataGrid
+        {/* <DataGrid
           rows={doctors}
           columns={columns}
           disableRowSelectionOnClick
           slots={{ toolbar: CustomToolbar }}
-        />
+        /> */}
+        {loading ? (
+          // Skeleton loading state
+          <Box>
+            {[...Array(8)].map((_, index) => (
+              <Skeleton key={index} height={50} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+            ))}
+          </Box>
+        ) : (
+          <DataGrid
+            rows={doctors}
+            columns={columns}
+            disableRowSelectionOnClick
+            slots={{ toolbar: CustomToolbar }}
+          />
+        )}
       </Box>
 
       {/* Details Modal */}
@@ -250,8 +234,7 @@ const Doctors = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor:
-              theme.palette.mode === "dark" ? colors.primary[400] : "white",
+            backgroundColor: theme.palette.mode === "dark" ? colors.primary[400] : "white",
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 600,
@@ -265,9 +248,7 @@ const Doctors = () => {
                 "&.Mui-focused fieldset": { borderColor: colors.grey[400] },
                 "&.Mui-disabled fieldset": { borderColor: colors.grey[300] },
                 "&.Mui-disabled .MuiInputBase-input": {
-                  WebkitTextFillColor: `${colors.grey[300]} !important`,
-                },
-              },
+                  WebkitTextFillColor: `${colors.grey[300]} !important`, }, },
               "& .MuiInputLabel-root": { color: colors.grey[200] },
               "& .MuiInputLabel-root.Mui-focused": { color: colors.grey[500] },
               "& .MuiInputLabel-root.Mui-disabled": { color: colors.grey[300] },
@@ -288,11 +269,7 @@ const Doctors = () => {
                 <Form>
                 <Box display="flex" alignItems="center" gap={4}>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                    <Avatar
-                      src={values.photo}
-                      alt={values.name}
-                      sx={{ width: 80, height: 80 }}
-                    />
+                    <Avatar src={values.photo} alt={values.name} sx={{ width: 80, height: 80 }} />
                     </Box>
                   <Box display="flex" flexDirection="column" flexGrow={1}>
                     <TextField
@@ -335,7 +312,6 @@ const Doctors = () => {
                     // type="date"
                     type="datetime-local"
                     name="assignedDate"
-                    // value={values.assignedDate ? values.assignedDate.split("T")[0] : ""  }
                     value={values.assignedDate ? values.assignedDate : ""}
                     onChange={handleChange}
                     InputLabelProps={{ shrink: true }}
@@ -353,9 +329,7 @@ const Doctors = () => {
                     fullWidth
                     size="small"
                     disabled={!isAdmin}
-                    error={
-                      touched.specialization && Boolean(errors.specialization)
-                    }
+                    error={ touched.specialization && Boolean(errors.specialization)}
                     helperText={touched.specialization && errors.specialization}
                   />
                   <Box display="flex" gap={2}>
@@ -367,13 +341,8 @@ const Doctors = () => {
                       fullWidth
                       size="small"
                       disabled={!isAdmin}
-                      error={
-                        touched.address?.street &&
-                        Boolean(errors.address?.street)
-                      }
-                      helperText={
-                        touched.address?.street && errors.address?.street
-                      }
+                      error={ touched.address?.street && Boolean(errors.address?.street) }
+                      helperText={ touched.address?.street && errors.address?.street }
                     />
                     <TextField
                       label="House Number"
@@ -383,14 +352,8 @@ const Doctors = () => {
                       fullWidth
                       size="small"
                       disabled={!isAdmin}
-                      error={
-                        touched.address?.houseNumber &&
-                        Boolean(errors.address?.houseNumber)
-                      }
-                      helperText={
-                        touched.address?.houseNumber &&
-                        errors.address?.houseNumber
-                      }
+                      error={ touched.address?.houseNumber && Boolean(errors.address?.houseNumber) }
+                      helperText={ touched.address?.houseNumber && errors.address?.houseNumber }
                     />
                     <TextField
                       label="Zip Code"
@@ -400,24 +363,15 @@ const Doctors = () => {
                       fullWidth
                       size="small"
                       disabled={!isAdmin}
-                      error={
-                        touched.address?.zipCode &&
-                        Boolean(errors.address?.zipCode)
-                      }
-                      helperText={
-                        touched.address?.zipCode && errors.address?.zipCode
-                      }
+                      error={ touched.address?.zipCode && Boolean(errors.address?.zipCode) }
+                      helperText={ touched.address?.zipCode && errors.address?.zipCode }
                     />
                   </Box>
                   <TextField
                     label="Treatment"
                     name="treatmentName"
                     value={values.treatmentIds
-                      .map(
-                        (id) =>
-                          treatments.find((treatment) => treatment.id === id)
-                            ?.name || ""
-                      )
+                      .map((id) => treatments.find((treatment) => treatment.id === id) ?.name || "" )
                       .join(", ")}
                     fullWidth
                     size="small"
@@ -480,12 +434,9 @@ const Doctors = () => {
                           .filter(Boolean)}
                         getOptionLabel={(option) => option.name?.toString()}
                         value={values.patientIds.map(
-                          (id) => patients.find((p) => p.id === id) || ""
-                        )}
+                          (id) => patients.find((p) => p.id === id) || "" )}
                         onChange={(event, newValue) => {
-                          const selectedPatientIds = newValue.map(
-                            (patient) => patient.id
-                          );
+                          const selectedPatientIds = newValue.map( (patient) => patient.id );
                           setFieldValue("patientIds", selectedPatientIds);
                         }}
                         renderInput={(params) => (
@@ -495,15 +446,11 @@ const Doctors = () => {
                             fullWidth
                             size="small"
                             disabled={!isAdmin}
-                            error={
-                              touched.patientIds && Boolean(errors.patientIds)
-                            }
+                            error={ touched.patientIds && Boolean(errors.patientIds) }
                             helperText={touched.patientIds && errors.patientIds}
                           />
                         )}
-                        isOptionEqualToValue={(option, value) =>
-                          option.id === value.id
-                        }
+                        isOptionEqualToValue={(option, value) => option.id === value.id }
                       />
                     ) : (
                       <TextField
@@ -511,10 +458,7 @@ const Doctors = () => {
                         name="patientIds"
                         value={values.patientIds
                           .map(
-                            (id) =>
-                              patients.find((patient) => patient.id === id)
-                                ?.name || ""
-                          )
+                            (id) => patients.find((patient) => patient.id === id)?.name || "")
                           .join(", ")}
                         fullWidth
                         size="small"
@@ -525,9 +469,7 @@ const Doctors = () => {
                     )}
                     {isAdmin && (
                       <Box display="flex" alignItems="center" mt={1} ml={1}>
-                        <ErrorOutlineIcon
-                          sx={{ color: "red", fontSize: 16, mr: 0.5 }}
-                        />
+                        <ErrorOutlineIcon sx={{ color: "red", fontSize: 16, mr: 0.5 }} />
                         <Typography
                           variant="caption"
                           fontSize={10}
@@ -550,10 +492,7 @@ const Doctors = () => {
                         Save
                       </Button>
                     )}
-                    <Button
-                      sx={{ backgroundColor: colors.grey[600] }}
-                      onClick={handleClose}
-                    >
+                    <Button sx={{ backgroundColor: colors.grey[600] }} onClick={handleClose} >
                       Close
                     </Button>
                   </Box>
@@ -573,8 +512,7 @@ const Doctors = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor:
-              theme.palette.mode === "dark" ? colors.primary[400] : "white",
+            backgroundColor: theme.palette.mode === "dark" ? colors.primary[400] : "white",
             boxShadow: 24,
             borderRadius: 2,
             maxWidth: 400,
@@ -612,9 +550,7 @@ const Doctors = () => {
             </Button>
             <Button
               onClick={handleDeleteClose}
-              sx={{
-                backgroundColor: colors.grey[600],
-              }}
+              sx={{ backgroundColor: colors.grey[600], }}
               variant="contained"
             >
               Cancel

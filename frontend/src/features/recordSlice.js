@@ -1,28 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createMedicalRecord, deleteMedicalRecord, getAllMedicalRecords, updateMedicalRecord } from "../controllers/medicalRecords.controller";
 
-
 //thunks
 export const fetchRecords = createAsyncThunk("records/fetchRecords", async ({ userRole, id }) => {
-  console.log("records fetch in slice");
   const response = await getAllMedicalRecords({ userRole, id });
   return response.data;
 });
-
 export const addRecord = createAsyncThunk("records/addRecord", async (record) => {
-  console.log(record)
   const response = await createMedicalRecord(record);
-  console.log(response.data)
   return response.data;
 });
-
 export const updateRecord = createAsyncThunk("records/updateRecord", async (record) => {
-  console.log(record)
   const response = await updateMedicalRecord(record);
-  console.log(response.data)
   return response.data;
 });
-
 export const deleteRecord = createAsyncThunk("records/deleteRecord", async (recordId) => {
   await deleteMedicalRecord(recordId);
   return recordId;
@@ -30,18 +21,7 @@ export const deleteRecord = createAsyncThunk("records/deleteRecord", async (reco
 
 const recordSlice = createSlice({
   name: "record",
-  initialState: {
-    records: [],
-    selectedRecord: null,
-    createModelOpen: false,
-    editModelOpen: false,
-    deleteModelOpen: false,
-    filterText: "",
-    currentPage: 1,
-    recordsPerPage: 5,
-    loading: false,
-    error: null,
-  },
+  initialState: { records: [], selectedRecord: null, createModelOpen: false, editModelOpen: false, deleteModelOpen: false, filterText: "", currentPage: 1, recordsPerPage: 5, loading: false, error: null, },
   reducers: {
     setSelectedRecord: (state, action) => {
       state.selectedRecord = action.payload;
@@ -94,17 +74,7 @@ const recordSlice = createSlice({
   },
 });
 
-export const {
-  setRecords,
-  setSelectedRecord,
-  setCreateModelOpen,
-  setEditModelOpen,
-  setDeleteModelOpen,
-  setFilterText,
-  setCurrentPage,
-  setRecordsPerPage,
-} = recordSlice.actions;
-
+export const { setRecords, setSelectedRecord, setCreateModelOpen, setEditModelOpen,setDeleteModelOpen, setFilterText,setCurrentPage, setRecordsPerPage,} = recordSlice.actions;
 export default recordSlice.reducer;
 
 //=====================================================================================================================================================================================================================================
