@@ -1,55 +1,3 @@
-// import { createSlice } from "@reduxjs/toolkit";
-
-// const initialState = {
-//   doctors: [],
-//   selectedDoctor: null,
-// };
-
-// const doctorSlice = createSlice({
-//   name: "doctors",
-//   initialState,
-//   reducers: {
-//     setDoctors(state, action) {
-//       console.log(action.payload)
-//       state.doctors = action.payload;
-//     },
-//     addDoctor(state, action) {
-//       console.log(action.payload)
-//       state.doctors.push(action.payload);
-//     },
-//     updateDoctor(state, action) {
-//       const index = state.doctors.findIndex(
-//         (doc) => doc.id === action.payload.id
-//       );
-//       if (index !== -1) {
-//         state.doctors[index] = action.payload;
-//       }
-//     },
-//     deleteDoctor(state, action) {
-//       state.doctors = state.doctors.filter((doc) => doc.id !== action.payload);
-//     },
-//     setSelectedDoctor(state, action) {
-//       state.selectedDoctor = action.payload;
-//     },
-//     clearSelectedDoctor(state) {
-//       state.selectedDoctor = null;
-//     },
-//   },
-// });
-
-// export const {
-//   setDoctors,
-//   addDoctor,
-//   updateDoctor,
-//   deleteDoctor,
-//   setSelectedDoctor,
-//   clearSelectedDoctor,
-// } = doctorSlice.actions;
-
-// export default doctorSlice.reducer;
-
-//=====================================================================================================================================================================================================================================
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllDoctors,
@@ -160,3 +108,5 @@ const doctorSlice = createSlice({
 export const { addDoctor, setDoctors, setSelectedDoctor, clearSelectedDoctor } =
   doctorSlice.actions;
 export default doctorSlice.reducer;
+
+//=====================================================================================================================================================================================================================================
