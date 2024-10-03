@@ -2669,7 +2669,7 @@ const mockDoctors = {
 const Appointments = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
+  const { userRole, id  } = JSON.parse(localStorage.getItem("userDetails")) || {};
   // const userRole = "PATIENT";
   const dispatch = useDispatch();
   const { appointments, status } = useSelector((state) => state.appointment);
@@ -2699,15 +2699,25 @@ const Appointments = () => {
   //   }
   // }, [dispatch, status]);
   useEffect(() => {
+    console.log("appointment useeffect");
+    console.log("appointment useeffect val", id, userRole);
+
     // if (status === "idle") {
-      dispatch(fetchAppointments());
+      // if (userRole && id && status === "idle") {
+      dispatch(fetchAppointments({userRole, id}));
+      // }
     // }
+    if (userRole && id) {
     dispatch(fetchPatients());
     dispatch(getDoctors());
-  // }, [dispatch, status]);
-  }, []);
+    }
+  }, [dispatch]);
+// }, [dispatch, userRole, id, status]);
+
 
   console.log(appointments);
+  console.log(doctors);
+  console.log(patients);
 
   const calculateEndTime = (dateTime, duration) => {
     const start = new Date(dateTime);

@@ -309,6 +309,7 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
+  const { userRole, id  } = JSON.parse(localStorage.getItem("userDetails")) || {};
 
   const { appointments } = useSelector((state) => state.appointment);
   const { treatments } = useSelector((state) => state.treatment);
@@ -317,11 +318,11 @@ const Dashboard = () => {
   const { doctors } = useSelector((state) => state.doctor);
 
   useEffect(() => {
-    dispatch(fetchAppointments());
+    dispatch(fetchAppointments({ userRole, id }));
     dispatch(fetchTreatments());
-    dispatch(fetchPayments());
+    dispatch(fetchPayments({ userRole, id }));
     dispatch(getDoctors());
-    dispatch(fetchRecords());
+    dispatch(fetchRecords({ userRole, id }));
   }, []);
   
   console.log({
@@ -484,7 +485,7 @@ const Dashboard = () => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Treatments
+              Recent Diagnostics
             </Typography>
           </Box>
           {latestRecords.length > 0 ? (

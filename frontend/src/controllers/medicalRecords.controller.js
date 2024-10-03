@@ -1,7 +1,7 @@
 import api from "../config/api";
-const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
+// const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
 
-export const getAllMedicalRecords = async () => {
+export const getAllMedicalRecords = async ({ userRole, id }) => {
 // const id = 4
     // const appointments = userRole === "DOCTOR"? await api.get(`/appointments/doctor/${id}`): []
     let records = []

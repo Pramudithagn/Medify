@@ -82,8 +82,9 @@ import { createMedicalRecord, deleteMedicalRecord, getAllMedicalRecords, updateM
 
 
 //thunks
-export const fetchRecords = createAsyncThunk("records/fetchRecords", async () => {
-  const response = await getAllMedicalRecords();
+export const fetchRecords = createAsyncThunk("records/fetchRecords", async ({ userRole, id }) => {
+  console.log("records fetch in slice");
+  const response = await getAllMedicalRecords({ userRole, id });
   return response.data;
 });
 

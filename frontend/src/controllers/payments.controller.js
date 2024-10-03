@@ -1,7 +1,9 @@
 import api from "../config/api";
-const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
+// const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
 
-export const getAllPayments = async () => {
+export const getAllPayments = async ({userRole, id}) => {
+    console.log( "in payments controller ",userRole, id)
+
     // const id = 2
     // const userRole = "PATIENT"
     let payments = []

@@ -66,8 +66,8 @@ const initialState = {
 
 export const fetchPayments = createAsyncThunk(
   "payment/fetchPayments",
-  async () => {
-    const response = await getAllPayments();
+  async ({userRole, id}) => {
+    const response = await getAllPayments({userRole, id});
     return response.data;
   }
 );

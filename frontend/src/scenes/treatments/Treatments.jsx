@@ -516,6 +516,7 @@ export const Treatments = () => {
 
     const [originalDoctorIds, setOriginalDoctorIds] = React.useState([]);
   useEffect(() => {
+    console.log("treatment useeffect");
     dispatch(fetchTreatments());
     dispatch(getDoctors());
 

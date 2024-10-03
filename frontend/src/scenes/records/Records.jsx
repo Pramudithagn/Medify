@@ -1363,8 +1363,8 @@ const Records = () => {
   const colors = tokens(theme.palette.mode);
   const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
   // const userRole = "PATIENT"
-  console.log("userrr",JSON.parse(localStorage.getItem("userDetails")))
-  console.log("idddddddd  " +id)
+  // console.log("userrr",JSON.parse(localStorage.getItem("userDetails")))
+  // console.log("idddddddd  " +id)
 
   const dispatch = useDispatch();
   const {
@@ -1384,10 +1384,11 @@ const Records = () => {
   const { doctors } = useSelector((state) => state.doctor);
 
   React.useEffect(() => {
-    dispatch(fetchRecords());
+    dispatch(fetchRecords({ userRole, id }));
     dispatch(fetchTreatments());
     dispatch(fetchPatients());
     dispatch(getDoctors());
+    console.log(records)
   }, [dispatch]);
 
   const handleEditOpen = (record) => {

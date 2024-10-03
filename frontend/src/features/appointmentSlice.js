@@ -46,7 +46,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllAppointments,
-  getAppointmentById,
   createAppointment as createAppointmentApi,
   updateAppointment as updateAppointmentApi,
   deleteAppointment as deleteAppointmentApi,
@@ -61,9 +60,12 @@ const initialState = {
 // Thunks 
 export const fetchAppointments = createAsyncThunk(
   "appointments/fetchAppointments",
-  async (_, { rejectWithValue }) => {
+  async ({userRole, id}, { rejectWithValue }) => {
     try {
-      const response = await getAllAppointments();
+      console.log("appointment fetch in slice");
+      const response = await getAllAppointments({userRole, id});
+      console.log("appointment fetch data in slice", response.data);
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -144,8 +146,5 @@ const appointmentSlice = createSlice({
   },
 });
 
-export const {
-    // setAppointments,
-  } = appointmentSlice.actions;
-
+export const {} = appointmentSlice.actions;
 export default appointmentSlice.reducer;

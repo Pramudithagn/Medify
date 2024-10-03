@@ -14,7 +14,9 @@ const FAQ = () => {
     <Box m="20px">
       <Header title="FAQ" subtitle="Frequently Asked Questions" />
 
-      <Accordion defaultExpanded>
+      {/* <Accordion defaultExpanded> */}
+      <Box display="flex" flexDirection="column" gap={1}>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
             How do I book an appointment with a doctor?
@@ -27,7 +29,7 @@ const FAQ = () => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
             Can I view my medical records online?
@@ -40,7 +42,7 @@ const FAQ = () => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
             How do I pay my medical bills?
@@ -53,7 +55,7 @@ const FAQ = () => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
             How can I contact my doctor?
@@ -66,7 +68,7 @@ const FAQ = () => {
         </AccordionDetails>
       </Accordion>
 
-      <Accordion defaultExpanded>
+      <Accordion >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography color={colors.greenAccent[500]} variant="h5">
             How can I update my personal information?
@@ -78,6 +80,7 @@ const FAQ = () => {
           </Typography>
         </AccordionDetails>
       </Accordion>
+      </Box>
     </Box>
   );
 };
