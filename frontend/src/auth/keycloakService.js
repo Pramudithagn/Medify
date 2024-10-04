@@ -26,11 +26,12 @@ const Login = (onAuthenticatedCallback) => {
     // });
     .then(async (authenticated) => {
       if (authenticated) {
+        console.log("Token after authentication:", keycloakInstance.token);
+        localStorage.setItem("token", keycloakInstance.token);
         const user = await getUser();
         localStorage.setItem("userDetails", JSON.stringify(user));
-
         onAuthenticatedCallback();
-        console.log("Token after authentication:", keycloakInstance.token);
+        // localStorage.setItem("token", keycloakInstance.token);
       } else {
         alert("Non authenticated");
       }
@@ -45,6 +46,7 @@ const Logout = () => {
   if (keycloakInstance) {
     keycloakInstance.logout();
     localStorage.removeItem('userDetails')
+    localStorage.removeItem('token')
   }
 };
 
@@ -53,7 +55,8 @@ const GetAccessToken = () => {
   console.log(keycloakInstance.tokenParsed)
   if (keycloakInstance.token) {
     console.log("Token authentication when requesting:", keycloakInstance.token);
-    return keycloakInstance.token;
+    // return keycloakInstance.token;
+    return localStorage.getItem('token');
   } else {
     console.warn("Token is undefined. Make sure the user is authenticated.");
     return null;

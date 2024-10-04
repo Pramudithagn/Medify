@@ -92,10 +92,10 @@ const Appointments = () => {
       dispatch(fetchAppointments({userRole, id}));
       // }
     // }
-    if (userRole && id) {
+
     dispatch(fetchPatients());
     dispatch(getDoctors());
-    }
+
   }, [dispatch]);
 // }, [dispatch, userRole, id, status]);
 
@@ -205,14 +205,16 @@ const Appointments = () => {
       <Header title="Appointments" subtitle="Manage your appointments" />
 
       {userRole === "ADMIN" && (
+        <Box display="flex" justifyContent="flex-end" mb={1} >
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         onClick={openCreateModal}
-        sx={{ marginBottom: "10px" }}
+        sx={{ marginBottom: "10px"}}
       >
         Create Appointment
       </Button>
+      </Box>
       )}
 
       <Box display="flex" justifyContent="space-between">
@@ -297,7 +299,7 @@ const Appointments = () => {
 
         {/* Create Appointment Modal */}
         <Dialog open={isCreateModalOpen} onClose={closeCreateModal}>
-          <DialogTitle>Create New Appointment</DialogTitle>
+        <DialogTitle  variant="h3" sx={{ display: "flex", justifyContent: "center", mt:"5%", mb:"3%" }} >Create New Appointment</DialogTitle>
           <DialogContent>
             <TextField
               label="Title"
@@ -381,18 +383,18 @@ const Appointments = () => {
               }
             />
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ display: "flex", justifyContent: "center", mb:"7%"}}>
             <Button
               onClick={handleCreateAppointment}
               variant="contained"
-              color="primary"
+              color="secondary"
             >
               Create
             </Button>
             <Button
               onClick={closeCreateModal}
               variant="contained"
-              color="secondary"
+              sx={{ backgroundColor: colors.grey[600]}}
             >
               Cancel
             </Button>
@@ -400,23 +402,23 @@ const Appointments = () => {
         </Dialog>
 
         {/* Delete Appointment Modal */}
-        <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal}>
-          <DialogTitle>Delete Appointment</DialogTitle>
-          <DialogContent>
+        <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal} sx={{ }}>
+          <DialogTitle  variant="h4" sx={{ display: "flex", justifyContent: "center", color: colors.redAccent[500], }} >Warning!</DialogTitle>
+           <DialogContent >
             Are you sure you want to delete this appointment?
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ display: "flex", justifyContent: "center"}}>
             <Button
               onClick={handleDeleteAppointment}
               variant="contained"
-              color="primary"
+              sx={{ backgroundColor: colors.redAccent[600]}}
             >
               Delete
             </Button>
             <Button
               onClick={closeDeleteModal}
               variant="contained"
-              color="secondary"
+              sx={{ backgroundColor: colors.grey[600]}}
             >
               Cancel
             </Button>
@@ -426,7 +428,7 @@ const Appointments = () => {
         {/* Update Appointment Modal */}
         {updatedAppointment && (
           <Dialog open={isUpdateModalOpen} onClose={closeUpdateModal}>
-            <DialogTitle>Edit Appointment</DialogTitle>
+            <DialogTitle mt={4} mb={2} variant="h4" sx={{ display: "flex", justifyContent: "center" }} >Edit Appointment</DialogTitle>
             <DialogContent>
               <TextField
                 label="Title"
@@ -466,18 +468,18 @@ const Appointments = () => {
                 }
               />
             </DialogContent>
-            <DialogActions>
+            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
               <Button
                 onClick={handleUpdateAppointment}
                 variant="contained"
-                color="primary"
+                color="secondary"
               >
                 Save
               </Button>
               <Button
                 onClick={closeUpdateModal}
                 variant="contained"
-                color="secondary"
+                sx={{ backgroundColor: colors.grey[600]}}
               >
                 Cancel
               </Button>

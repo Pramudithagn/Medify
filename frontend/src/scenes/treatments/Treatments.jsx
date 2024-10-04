@@ -478,13 +478,14 @@ export const Treatments = () => {
                     checked={values.status}
                     onChange={(event) => setFieldValue("status", event.target.checked) }
                     name="status"
+                    color="secondary"
                   />
                 </Box>
                 <Box display="flex" justifyContent="center" gap={2} mt={3}>
                   <Button
                     variant="contained"
                     type="submit"
-                    sx={{ backgroundColor: colors.greenAccent }}
+                    color="secondary"
                   >
                     Save
                   </Button>
@@ -514,10 +515,10 @@ export const Treatments = () => {
       </Fab> */}
       {userRole === "ADMIN" && (
         <Fab
-          color="primary"
+          color="secondary"
           aria-label="add"
           onClick={() => { dispatch(setIsCreating(true)); }}
-          sx={{ position: "fixed", bottom: 20, right: 20 }}
+          sx={{ backgroundColor: colors.greenAccent[500], position: "fixed", bottom: "10%", right: "2%" }}
         >
           <AddIcon />
         </Fab>

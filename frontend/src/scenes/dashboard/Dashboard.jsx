@@ -120,7 +120,6 @@ const Dashboard = () => {
               <Divider sx={{ mt: 2, backgroundColor: colors.grey[500] }} />
 
               {isLoading ? (
-                // <Skeleton variant="rectangular" height={100} />
                 <Box>
                 {[...Array(3)].map((_, index) => (
                   <Skeleton key={index} height={100} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
@@ -169,7 +168,6 @@ const Dashboard = () => {
             </Typography>
           </Box>
           {isLoading ? (
-            // <Skeleton variant="rectangular" height={100} />
             <Box>
                 {[...Array(2)].map((_, index) => (
                   <Skeleton key={index} height={100} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
@@ -222,7 +220,6 @@ const Dashboard = () => {
           </Box>
           
           {isLoading ? (
-            // <Skeleton variant="rectangular" height={100} />
             <Box>
                 {[...Array(2)].map((_, index) => (
                   <Skeleton key={index} height={100} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
@@ -276,7 +273,7 @@ const Dashboard = () => {
             title={weeklyAppointments.length?.toString()}
             subtitle="Weekly Consultations"
             progress={weeklyAppointments.length / appointments?.length}
-            increase="+5%"
+            increase="+0%"
             icon={ <PersonAddIcon sx={{ color: colors.greenAccent[600], fontSize: "26px" }} /> }
           />
         </Box>

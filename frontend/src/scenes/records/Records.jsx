@@ -199,7 +199,7 @@ const Records = () => {
             <SearchIcon sx={{ marginLeft: 1 }} />
           </Box>
           <Box>
-          {userRole !== "PATIENT" && (
+          {userRole === "DOCTOR" && (
             <Button type="submit" variant="contained"  color="secondary"  onClick={handleCreateOpen} >
               + Create Record
             </Button>
@@ -545,7 +545,7 @@ const Records = () => {
                       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, maxHeight: "150px", overflowY: "auto", marginBottom: 2, }} >
                         {/* {mockTreatmentIds.map((treatmentId) => ( */}
                         {treatments.map((treatment) => (
-                          <Box key={treatment} sx={{ width: "calc(45% - 16px)", display: "flex", alignItems: "center", }} >
+                          <Box key={treatment.id} sx={{ width: "calc(45% - 16px)", display: "flex", alignItems: "center", }} >
                             <FormControlLabel
                               control={
                                 <Checkbox
