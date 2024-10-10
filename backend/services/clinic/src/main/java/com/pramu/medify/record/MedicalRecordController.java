@@ -1,6 +1,5 @@
 package com.pramu.medify.record;
 
-import com.pramu.medify.appointment.AppointmentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +22,7 @@ public class MedicalRecordController {
     @GetMapping("/{id}")
     public ResponseEntity<MedicalRecordDTO> getMedicalRecordById(@PathVariable Long id) {
         MedicalRecordDTO medicalRecordDTO = medicalRecordService.getMedicalRecordById(id);
-//        if (medicalRecordDTO != null) {
             return new ResponseEntity<>(medicalRecordDTO, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/doctor/{doctorId}")
@@ -47,15 +43,11 @@ public class MedicalRecordController {
     @PutMapping("/edit")
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO) {
         MedicalRecord updatedMedicalRecord = medicalRecordService.updateMedicalRecord(medicalRecordDTO);
-//        if (updatedMedicalRecord != null) {
             return new ResponseEntity<>(updatedMedicalRecord, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Long> deleteMedicalRecord(@PathVariable Long id) {
-
         return new ResponseEntity<>(medicalRecordService.deleteMedicalRecord(id), HttpStatus.OK);
     }
 }

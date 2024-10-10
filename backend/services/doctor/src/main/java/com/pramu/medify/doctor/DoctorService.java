@@ -71,9 +71,6 @@ public class DoctorService {
         if (doctorDTO.specialization() != null) {
             doctor.setSpecialization(doctorDTO.specialization());
         }
-//        if (doctorDTO.patientIds() != null) {
-//            doctor.getPatientIds().addAll(doctorDTO.patientIds());
-//        }
 
         if (doctorDTO.patientIds() != null) {
             if (doctor.getPatientIds().size() > doctorDTO.patientIds().size()) {
@@ -96,11 +93,7 @@ public class DoctorService {
         if (doctorDTO.appointmentIds() != null) {
             doctor.getAppointmentIds().addAll(doctorDTO.appointmentIds());
         }
-//        if (doctorDTO.treatmentIds() != null) {
-//            doctor.getTreatmentIds().addAll(doctorDTO.treatmentIds());
-//        }
         if (doctorDTO.treatmentIds() != null) {
-//            doctor.setTreatmentIds(doctorDTO.treatmentIds());
             for (Long treatmentId : doctorDTO.treatmentIds()) {
                 if (doctor.getTreatmentIds().contains(treatmentId)) {
                     doctor.getTreatmentIds().remove(treatmentId);

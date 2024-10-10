@@ -12,7 +12,6 @@ import java.util.Optional;
         url = "${application.config.payment-url}"
 )
 public interface PaymentClient {
-
     @PostMapping("/create")
     Optional<PaymentDTO> createPayment(PaymentDTO paymentDTO);
 }

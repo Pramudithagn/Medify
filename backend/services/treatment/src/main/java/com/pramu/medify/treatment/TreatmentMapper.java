@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TreatmentMapper {
 
-    // Converts Treatment entity to TreatmentDTO
     public TreatmentDTO toDto(Treatment treatment) {
         if (treatment == null) {
             return null;
@@ -19,7 +18,6 @@ public class TreatmentMapper {
         );
     }
 
-    // Converts TreatmentDTO to Treatment entity
     public Treatment toEntity(TreatmentDTO dto) {
         if (dto == null) {
             return null;

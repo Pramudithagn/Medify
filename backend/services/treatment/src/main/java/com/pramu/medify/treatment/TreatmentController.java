@@ -22,10 +22,7 @@ public class TreatmentController {
     @GetMapping("/{id}")
     public ResponseEntity<TreatmentDTO> getTreatmentById(@PathVariable Long id) {
         TreatmentDTO treatmentDTO = treatmentService.getTreatmentById(id);
-//        if (treatmentDTO != null) {
             return new ResponseEntity<>(treatmentDTO, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/create")
@@ -36,10 +33,7 @@ public class TreatmentController {
     @PutMapping("/edit")
     public ResponseEntity<Treatment> updateTreatment(@RequestBody TreatmentDTO treatmentDTO) {
         Treatment updatedTreatment = treatmentService.updateTreatment(treatmentDTO);
-//        if (updatedTreatment != null) {
             return new ResponseEntity<>(updatedTreatment, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/edit/change-status/{id}")

@@ -20,6 +20,11 @@ spring:
       properties:
         spring.json.type.mapping: MedicalRecordCreatedEvent:com.pramu.medify.kafka.MedicalRecordCreatedEvent,AppointmentCreatedEvent:com.pramu.medify.kafka.AppointmentCreatedEvent,AppointmentCancelledEvent:com.pramu.medify.kafka.AppointmentCancelledEvent
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 
 application:
   config:

@@ -12,5 +12,4 @@ public class KafkaTopicConfig {
     public NewTopic treatmentDoctorsChangedTopic() {
         return TopicBuilder.name("treatment-doctors-changed").build();
     }
-
 }

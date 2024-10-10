@@ -56,12 +56,6 @@ import reactor.core.publisher.Mono;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-//    private final ServiceRequestFilter serviceRequestFilter;
-//
-//    public SecurityConfig(ServiceRequestFilter serviceRequestFilter) {
-//        this.serviceRequestFilter = serviceRequestFilter;
-//    }
-
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
@@ -80,8 +74,6 @@ public class SecurityConfig {
                             .jwtAuthenticationConverter(grantedAuthoritiesExtractor())
                     )
             );
-//                .addFilterBefore(serviceRequestFilter, SecurityWebFilterChain.class);
-//                .addFilterBefore(serviceRequestFilter, SecurityWebFiltersOrder.AUTHORIZATION);
 
         return http.build();
     }

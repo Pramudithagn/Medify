@@ -93,8 +93,6 @@ public class PatientService {
             patient.setAllergies(patientDTO.allergies());
         }
         if (patientDTO.doctorIds() != null) {
-//            patient.getDoctorIds().addAll(patientDTO.doctorIds());
-//            patient.setDoctorIds(patientDTO.doctorIds());
             if (patient.getDoctorIds().size() < patientDTO.doctorIds().size()) {
                 for (Long doctorId : patientDTO.doctorIds()) {
                     if (!patient.getDoctorIds().contains(doctorId)) {
@@ -120,7 +118,6 @@ public class PatientService {
         }
         if (patientDTO.paymentIds() != null) {
             patient.getPaymentIds().addAll(patientDTO.paymentIds());
-//            patient.setPaymentIds(patientDTO.paymentIds());
         }
 
         return patientRepository.save(patient);
@@ -154,7 +151,6 @@ public class PatientService {
         }
 
         patientRepository.save(patient);
-
     }
 
     public PatientDTO assignDoctorToPatient(Long patientId, Long doctorId) {
@@ -169,9 +165,6 @@ public class PatientService {
         if (patient.getDoctorIds().contains(doctorId)) {
             throw new BusinessException("The selected doctor already assigned to this patient. ID :" + doctorId);
         }
-//        if (patient.getDoctorId() != null) {
-//            throw new IllegalStateException("Patient already has a doctor assigned");
-//        }
 
         Set<Long> newDoctorIds = patient.getDoctorIds();
         newDoctorIds.add(doctorId);
@@ -187,7 +180,6 @@ public class PatientService {
     }
 
     public Long deletePatient(Long id) {
-//        patientRepository.deleteById(id);
         Optional<Patient> optionalPatient = patientRepository.findById(id);
         if (optionalPatient.isEmpty()) {
             throw new EntityNotFoundException("Patient with ID " + id + " not found.");

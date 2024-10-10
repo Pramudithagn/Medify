@@ -22,10 +22,7 @@ public class DoctorController {
     @GetMapping("/{id}")
     public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable Long id) {
         DoctorDTO doctorDTO = doctorService.getDoctorById(id);
-//        if (doctorDTO != null) {
             return new ResponseEntity<>(doctorDTO, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/uuid/{uuid}")
@@ -42,10 +39,7 @@ public class DoctorController {
     @PutMapping("/edit")
     public ResponseEntity<Doctor> updateDoctor(@RequestBody DoctorDTO doctorDTO) {
         Doctor updatedDoctor = doctorService.updateDoctor(doctorDTO);
-//        if (updatedDoctor != null) {
             return new ResponseEntity<>(updatedDoctor, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{id}")

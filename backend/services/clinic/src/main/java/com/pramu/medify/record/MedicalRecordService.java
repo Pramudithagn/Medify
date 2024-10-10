@@ -1,10 +1,8 @@
 package com.pramu.medify.record;
 
-import com.pramu.medify.appointment.AppointmentDTO;
 import com.pramu.medify.doctor.DoctorClient;
 import com.pramu.medify.exception.BusinessException;
 import com.pramu.medify.exception.ResourceNotFoundException;
-import com.pramu.medify.kafka.AppointmentCreatedEvent;
 import com.pramu.medify.kafka.ClinicKafkaProducer;
 import com.pramu.medify.kafka.MedicalRecordCreatedEvent;
 import com.pramu.medify.patient.PatientClient;
@@ -15,7 +13,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +55,6 @@ public class MedicalRecordService {
                     .stream().filter(medicalRecord -> Objects.equals(medicalRecord.patientId(), userId))
                     .toList();
         }
-        System.out.println(allMedicalRecords);
         return allMedicalRecords;
     }
 
@@ -151,7 +147,6 @@ public class MedicalRecordService {
     }
 
     public Long deleteMedicalRecord(Long id) {
-//        medicalRecordRepository.deleteById(id);
         MedicalRecord medicalRecord = medicalRecordRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("MedicalRecord not found with id " + id));
         medicalRecordRepository.delete(medicalRecord);

@@ -23,18 +23,12 @@ public class AppointmentController {
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentDTO> getAppointmentById(@PathVariable Long id) {
         AppointmentDTO appointmentDTO = appointmentService.getAppointmentById(id);
-//        if (appointmentDTO != null) {
             return new ResponseEntity<>(appointmentDTO, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/doctor/{doctorId}")
     public ResponseEntity<List<AppointmentDTO>> getAppointmentsByDoctorId(@PathVariable Long doctorId) {
-//        List<AppointmentDTO> appointmentDTOs = appointmentService.getAppointmentByDoctorId(doctorId);
-//        return new ResponseEntity<>(appointmentService.getAppointmentsByDoctorId(doctorId), HttpStatus.OK);
         return new ResponseEntity<>(appointmentService.getAppointmentsByUserId(doctorId, "doctor"), HttpStatus.OK);
-
     }
 
     @GetMapping("/patient/{patientId}")
@@ -44,24 +38,13 @@ public class AppointmentController {
 
     @PostMapping("/create")
     public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-//        try {
             return new ResponseEntity<>(appointmentService.createAppointment(appointmentDTO), HttpStatus.CREATED);
-//        } catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        }
     }
 
     @PutMapping("/edit")
     public ResponseEntity<Appointment> updateAppointment(@RequestBody AppointmentDTO appointmentDTO) {
-//        try {
             Appointment updatedAppointment = appointmentService.updateAppointment(appointmentDTO);
-//            if (updatedAppointment != null) {
                 return new ResponseEntity<>(updatedAppointment, HttpStatus.OK);
-//            }
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        } catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        }
     }
 
     @DeleteMapping("/delete/{id}")

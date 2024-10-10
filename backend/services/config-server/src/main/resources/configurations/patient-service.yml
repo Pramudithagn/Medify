@@ -19,7 +19,6 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: DoctorPatientAssignedEvent:com.pramu.medify.kafka.DoctorPatientAssignedEvent
-
     consumer:
       bootstrap-servers: localhost:9092
       group-id: patient-group
@@ -29,3 +28,9 @@ spring:
       properties:
         spring.json.trusted.packages: '*'
         spring.json.type.mapping: MedicalRecordCreatedEvent:com.pramu.medify.kafka.MedicalRecordCreatedEvent,AppointmentCreatedEvent:com.pramu.medify.kafka.AppointmentCreatedEvent,AppointmentCancelledEvent:com.pramu.medify.kafka.AppointmentCancelledEvent,PaymentCreatedEvent:com.pramu.medify.kafka.PaymentCreatedEvent,DoctorPatientAssignedEvent:com.pramu.medify.kafka.DoctorPatientAssignedEvent
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

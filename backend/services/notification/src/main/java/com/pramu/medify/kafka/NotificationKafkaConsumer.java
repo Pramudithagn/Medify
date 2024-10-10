@@ -22,10 +22,6 @@ public class NotificationKafkaConsumer {
         message = "You have been assigned to a new patient with ID: " + event.patientId();
         notificationService.sendNotification(event.doctorId(), UserType.DOCTOR.name(),
                 NotificationType.DOCTOR_ASSIGNATION.name(), message);
-
-//        message = "Doctor assigned to a doctor with ID: " + event.doctorId() + "and patient " +
-//                "with ID: " + event.patientId();
-//        notificationService.sendNotification(event.doctorId(), UserType.ADMIN, message);
     }
 
     @KafkaListener(topics = "medical-record-created")
@@ -35,7 +31,6 @@ public class NotificationKafkaConsumer {
                 NotificationType.MEDICAL_RECORD_CREATION.name(), message);
         notificationService.sendNotification(event.doctorId(), UserType.DOCTOR.name(),
                 NotificationType.MEDICAL_RECORD_CREATION.name(), message);
-//        notificationService.sendNotification(event.doctorId(), UserType.ADMIN, message);
     }
 
     @KafkaListener(topics = "appointment-created")
@@ -46,7 +41,6 @@ public class NotificationKafkaConsumer {
                 NotificationType.APPOINTMENT_CREATION.name(), message);
         notificationService.sendNotification(event.doctorId(), UserType.DOCTOR.name(),
                 NotificationType.APPOINTMENT_CREATION.name(), message);
-//        notificationService.sendNotification(event.doctorId(), UserType.ADMIN, message);
     }
 
     @KafkaListener(topics = "appointment-cancelled")
@@ -56,7 +50,6 @@ public class NotificationKafkaConsumer {
                 NotificationType.APPOINTMENT_CANCELLATION.name(), message);
         notificationService.sendNotification(event.doctorId(), UserType.DOCTOR.name(),
                 NotificationType.APPOINTMENT_CANCELLATION.name(), message);
-//        notificationService.sendNotification(event.doctorId(), UserType.ADMIN, message);
     }
 
     @KafkaListener(topics = "payment-created")
@@ -65,6 +58,5 @@ public class NotificationKafkaConsumer {
                 " and amount: " + event.amount();
         notificationService.sendNotification(event.id(), UserType.PATIENT.name(),
                 NotificationType.PAYMENT_CREATION.name(), message);
-//        notificationService.sendNotification(event.id(), UserType.ADMIN, message);
     }
 }

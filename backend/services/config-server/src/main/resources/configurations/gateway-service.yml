@@ -42,3 +42,9 @@ keycloak:
   resource:
     access:
       clientid: medify-client
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

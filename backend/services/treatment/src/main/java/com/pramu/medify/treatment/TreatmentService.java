@@ -40,9 +40,7 @@ public class TreatmentService {
         Set<Long> doctorIds = new HashSet<>(treatmentDTO.doctorIds());
 
         treatmentKafkaProducer.assignedDoctorsChangedEvent(new AssignedDoctorsChangedEvent(
-//                treatmentDTO.id(),
                 savedTreatment.getId(),
-//                    (List<Long>) treatmentDTO.doctorIds()
                 doctorIds
         ));
         return savedTreatment;
@@ -55,11 +53,6 @@ public class TreatmentService {
             throw new EntityNotFoundException("Treatment with ID " + treatmentDTO.id() + " not found.");
         }
         Treatment treatment = optionalTreatment.get();
-//            treatment.setName(treatmentDTO.name());
-//            treatment.setDescription(treatmentDTO.description());
-//            treatment.setPrice(treatmentDTO.price());
-//            treatment.setStatus(treatmentDTO.status());
-//            treatment.setDoctorIds(treatmentDTO.doctorIds());
 
         if (treatmentDTO.name() != null) {
             treatment.setName(treatmentDTO.name());
@@ -78,10 +71,8 @@ public class TreatmentService {
 
             treatmentKafkaProducer.assignedDoctorsChangedEvent(new AssignedDoctorsChangedEvent(
                     treatmentDTO.id(),
-//                    (List<Long>) treatmentDTO.doctorIds()
                     doctorIds
             ));
-//            treatment.setDoctorIds(treatmentDTO.doctorIds());
             for (Long doctorId : treatmentDTO.doctorIds()) {
                 if (treatment.getDoctorIds().contains(doctorId)) {
                     treatment.getDoctorIds().remove(doctorId);
@@ -103,7 +94,6 @@ public class TreatmentService {
     }
 
     public Long deleteTreatment(Long id) {
-//        treatmentRepository.deleteById(id);
         Optional<Treatment> optionalTreatment = treatmentRepository.findById(id);
         if (optionalTreatment.isEmpty()) {
             throw new EntityNotFoundException("Treatment with ID " + id + " not found.");

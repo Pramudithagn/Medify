@@ -58,7 +58,6 @@ services:
     command:
       - "start-dev"
 
-
 networks:
   microservices-net:
     driver: bridge

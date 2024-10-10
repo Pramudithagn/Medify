@@ -34,14 +34,9 @@ public class PaymentService {
     }
 
     public List<PaymentDTO> getPaymentsByUserId(Long userId) {
-//        List<PaymentDTO> allAppointments =  new ArrayList<>();
-//            allAppointments =
         return getAllPayments()
                 .stream().filter(payment -> Objects.equals(payment.patientId(), userId))
                 .toList();
-
-//        System.out.println(allAppointments);
-//        return allAppointments;
     }
 
     public Payment createPayment(PaymentDTO paymentDTO) {
@@ -63,8 +58,6 @@ public class PaymentService {
             throw new ResourceNotFoundException("Payment entry with ID " + paymentDTO.id() + " not found.");
         }
         Payment payment = optionalPayment.get();
-
-        System.out.println("med rec with ID "+paymentDTO.medicalRecordId());
 
         if (paymentDTO.issueDate() != null) {
             payment.setIssueDate(paymentDTO.issueDate());
@@ -92,7 +85,6 @@ public class PaymentService {
     }
 
     public Long deletePayment(Long id) {
-//        paymentRepository.deleteById(id);
         Optional<Payment> optionalPayment = paymentRepository.findById(id);
         if (optionalPayment.isEmpty()) {
             throw new EntityNotFoundException("Doctor with ID " + id + " not found.");

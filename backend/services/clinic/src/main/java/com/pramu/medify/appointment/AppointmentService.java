@@ -50,7 +50,6 @@ public class AppointmentService {
                     .stream().filter(appointment -> Objects.equals(appointment.patientId(), userId))
                     .toList();
         }
-        System.out.println(allAppointments);
         return allAppointments;
     }
 
@@ -108,12 +107,8 @@ public class AppointmentService {
             }
             appointment.setDateTime(appointmentDTO.dateTime());
             appointment.setDuration(appointmentDTO.duration());
-//            appointment.setDoctorId(appointmentDTO.doctorId());
-//            appointment.setPatientId(appointmentDTO.patientId());
 
             return appointmentRepository.save(appointment);
-//        }
-//        return null;
     }
 
     public Long deleteAppointment(Long id) {
@@ -121,9 +116,7 @@ public class AppointmentService {
         if (optionalAppointment.isEmpty()) {
             throw new EntityNotFoundException("Appointment with ID " + id + " not found.");
         }
-//        if (optionalAppointment.isPresent()) {
             Appointment appointment = optionalAppointment.get();
-
             appointmentRepository.deleteById(id);
 
             clinicKafkaProducer.publishAppointmentCancelledEvent(new AppointmentCancelledEvent(
@@ -132,7 +125,5 @@ public class AppointmentService {
                     appointment.getDoctorId()
             ));
             return id;
-//        }
-//        return null;
     }
 }

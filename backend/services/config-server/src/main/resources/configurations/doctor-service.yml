@@ -29,3 +29,9 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: DoctorPatientAssignedEvent:com.pramu.medify.kafka.DoctorPatientAssignedEvent
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus

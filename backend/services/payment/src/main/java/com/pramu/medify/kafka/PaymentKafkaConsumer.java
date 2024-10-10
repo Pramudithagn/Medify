@@ -16,8 +16,6 @@ public class PaymentKafkaConsumer {
     @Transactional
     @KafkaListener(topics = "medical-record-created")
     public void consumeMedicalRecordCreatedEvent(MedicalRecordCreatedEvent event) {
-
-        System.out.println("med rec in payment consumer"+ event.id());
         paymentService.updatePayment(new PaymentDTO(
                 event.paymentId(),
                 null,

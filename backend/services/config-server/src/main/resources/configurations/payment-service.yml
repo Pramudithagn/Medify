@@ -28,3 +28,9 @@ spring:
       properties:
         spring.json.trusted.packages: '*'
         spring.json.type.mapping: MedicalRecordCreatedEvent:com.pramu.medify.kafka.MedicalRecordCreatedEvent
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
