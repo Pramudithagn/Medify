@@ -22,7 +22,6 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { createPatient } from "../../features/patientSlice";
 import { createDoctor, getDoctors } from "../../features/doctorSlice";
 import { fetchTreatments } from "../../features/treatmentSlice";
@@ -58,7 +57,6 @@ const Register = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
-  const { treatments } = useSelector((state) => state.treatment);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [alert, setAlert] = useState({
     message: "",
@@ -83,7 +81,6 @@ const Register = () => {
     const address = { city, houseNumber, street, zipCode };
     const formData = { ...rest, address };
 
-    console.log(formData);
     if (values.userType === "patient") {
       dispatch(createPatient(formData))
         .then(() => {

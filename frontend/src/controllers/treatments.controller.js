@@ -13,7 +13,6 @@ export const createTreatment = async (treatmentData) => {
 };
 
 export const updateTreatment = async (treatmentData) => {
-  console.log(treatmentData);
   return await api.put("/treatments/edit", treatmentData);
 };
 

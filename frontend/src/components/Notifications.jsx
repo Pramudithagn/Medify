@@ -35,7 +35,6 @@ const Notifications = () => {
   );
   const unreadCount = useSelector((state) => state.notification.unreadCount);
   const isOpen = useSelector((state) => state.notification.isOpen);
-
   const dropdownRef = useRef(null);
   const iconRef = useRef(null);
 

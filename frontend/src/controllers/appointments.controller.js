@@ -9,7 +9,6 @@ export const getAllAppointments = async ({ userRole, id }) => {
   } else if (userRole === "ADMIN") {
     appointments = await api.get("/appointments");
   }
-  console.log(appointments);
   return appointments;
 };
 
