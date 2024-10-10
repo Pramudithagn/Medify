@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getNotificationsForUser, markNotificationAsRead } from "../controllers/notifications.controller";
+import {
+  getNotificationsForUser,
+  markNotificationAsRead,
+} from "../controllers/notifications.controller";
 
-// thunk 
+// thunk
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchNotifications",
   async ({ id, userRole }, { rejectWithValue }) => {

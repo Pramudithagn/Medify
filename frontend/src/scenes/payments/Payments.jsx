@@ -6,7 +6,6 @@ import {
   TextField,
   Select,
   MenuItem,
-  Fab,
   InputLabel,
   FormControl,
   Typography,
@@ -26,7 +25,6 @@ import Header from "../../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPayments,
-  // setPayments,
   setSelectedPayment,
   updatePaymentMethod,
   updatePaymentStatus,
@@ -59,14 +57,13 @@ const Payment = () => {
   const payments = useSelector((state) => state.payment.payments);
   const selectedPayment = useSelector((state) => state.payment.selectedPayment);
   const [selectedMethod, setSelectedMethod] = useState("");
-  const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
-  // const userRole = "PATIENT";
+  const { userRole, id } =
+    JSON.parse(localStorage.getItem("userDetails")) || {};
 
   const isLoading = useSelector((state) => state.payment.isLoading);
 
   useEffect(() => {
-    // dispatch(setPayments(mockDataPayments));
-    dispatch(fetchPayments({userRole, id}));
+    dispatch(fetchPayments({ userRole, id }));
   }, [dispatch]);
 
   const handleOpen = (payment) => {
@@ -81,7 +78,6 @@ const Payment = () => {
 
   const handleMethodChange = (event) => {
     const updatedMethod = event.target.value;
-
     const updatedPayment = {
       ...selectedPayment,
       method: updatedMethod,
@@ -97,7 +93,6 @@ const Payment = () => {
     ).unwrap();
     dispatch(setSelectedPayment(null));
     dispatch(updatePaymentStatus({ ...updatedPayment, status: "reviewing" }));
-
     handleClose();
   };
 
@@ -108,7 +103,6 @@ const Payment = () => {
       method: event.target.value === "unpaid" || "failed" ? "" : payment.method,
     };
 
-    // dispatch(updatePaymentStatus({ id, status: event.target.value }));
     dispatch(updatePaymentStatus(updatedPayment));
     setSelectedMethod("");
   };
@@ -141,35 +135,33 @@ const Payment = () => {
       field: "status",
       headerName: "Status",
       flex: 1,
-      renderCell: (params) => 
-        userRole==="ADMIN"?
-        (<FormControl variant="standard" sx={{ minWidth: 120 }}>
-          <Select
-            value={params.row.status}
-            // disabled={userRole!=="ADMIN"}
-            onChange={(e) => handleStatusChange(params.row, e)}
-            sx={{
-              paddingTop: 1,
-              color:
-                params.value === "paid"
-                  ? colors.greenAccent[500]
-                  : params.value === "unpaid"
-                  ? colors.redAccent[300]
-                  : params.value === "reviewing"
-                  ? colors.blueAccent[500]
-                  : colors.redAccent[500],
-            }}
-          >
-            <MenuItem value="paid">Paid</MenuItem>
-            <MenuItem value="unpaid">Unpaid</MenuItem>
-            <MenuItem value="reviewing">Reviewing</MenuItem>
-            <MenuItem value="failed">Failed</MenuItem>
-          </Select>
-        </FormControl>
-      ) : (
-        params.row.status || "N/A"
-      ),
-    
+      renderCell: (params) =>
+        userRole === "ADMIN" ? (
+          <FormControl variant="standard" sx={{ minWidth: 120 }}>
+            <Select
+              value={params.row.status}
+              onChange={(e) => handleStatusChange(params.row, e)}
+              sx={{
+                paddingTop: 1,
+                color:
+                  params.value === "paid"
+                    ? colors.greenAccent[500]
+                    : params.value === "unpaid"
+                    ? colors.redAccent[300]
+                    : params.value === "reviewing"
+                    ? colors.blueAccent[500]
+                    : colors.redAccent[500],
+              }}
+            >
+              <MenuItem value="paid">Paid</MenuItem>
+              <MenuItem value="unpaid">Unpaid</MenuItem>
+              <MenuItem value="reviewing">Reviewing</MenuItem>
+              <MenuItem value="failed">Failed</MenuItem>
+            </Select>
+          </FormControl>
+        ) : (
+          params.row.status || "N/A"
+        ),
     },
 
     {
@@ -221,10 +213,14 @@ const Payment = () => {
       >
         {isLoading ? (
           <Box>
-          {[...Array(8)].map((_, index) => (
-           <Skeleton key={index} height={50} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
-         ))}
-       </Box>
+            {[...Array(8)].map((_, index) => (
+              <Skeleton
+                key={index}
+                height={50}
+                sx={{ bgcolor: colors.primary[400], mb: 1 }}
+              />
+            ))}
+          </Box>
         ) : (
           <DataGrid
             rows={payments}

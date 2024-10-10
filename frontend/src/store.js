@@ -18,7 +18,7 @@ export const store = configureStore({
     payment: paymentReducer,
     treatment: treatmentReducer,
     notification: notificationsReducer,
-    auth: authReducer
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
 });

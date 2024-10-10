@@ -24,27 +24,16 @@ import {
   Autocomplete,
   useTheme,
   Switch,
-  Checkbox,
   Skeleton,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Header from "../../components/Header";
 import {
-  // setPatients,
-  // setSelectedPatient,
-  // setIsUuidDeleted,
-  // setDeleteButtonEnabled,
-  // addPatient,
-  // updatePatient,
-  // deletePatient,
   fetchPatients,
-  createPatient,
   updatePatient,
   deletePatient,
   setSelectedPatient,
@@ -111,35 +100,24 @@ const Patients = () => {
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
   const { userRole } = JSON.parse(localStorage.getItem("userDetails")) || {};
-  // const userRole = "PATIENT";
-  const { patients, selectedPatient, isUuidDeleted, deleteButtonEnabled, loading } =
-    useSelector((state) => state.patient);
+  const {
+    patients,
+    selectedPatient,
+    isUuidDeleted,
+    deleteButtonEnabled,
+    loading,
+  } = useSelector((state) => state.patient);
   const { doctors } = useSelector((state) => state.doctor);
-  const { payments } = useSelector((state) => state.payment);
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [doctorIds, setDoctorIds] = useState([]);
 
-  // const isAdmin = true; // admin non-admin toggle
   const isAdmin = userRole === "ADMIN";
 
-  // useEffect(() => {
-  //   dispatch(setPatients(mockDataPatients));
-  //   console.log(patients);
-  // }, [dispatch]);
   useEffect(() => {
     dispatch(fetchPatients());
     dispatch(getDoctors());
     dispatch(fetchPayments());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (doctors.length > 0) {
-      setDoctorIds(doctors.map((doctor) => doctor.id));
-    }
-  }, [doctors]);
-
-  console.log(patients);
 
   const handleOpen = (patient) => {
     dispatch(setSelectedPatient(patient));
@@ -150,9 +128,7 @@ const Patients = () => {
     dispatch(setSelectedPatient(null));
   };
   const handleSave = (values) => {
-    console.log(selectedPatient, values);
     dispatch(updatePatient({ selectedPatient, updatedPatient: values }));
-    // dispatch(updatePatient(values));
     handleClose();
   };
   const handleDeleteOpen = (patient) => {
@@ -175,8 +151,9 @@ const Patients = () => {
   };
 
   const columns = [
-    ...(userRole === "ADMIN" ? [{ field: "id", headerName: "ID", flex: 0.25 }] : []),
-    // { field: "id", headerName: "ID", flex: 0.25 },
+    ...(userRole === "ADMIN"
+      ? [{ field: "id", headerName: "ID", flex: 0.25 }]
+      : []),
     {
       field: "name",
       headerName: "Name",
@@ -214,12 +191,12 @@ const Patients = () => {
           </IconButton>
           {userRole === "ADMIN" && (
             <IconButton
-            aria-label="delete"
-            onClick={() => handleDeleteOpen(params.row)}
-            sx={{ color: colors.grey[400] }}
-          >
-            <DeleteIcon />
-          </IconButton>
+              aria-label="delete"
+              onClick={() => handleDeleteOpen(params.row)}
+              sx={{ color: colors.grey[400] }}
+            >
+              <DeleteIcon />
+            </IconButton>
           )}
         </Box>
       ),
@@ -255,26 +232,24 @@ const Patients = () => {
           },
         }}
       >
-        {/* <DataGrid
-          rows={patients}
-          columns={columns}
-          disableRowSelectionOnClick
-          slots={{ toolbar: CustomToolbar }}
-        /> */}
         {loading ? (
-          // Skeleton loading state
+          // Skeleton loading
           <Box>
             {[...Array(8)].map((_, index) => (
-              <Skeleton key={index} height={50} sx={{ bgcolor: colors.primary[400], mb: 1 }} />
+              <Skeleton
+                key={index}
+                height={50}
+                sx={{ bgcolor: colors.primary[400], mb: 1 }}
+              />
             ))}
           </Box>
         ) : (
           <DataGrid
-          rows={patients}
-          columns={columns}
-          disableRowSelectionOnClick
-          slots={{ toolbar: CustomToolbar }}
-        />
+            rows={patients}
+            columns={columns}
+            disableRowSelectionOnClick
+            slots={{ toolbar: CustomToolbar }}
+          />
         )}
       </Box>
 
@@ -330,37 +305,41 @@ const Patients = () => {
               }) => (
                 <Form>
                   <Box display="flex" alignItems="center" gap={4}>
-                    <Box display="flex" flexDirection="column" alignItems="center">
-                    <Avatar
-                      src={values.photo}
-                      alt={values.name}
-                      sx={{ width: 80, height: 80 }}
-                    />
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                    >
+                      <Avatar
+                        src={values.photo}
+                        alt={values.name}
+                        sx={{ width: 80, height: 80 }}
+                      />
                     </Box>
                     <Box display="flex" flexDirection="column" flexGrow={1}>
-                    <TextField
-                      label="Name"
-                      name="name"
-                      value={values.name}
-                      onChange={handleChange}
-                      fullWidth
-                      size="small"
-                      disabled={!isAdmin}
-                      error={touched.name && Boolean(errors.name)}
-                      helperText={touched.name && errors.name}
-                    />
-                    <TextField
-                    label="Email"
-                    name="mail"
-                    value={values.mail}
-                    onChange={handleChange}
-                    fullWidth
-                    size="small"
-                    disabled={!isAdmin}
-                    error={touched.mail && Boolean(errors.mail)}
-                    helperText={touched.mail && errors.mail}
-                  />
-                  </Box>
+                      <TextField
+                        label="Name"
+                        name="name"
+                        value={values.name}
+                        onChange={handleChange}
+                        fullWidth
+                        size="small"
+                        disabled={!isAdmin}
+                        error={touched.name && Boolean(errors.name)}
+                        helperText={touched.name && errors.name}
+                      />
+                      <TextField
+                        label="Email"
+                        name="mail"
+                        value={values.mail}
+                        onChange={handleChange}
+                        fullWidth
+                        size="small"
+                        disabled={!isAdmin}
+                        error={touched.mail && Boolean(errors.mail)}
+                        helperText={touched.mail && errors.mail}
+                      />
+                    </Box>
                   </Box>
 
                   <TextField
@@ -393,7 +372,6 @@ const Patients = () => {
                     <TextField
                       label="Date of Birth"
                       name="dob"
-                      // type="datetime-local"
                       type="date"
                       value={values.dob || ""}
                       onChange={handleChange}
@@ -466,7 +444,6 @@ const Patients = () => {
                       name="age"
                       value={values.age || ""}
                       onChange={handleChange}
-                      // fullWidth
                       size="small"
                       disabled={!isAdmin}
                       error={touched.age && Boolean(errors.age)}
@@ -477,7 +454,6 @@ const Patients = () => {
                       name="weight"
                       value={values.weight || ""}
                       onChange={handleChange}
-                      // fullWidth
                       size="small"
                       disabled={!isAdmin}
                       error={touched.weight && Boolean(errors.weight)}
@@ -488,7 +464,6 @@ const Patients = () => {
                       name="height"
                       value={values.height || ""}
                       onChange={handleChange}
-                      // fullWidth
                       size="small"
                       disabled={!isAdmin}
                       error={touched.height && Boolean(errors.height)}
@@ -530,7 +505,6 @@ const Patients = () => {
                       value={values.address?.street || ""}
                       onChange={handleChange}
                       size="small"
-                      //   fullWidth
                       disabled={!isAdmin}
                       error={
                         touched.address?.street &&
@@ -571,144 +545,35 @@ const Patients = () => {
                       }
                     />
                   </Box>
-                  {/* <Autocomplete
-                    multiple
-                    // options={mockDoctorIds}
-                    options={doctorIds}
-                    value={values.doctorIds}
-                    onChange={(event, newValue) => { setFieldValue("doctorIds", newValue); }}
-                    getOptionLabel={(option) => option.toString()}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Doctor IDs"
-                        variant="outlined"
-                        size="small"
-                        error={touched.doctorIds && Boolean(errors.doctorIds)}
-                        helperText={touched.doctorIds && errors.doctorIds}
-                      />
-                    )}
-                    disabled={!isAdmin}
-                  /> */}
-
-
-
-                  {/* <Autocomplete
-                    multiple
-                    // options={doctorIds}
-                    // getOptionLabel={(option) => option.toString()}
-                    // value={values.doctorIds}
-                    options={values.doctorIds
-                      .map((id) => doctors.find((p) => p.id === id))
-                      .filter(Boolean)}
-                    getOptionLabel={(option) => option.name.toString()}
-                    value={values.doctorIds.map(
-                      (id) => doctors.find((p) => p.id === id) || ""
-                    )}
-
-                    onChange={(event, newValue) => {
-                      const existingDoctorIds = selectedPatient.doctorIds;
-                      const newDoctorIds = newValue.filter(
-                        (id) => !existingDoctorIds.includes(id)
-                      );
-                      setFieldValue("doctorIds", [
-                        ...existingDoctorIds,
-                        ...newDoctorIds,
-                      ]);
-                    }}
-                    isOptionEqualToValue={(option, value) => option === value}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        variant="outlined"
-                        label="Doctors"
-                        size="small"
-                        error={touched.doctorIds && Boolean(errors.doctorIds)}
-                        helperText={touched.doctorIds && errors.doctorIds}
-                        fullWidth
-                      />
-                    )}
-                    disableCloseOnSelect
-                    // renderOption={(props, option, { selected }) => (
-                    //   <li {...props}>
-                    //     <Checkbox
-                    //       icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-                    //       checkedIcon={<CheckBoxIcon fontSize="small" />}
-                    //       style={{ marginRight: 8 }}
-                    //       checked={
-                    //         selected ||
-                    //         selectedPatient.doctorIds.includes(option)
-                    //       }
-                    //     />
-                    //     {option}
-                    //   </li>
-                    // )}
-                    disableClearable
-                  /> */}
-
-                {/* <Autocomplete
-                    multiple
-                    id="doctorIds"
-                    options={doctors}
-                    getOptionLabel={(option) => option.name} 
-                    value={values.doctorIds.map((id) =>
-                      doctors.find((doctor) => doctor.id === id)
-                    )} 
-                    onChange={(event, newValue) => {
-                      const selectedDoctorIds = newValue.map((doctor) => doctor.id);
-                      setFieldValue("doctorIds", selectedDoctorIds);
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        variant="outlined"
-                        label="Select Doctors"
-                        placeholder="Choose doctors"
-                        size="small"
-                        error={touched.doctorIds && Boolean(errors.doctorIds)}
-                        helperText={touched.doctorIds && errors.doctorIds}
-                        disabled={!isAdmin}
-                      />
-                    )}
-                  />
-  
-                  <Box display="flex" alignItems="center" mt={1} ml={1}>
-                    <ErrorOutlineIcon
-                      sx={{ color: "red", fontSize: 16, mr: 0.5 }}
-                    />
-                    <Typography
-                      variant="caption"
-                      fontSize={10}
-                      sx={{ color: colors.redAccent[300] }}
-                    >
-                      You can only add one doctor at a time
-                    </Typography>
-                  </Box> */}
                   <Box>
                     {isAdmin ? (
                       <Autocomplete
                         multiple
                         disabled={!isAdmin}
                         id="doctorIds"
-                    options={doctors}
-                    getOptionLabel={(option) => option.name} 
-                    value={values.doctorIds.map((id) =>
-                      doctors.find((doctor) => doctor.id === id)
-                    )} 
-                    onChange={(event, newValue) => {
-                      const selectedDoctorIds = newValue.map((doctor) => doctor.id);
-                      setFieldValue("doctorIds", selectedDoctorIds);
-                    }}
+                        options={doctors}
+                        getOptionLabel={(option) => option?.name}
+                        value={values.doctorIds.map((id) =>
+                          doctors.find((doctor) => doctor.id === id)
+                        )}
+                        onChange={(event, newValue) => {
+                          const selectedDoctorIds = newValue.map(
+                            (doctor) => doctor.id
+                          );
+                          setFieldValue("doctorIds", selectedDoctorIds);
+                        }}
                         renderInput={(params) => (
                           <TextField
-                          {...params}
-                          variant="outlined"
-                          label="Doctors"
-                          placeholder="Choose doctors"
-                          size="small"
-                          error={touched.doctorIds && Boolean(errors.doctorIds)}
-                          helperText={touched.doctorIds && errors.doctorIds}
-                          disabled={!isAdmin}
+                            {...params}
+                            variant="outlined"
+                            label="Doctors"
+                            placeholder="Choose doctors"
+                            size="small"
+                            error={
+                              touched.doctorIds && Boolean(errors.doctorIds)
+                            }
+                            helperText={touched.doctorIds && errors.doctorIds}
+                            disabled={!isAdmin}
                           />
                         )}
                       />
@@ -732,57 +597,35 @@ const Patients = () => {
                     )}
                     {isAdmin && (
                       <Box display="flex" alignItems="center" mt={1} ml={1}>
-                      <ErrorOutlineIcon
-                        sx={{ color: "red", fontSize: 16, mr: 0.5 }}
-                      />
-                      <Typography
-                        variant="caption"
-                        fontSize={10}
-                        sx={{ color: colors.redAccent[300] }}
-                      >
-                        You can only add one doctor at a time
-                      </Typography>
-                    </Box>
+                        <ErrorOutlineIcon
+                          sx={{ color: "red", fontSize: 16, mr: 0.5 }}
+                        />
+                        <Typography
+                          variant="caption"
+                          fontSize={10}
+                          sx={{ color: colors.redAccent[300] }}
+                        >
+                          You can only add one doctor at a time
+                        </Typography>
+                      </Box>
                     )}
                   </Box>
-
-                  {/* <Autocomplete
-                    multiple
-                    options={mockPaymentIds}
-                    value={values.paymentIds}
-                    onChange={(event, newValue) => {
-                      setFieldValue("paymentIds", newValue);
-                    }}
-                    getOptionLabel={(option) => option}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Payment IDs"
-                        variant="outlined"
-                        size="small"
-                        error={touched.paymentIds && Boolean(errors.paymentIds)}
-                        helperText={touched.paymentIds && errors.paymentIds}
-                      />
-                    )}
-                    disabled={!isAdmin}
-                  /> */}
                   <TextField
-                      label="Payment IDs"
-                      name="paymentIds"
-                      value={values.paymentIds}
-                      // value={values.paymentIds.join(", ")}
-                      onChange={handleChange}
-                      size="small"
-                      fullWidth
-                      disabled={true}
-                      error={
-                        touched.address?.zipCode &&
-                        Boolean(errors.address?.zipCode)
-                      }
-                      helperText={
-                        touched.address?.zipCode && errors.address?.zipCode
-                      }
-                    />
+                    label="Payment IDs"
+                    name="paymentIds"
+                    value={values.paymentIds}
+                    onChange={handleChange}
+                    size="small"
+                    fullWidth
+                    disabled={true}
+                    error={
+                      touched.address?.zipCode &&
+                      Boolean(errors.address?.zipCode)
+                    }
+                    helperText={
+                      touched.address?.zipCode && errors.address?.zipCode
+                    }
+                  />
                   <Box display="flex" justifyContent="flex-end" gap={2} mt={4}>
                     {isAdmin && (
                       <Button

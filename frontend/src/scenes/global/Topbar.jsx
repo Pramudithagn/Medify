@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Box, IconButton, Menu, MenuItem, useTheme } from "@mui/material";
-import { ColorModeContext, tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
+import { ColorModeContext } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
@@ -11,7 +10,6 @@ import keyCloakService from "../../auth/keycloakService";
 
 function Topbar() {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -41,10 +39,6 @@ function Topbar() {
 
         {/* Notification Dropdo */}
         <Notifications />
-
-        {/* <IconButton>
-          <LogoutIcon />
-        </IconButton> */}
 
         <IconButton onClick={handleMenuOpen}>
           <PersonOutlinedIcon />

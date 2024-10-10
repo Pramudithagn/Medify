@@ -71,7 +71,9 @@ const modalStyle = {
 const recordValidationSchema = Yup.object().shape({
   diagnosis: Yup.string().required("Diagnosis is required"),
   prescription: Yup.string().required("Prescription is required"),
-  price: Yup.number().required("Price is required").min(0, "Price must be positive"),
+  price: Yup.number()
+    .required("Price is required")
+    .min(0, "Price must be positive"),
   patientId: Yup.number().required("Patient is required"),
   treatmentIds: Yup.array().min(1, "At least one treatment is required"),
 });
@@ -79,10 +81,8 @@ const recordValidationSchema = Yup.object().shape({
 const Records = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { userRole, id } = JSON.parse(localStorage.getItem("userDetails")) || {};
-  // const userRole = "PATIENT"
-  // console.log("userrr",JSON.parse(localStorage.getItem("userDetails")))
-  // console.log("idddddddd  " +id)
+  const { userRole, id } =
+    JSON.parse(localStorage.getItem("userDetails")) || {};
 
   const dispatch = useDispatch();
   const {
@@ -95,7 +95,6 @@ const Records = () => {
     currentPage,
     recordsPerPage,
     loading,
-    error,
   } = useSelector((state) => state.record);
   const { treatments } = useSelector((state) => state.treatment);
   const { patients } = useSelector((state) => state.patient);
@@ -125,15 +124,23 @@ const Records = () => {
   const handleEditSave = (values) => {
     dispatch(updateRecord(values))
       .unwrap()
-      .then(() => { dispatch(setEditModelOpen(false)); })
-      .catch((error) => { console.error("Error updating record:", error);});
+      .then(() => {
+        dispatch(setEditModelOpen(false));
+      })
+      .catch((error) => {
+        console.error("Error updating record:", error);
+      });
   };
 
   const handleDeleteConfirm = () => {
     dispatch(deleteRecord(selectedRecord.id))
       .unwrap()
-      .then(() => { dispatch(setDeleteModelOpen(false)); })
-      .catch((error) => { console.error("Error deleting record:", error); });
+      .then(() => {
+        dispatch(setDeleteModelOpen(false));
+      })
+      .catch((error) => {
+        console.error("Error deleting record:", error);
+      });
   };
 
   const handleFilterChange = (e) => {
@@ -153,7 +160,9 @@ const Records = () => {
         resetForm();
         dispatch(setCreateModelOpen(false));
       })
-      .catch((error) => { console.error("Error creating record:", error); });
+      .catch((error) => {
+        console.error("Error creating record:", error);
+      });
   };
 
   const filteredRecords = records?.filter(
@@ -177,7 +186,7 @@ const Records = () => {
   return (
     <Box m="20px">
       <Header title="MEDICAL RECORDS" subtitle="Manage your medical records" />
-      <Box m="20px" p={2} sx={{ borderRadius: 2, maxHeight: "77vh", }} >
+      <Box m="20px" p={2} sx={{ borderRadius: 2, maxHeight: "77vh" }}>
         {/* Header Bar*/}
         <Box
           display="flex"
@@ -199,140 +208,176 @@ const Records = () => {
             <SearchIcon sx={{ marginLeft: 1 }} />
           </Box>
           <Box>
-          {userRole === "DOCTOR" && (
-            <Button type="submit" variant="contained"  color="secondary"  onClick={handleCreateOpen} >
-              + Create Record
-            </Button>
-          )}
+            {userRole === "DOCTOR" && (
+              <Button
+                type="submit"
+                variant="contained"
+                color="secondary"
+                onClick={handleCreateOpen}
+              >
+                + Create Record
+              </Button>
+            )}
           </Box>
         </Box>
 
         {/* Record List and Detials*/}
-       
+
         <Box sx={{ overflowY: "auto", maxHeight: "55vh" }}>
-          {loading ? (
-            Array.from(new Array(5)).map((_, index) => (
-              <Card
-                key={index}
-                sx={{ mr: 2, mb: 2, p: 2, borderRadius: 2, backgroundColor: colors.primary[400], }}
-              >
-                <CardContent>
-                  <Skeleton animation="wave" height={40} width="80%" />
-                  <Skeleton animation="wave" height={40} width="90%" />
-                  <Skeleton animation="wave" height={40} width="60%" />
-                </CardContent>
-              </Card>
-            ))
-          ) : (paginatedRecords?.map((record) => {
-            // patient name find
-            const patient = patients.find((p) => p.id === record.patientId);
-            const patientName = patient ? patient.name : "Unknown";
-
-            // doctor name find
-            const doctor = doctors.find((d) => d.id === record.doctorId);
-            const doctorName = doctor ? doctor.name : "Unknown";
-
-            //treatment names find
-            const treatmentNames = record.treatmentIds
-              .map((treatmentId) => {
-                const treatment = treatments.find((t) => t.id === treatmentId);
-                return treatment ? treatment.name : "Unknown";
-              })
-              .join(", ");
-
-            return (
-              <Card
-                key={record.id}
-                sx={{ mr: 2, mb: 2, p: 2, borderRadius: 2, backgroundColor: colors.primary[400], }} >
-                <CardContent sx={{ display: "flex",  alignItems: "center", maxHeight: "23vh", }}
+          {loading
+            ? Array.from(new Array(5)).map((_, index) => (
+                <Card
+                  key={index}
+                  sx={{
+                    mr: 2,
+                    mb: 2,
+                    p: 2,
+                    borderRadius: 2,
+                    backgroundColor: colors.primary[400],
+                  }}
                 >
-                  {/* Record Details */}
-                  <Box sx={{ width: "90%", pt: 2 }}>
-                    <Grid
-                      container
-                      rowSpacing={1}
-                      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                  <CardContent>
+                    <Skeleton animation="wave" height={40} width="80%" />
+                    <Skeleton animation="wave" height={40} width="90%" />
+                    <Skeleton animation="wave" height={40} width="60%" />
+                  </CardContent>
+                </Card>
+              ))
+            : paginatedRecords?.map((record) => {
+                // patient name find
+                const patient = patients.find((p) => p.id === record.patientId);
+                const patientName = patient ? patient.name : "Unknown";
+
+                // doctor name find
+                const doctor = doctors.find((d) => d.id === record.doctorId);
+                const doctorName = doctor ? doctor.name : "Unknown";
+
+                //treatment names find
+                const treatmentNames = record.treatmentIds
+                  .map((treatmentId) => {
+                    const treatment = treatments.find(
+                      (t) => t.id === treatmentId
+                    );
+                    return treatment ? treatment.name : "Unknown";
+                  })
+                  .join(", ");
+
+                return (
+                  <Card
+                    key={record.id}
+                    sx={{
+                      mr: 2,
+                      mb: 2,
+                      p: 2,
+                      borderRadius: 2,
+                      backgroundColor: colors.primary[400],
+                    }}
+                  >
+                    <CardContent
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        maxHeight: "23vh",
+                      }}
                     >
-                      <Grid size={12}>
-                        {/* <Typography variant="h5">Diagnosis: {record.diagnosis}</Typography> */}
-                        <Typography variant="h5">
-                          <strong>Diagnosis:</strong>{" "}
-                          <em>{record.diagnosis}</em>
-                        </Typography>
-                      </Grid>
-                      <Grid size={12}>
-                        {/* <Typography variant="h5">Prescription: {record.prescription}</Typography> */}
-                        <Typography variant="h5">
-                          <strong>Prescription:</strong>{" "}
-                          <em>{record.prescription}</em>
-                        </Typography>
-                      </Grid>
-                      <Grid size={12}>
-                        {/* <Typography variant="h5">Treatments: {treatmentNames}</Typography> */}
-                        <Typography variant="h5">
-                          <strong>Treatments:</strong> <em>{treatmentNames}</em>
-                        </Typography>
-                      </Grid>
-                      <Grid size={6}>
-                        {/* <Typography variant="h5">Doctor: {doctorName}</Typography> */}
-                        <Typography variant="h5">
-                          <strong>Doctor:</strong> <em>{doctorName}</em>
-                        </Typography>
-                      </Grid>
-                      <Grid size={6}>
-                        {/* <Typography variant="h5">Patient: {patientName}</Typography> */}
-                        <Typography variant="h5">
-                          <strong>Patient:</strong> <em>{patientName}</em>
-                        </Typography>
-                      </Grid>
-                      <Grid size={12}>
-                        <Divider sx={{ width: "65%" }} />
-                      </Grid>
-                      <Grid size={6}>
-                        {/* <Typography variant="h5">Price: {record.price}</Typography> */}
-                        <Typography variant="h5">
-                          <strong>Price:</strong> <em>{record.price}</em>
-                        </Typography>
-                      </Grid>
-                      <Grid size={6}>
-                        {/* <Typography variant="h5">
-                  Date: {dayjs(record.assignDate).format("MM-DD-YYYY")}
-                </Typography> */}
-                        <Typography variant="h5">
-                          <strong>Date:</strong>{" "}
-                          <em>
-                            {dayjs(record.assignDate).format("MM-DD-YYYY")}
-                          </em>
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                  {userRole !== "PATIENT" && (
-                  <Box sx={{ width: "10%" }}>
-                    <Tooltip title="Edit">
-                      <IconButton onClick={() => handleEditOpen(record)} color="secondary" >
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton onClick={() => handleDeleteOpen(record)} color="error" >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Box>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          }))}
+                      {/* Record Details */}
+                      <Box sx={{ width: "90%", pt: 2 }}>
+                        <Grid
+                          container
+                          rowSpacing={1}
+                          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                        >
+                          <Grid size={12}>
+                            <Typography variant="h5">
+                              <strong>Diagnosis:</strong>{" "}
+                              <em>{record.diagnosis}</em>
+                            </Typography>
+                          </Grid>
+                          <Grid size={12}>
+                            <Typography variant="h5">
+                              <strong>Prescription:</strong>{" "}
+                              <em>{record.prescription}</em>
+                            </Typography>
+                          </Grid>
+                          <Grid size={12}>
+                            <Typography variant="h5">
+                              <strong>Treatments:</strong>{" "}
+                              <em>{treatmentNames}</em>
+                            </Typography>
+                          </Grid>
+                          <Grid size={6}>
+                            <Typography variant="h5">
+                              <strong>Doctor:</strong> <em>{doctorName}</em>
+                            </Typography>
+                          </Grid>
+                          <Grid size={6}>
+                            <Typography variant="h5">
+                              <strong>Patient:</strong> <em>{patientName}</em>
+                            </Typography>
+                          </Grid>
+                          <Grid size={12}>
+                            <Divider sx={{ width: "65%" }} />
+                          </Grid>
+                          <Grid size={6}>
+                            <Typography variant="h5">
+                              <strong>Price:</strong> <em>{record.price}</em>
+                            </Typography>
+                          </Grid>
+                          <Grid size={6}>
+                            <Typography variant="h5">
+                              <strong>Date:</strong>{" "}
+                              <em>
+                                {dayjs(record.assignDate).format("MM-DD-YYYY")}
+                              </em>
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Box>
+                      {userRole !== "PATIENT" && (
+                        <Box sx={{ width: "10%" }}>
+                          <Tooltip title="Edit">
+                            <IconButton
+                              onClick={() => handleEditOpen(record)}
+                              color="secondary"
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              onClick={() => handleDeleteOpen(record)}
+                              color="error"
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
         </Box>
 
         {/* Pagination */}
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2, padding: 2, borderTop: `1px solid ${colors.grey[700]}`, }} >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            mt: 2,
+            padding: 2,
+            borderTop: `1px solid ${colors.grey[700]}`,
+          }}
+        >
           <Box>
             <FormControl sx={{ minWidth: 120 }}>
               <InputLabel>Records per page</InputLabel>
-              <Select value={recordsPerPage} onChange={handleRecordsPerPageChange} label="Records per page" >
+              <Select
+                value={recordsPerPage}
+                onChange={handleRecordsPerPageChange}
+                label="Records per page"
+              >
                 {[2, 5, 10, 15].map((num) => (
                   <MenuItem key={num} value={num}>
                     {num}
@@ -343,15 +388,20 @@ const Records = () => {
           </Box>
           <Box display="flex" alignItems="center">
             <IconButton
-              onClick={() => dispatch(setCurrentPage(Math.max(currentPage - 1, 1))) }
-              disabled={currentPage === 1} >
+              onClick={() =>
+                dispatch(setCurrentPage(Math.max(currentPage - 1, 1)))
+              }
+              disabled={currentPage === 1}
+            >
               <ArrowBackIcon />
             </IconButton>
             <Typography variant="h6">
               {currentPage} of {totalPages}
             </Typography>
             <IconButton
-              onClick={() => dispatch(setCurrentPage(Math.min(currentPage + 1, totalPages))) }
+              onClick={() =>
+                dispatch(setCurrentPage(Math.min(currentPage + 1, totalPages)))
+              }
               disabled={currentPage === totalPages}
             >
               <ArrowForwardIcon />
@@ -361,8 +411,11 @@ const Records = () => {
       </Box>
 
       {/* Create Record Modal */}
-      <Modal open={createModelOpen} onClose={() => dispatch(setCreateModelOpen(false))} >
-        <Box sx={{ ...modalStyle, backgroundColor: colors.primary[400], }} >
+      <Modal
+        open={createModelOpen}
+        onClose={() => dispatch(setCreateModelOpen(false))}
+      >
+        <Box sx={{ ...modalStyle, backgroundColor: colors.primary[400] }}>
           <Typography variant="h2" padding={3} align="center">
             Create New Record
           </Typography>
@@ -417,7 +470,9 @@ const Records = () => {
                     onChange={handleChange}
                     error={touched.patientId && Boolean(errors.patientId)}
                     renderValue={(selected) => {
-                      const selectedPatient = patients.find( (patient) => patient.id === selected );
+                      const selectedPatient = patients.find(
+                        (patient) => patient.id === selected
+                      );
                       return selectedPatient ? selectedPatient.name : "";
                     }}
                   >
@@ -436,10 +491,13 @@ const Records = () => {
                   multiple
                   options={treatments}
                   getOptionLabel={(option) => option.name.toString()}
-                  value={values.treatmentIds.map( (id) => treatments.find((t) => t.id === id) || "")}
+                  value={values.treatmentIds.map(
+                    (id) => treatments.find((t) => t.id === id) || ""
+                  )}
                   onChange={(event, newValue) => {
                     const selectedTreatmentIds = newValue.map(
-                      (treatment) => treatment.id );
+                      (treatment) => treatment.id
+                    );
                     setFieldValue("treatmentIds", selectedTreatmentIds);
                   }}
                   renderInput={(params) => (
@@ -447,7 +505,9 @@ const Records = () => {
                       {...params}
                       label="Treatments"
                       placeholder="Select treatments"
-                      error={ touched.treatmentIds && Boolean(errors.treatmentIds) }
+                      error={
+                        touched.treatmentIds && Boolean(errors.treatmentIds)
+                      }
                       helperText={touched.treatmentIds && errors.treatmentIds}
                       fullWidth
                       sx={{ marginBottom: 2 }}
@@ -467,7 +527,12 @@ const Records = () => {
                   sx={{ marginBottom: 2 }}
                 />
 
-                <Button type="submit" variant="contained" color="secondary" sx={{ width: "50%", ml: "25%", }} >
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="secondary"
+                  sx={{ width: "50%", ml: "25%" }}
+                >
                   Save
                 </Button>
               </Form>
@@ -477,7 +542,10 @@ const Records = () => {
       </Modal>
 
       {/* Edit Record Modal */}
-      <Modal open={!!editModelOpen} onClose={() => dispatch(setEditModelOpen(false))}>
+      <Modal
+        open={!!editModelOpen}
+        onClose={() => dispatch(setEditModelOpen(false))}
+      >
         <Box p={4} sx={{ ...modalStyle, backgroundColor: colors.primary[400] }}>
           {selectedRecord && (
             <Formik
@@ -490,7 +558,9 @@ const Records = () => {
                 }
               }
               validationSchema={recordValidationSchema}
-              onSubmit={(values) => { handleEditSave(values); }}
+              onSubmit={(values) => {
+                handleEditSave(values);
+              }}
             >
               {({
                 values,
@@ -542,14 +612,31 @@ const Records = () => {
                   <Divider sx={{ mt: 1, mb: 1 }} />
                   <FieldArray name="treatmentIds">
                     {() => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, maxHeight: "150px", overflowY: "auto", marginBottom: 2, }} >
-                        {/* {mockTreatmentIds.map((treatmentId) => ( */}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: 2,
+                          maxHeight: "150px",
+                          overflowY: "auto",
+                          marginBottom: 2,
+                        }}
+                      >
                         {treatments.map((treatment) => (
-                          <Box key={treatment.id} sx={{ width: "calc(45% - 16px)", display: "flex", alignItems: "center", }} >
+                          <Box
+                            key={treatment.id}
+                            sx={{
+                              width: "calc(45% - 16px)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
                             <FormControlLabel
                               control={
                                 <Checkbox
-                                  checked={values.treatmentIds.includes(treatment.id )}
+                                  checked={values.treatmentIds.includes(
+                                    treatment.id
+                                  )}
                                   onChange={() => {
                                     const newTreatmentIds =
                                       values.treatmentIds.includes(treatment.id)
@@ -578,7 +665,7 @@ const Records = () => {
                     variant="contained"
                     type="submit"
                     color="secondary"
-                    sx={{ width: "50%", ml: "25%", }}
+                    sx={{ width: "50%", ml: "25%" }}
                   >
                     Save Changes
                   </Button>
@@ -594,22 +681,29 @@ const Records = () => {
         open={!!deleteModelOpen}
         onClose={() => dispatch(setDeleteModelOpen(false))}
       >
-        <Box p={4} sx={{ ...modalStyle, backgroundColor: colors.primary[400], alignItems: "center", }} >
-          <Typography variant="h4" sx={{  color: colors.redAccent[500], }} >
+        <Box
+          p={4}
+          sx={{
+            ...modalStyle,
+            backgroundColor: colors.primary[400],
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" sx={{ color: colors.redAccent[500] }}>
             Warning !
           </Typography>
           <Typography>Are you sure you want to delete this record?</Typography>
           <Button
             variant="contained"
             onClick={handleDeleteConfirm}
-            sx={{ backgroundColor: colors.redAccent[600], width: "50%", }}
+            sx={{ backgroundColor: colors.redAccent[600], width: "50%" }}
           >
             Confirm
           </Button>
           <Button
             variant="contained"
             onClick={() => dispatch(setDeleteModelOpen(false))}
-            sx={{ backgroundColor: colors.grey[600], width: "50%", }}
+            sx={{ backgroundColor: colors.grey[600], width: "50%" }}
           >
             Cancel
           </Button>

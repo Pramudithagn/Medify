@@ -6,14 +6,14 @@ import {
   deleteAppointment as deleteAppointmentApi,
 } from "../controllers/appointments.controller";
 
-const initialState = { appointments: [], status: "idle", error: null,};
+const initialState = { appointments: [], status: "idle", error: null };
 
-// Thunks 
+// Thunks
 export const fetchAppointments = createAsyncThunk(
   "appointments/fetchAppointments",
-  async ({userRole, id}, { rejectWithValue }) => {
+  async ({ userRole, id }, { rejectWithValue }) => {
     try {
-      const response = await getAllAppointments({userRole, id});
+      const response = await getAllAppointments({ userRole, id });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -78,11 +78,17 @@ const appointmentSlice = createSlice({
         state.appointments.push(action.payload);
       })
       .addCase(updateAppointment.fulfilled, (state, action) => {
-        const index = state.appointments.findIndex((appt) => appt.id === action.payload.id );
-        if (index !== -1) { state.appointments[index] = action.payload; }
+        const index = state.appointments.findIndex(
+          (appt) => appt.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.appointments[index] = action.payload;
+        }
       })
       .addCase(deleteAppointment.fulfilled, (state, action) => {
-        state.appointments = state.appointments.filter((appt) => appt.id !== action.payload );
+        state.appointments = state.appointments.filter(
+          (appt) => appt.id !== action.payload
+        );
       });
   },
 });

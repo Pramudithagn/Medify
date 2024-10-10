@@ -2,9 +2,6 @@ import api from "../config/api";
 
 export const getAllTreatments = async () => {
   return await api.get("/treatments");
-
-  // const body = await api.get('/treatments');
-  // return body.data
 };
 
 export const getTreatmentById = async (id) => {
@@ -12,7 +9,6 @@ export const getTreatmentById = async (id) => {
 };
 
 export const createTreatment = async (treatmentData) => {
-  console.log(treatmentData);
   return await api.post("/treatments/create", treatmentData);
 };
 

@@ -41,7 +41,7 @@ function App() {
                 <Route path="/patients" element={<Patients />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/faq" element={<FAQ />} />
-                {/* <Route path="/profile" element={<Profile />} />               */}
+                {/* <Route path="/profile" element={<Profile />} />  */}
               </Routes>
             </main>
           </div>

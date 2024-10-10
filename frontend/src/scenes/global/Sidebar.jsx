@@ -6,7 +6,6 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -15,9 +14,6 @@ import PaidIcon from "@mui/icons-material/Paid";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import HealingIcon from "@mui/icons-material/Healing";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
-import keyCloakService from "../../auth/keycloakService";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserDetails } from "../../features/authSlice";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -44,17 +40,19 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 
-  const { userRole, userName, photo } = JSON.parse(localStorage.getItem("userDetails")) || {};
-  // const userRole = "PATIENT"
+  const { userRole, userName, photo } =
+    JSON.parse(localStorage.getItem("userDetails")) || {};
 
   return (
     <Box
       sx={{
-        "& .pro-sidebar-inner": {background: `${colors.primary[400]} !important`,},
-        "& .pro-icon-wrapper": {backgroundColor: "transparent !important",},
-        "& .pro-inner-item": {padding: "5px 35px 5px 20px !important",},
-        "& .pro-inner-item:hover": {color: "#868dfb !important",},
-        "& .pro-menu-item.active": {color: "#6870fa !important",},
+        "& .pro-sidebar-inner": {
+          background: `${colors.primary[400]} !important`,
+        },
+        "& .pro-icon-wrapper": { backgroundColor: "transparent !important" },
+        "& .pro-inner-item": { padding: "5px 35px 5px 20px !important" },
+        "& .pro-inner-item:hover": { color: "#868dfb !important" },
+        "& .pro-menu-item.active": { color: "#6870fa !important" },
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
@@ -88,19 +86,21 @@ const Sidebar = () => {
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
-                {userRole !== "ADMIN" ? 
-                (<img
-                  alt={"profile-user"}
-                  width="100px"
-                  height="100px"
-                  // src={`../../assets/user.png`}
-                  src={photo}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />):
-                (<Avatar sx={{ width: 100, height: 100, bgcolor: colors.grey[500] }}>
-                  {userName ? userName.charAt(0).toUpperCase() : "A"}
-                </Avatar>)
-}
+                {userRole !== "ADMIN" ? (
+                  <img
+                    alt={"profile-user"}
+                    width="100px"
+                    height="100px"
+                    src={photo}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                ) : (
+                  <Avatar
+                    sx={{ width: 100, height: 100, bgcolor: colors.grey[500] }}
+                  >
+                    {userName ? userName.charAt(0).toUpperCase() : "A"}
+                  </Avatar>
+                )}
               </Box>
               <Box textAlign="center">
                 <Typography
@@ -109,7 +109,7 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {userName?userName:"Unknown User"}
+                  {userName ? userName : "Unknown User"}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   {userRole?.toString()}
@@ -156,13 +156,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
-              title="Payments "
-              to="/payments "
-              icon={<PaidIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
             {userRole !== "DOCTOR" && (
               <Item
                 title="Payments "
@@ -187,30 +180,15 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Item
-              title="Patients"
-              to="/patients"
-              icon={<HealingIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
             {userRole !== "PATIENT" && (
               <Item
-              title="Patients"
-              to="/patients"
-              icon={<HealingIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                title="Patients"
+                to="/patients"
+                icon={<HealingIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
             )}
-
-            {/* <Item
-              title="Register"
-              to="/register"
-              icon={<PersonAddAltIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
             {userRole === "ADMIN" && (
               <Item
                 title="Register"

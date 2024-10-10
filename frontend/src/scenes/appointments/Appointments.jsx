@@ -10,7 +10,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Typography,
   Button,
   Dialog,
   DialogActions,
@@ -38,76 +37,51 @@ import { mockDataAppointments } from "../../data/mockData";
 import { getDoctors } from "../../features/doctorSlice";
 import { fetchPatients } from "../../features/patientSlice";
 
-const mockPatients = [
-  { id: 3, name: "John Doe" },
-  { id: 2, name: "Jane Smith" },
-];
+// const mockPatients = [
+//   { id: 3, name: "John Doe" },
+//   { id: 2, name: "Jane Smith" },
+// ];
 
-const mockDoctors = {
-  3: [
-    { id: 4, name: "Dr. John Specialist" },
-    { id: 102, name: "Dr. Jane Expert" },
-  ],
-  2: [{ id: 103, name: "Dr. Alex Surgeon" }],
-};
+// const mockDoctors = {
+//   3: [
+//     { id: 4, name: "Dr. John Specialist" },
+//     { id: 102, name: "Dr. Jane Expert" },
+//   ],
+//   2: [{ id: 103, name: "Dr. Alex Surgeon" }],
+// };
 
 const Appointments = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { userRole, id  } = JSON.parse(localStorage.getItem("userDetails")) || {};
-  // const userRole = "PATIENT";
+  const { userRole, id } =
+    JSON.parse(localStorage.getItem("userDetails")) || {};
   const dispatch = useDispatch();
   const { appointments, status } = useSelector((state) => state.appointment);
   const { patients } = useSelector((state) => state.patient);
   const { doctors } = useSelector((state) => state.doctor);
-
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setUpdateModalOpen] = useState(false);
-
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [newAppointment, setNewAppointment] = useState({
     title: "",
     patientId: null,
     doctorId: null,
     duration: "",
-    // startTime: "",
     dateTime: "",
   });
-
   const [updatedAppointment, setUpdatedAppointment] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // useEffect(() => {
-  //   if (status === "idle") {
-  //     dispatch(fetchAppointments());
-  //   }
-  // }, [dispatch, status]);
   useEffect(() => {
-    console.log("appointment useeffect");
-    console.log("appointment useeffect val", id, userRole);
-
-    // if (status === "idle") {
-      // if (userRole && id && status === "idle") {
-      dispatch(fetchAppointments({userRole, id}));
-      // }
-    // }
-
+    dispatch(fetchAppointments({ userRole, id }));
     dispatch(fetchPatients());
     dispatch(getDoctors());
-
   }, [dispatch]);
-// }, [dispatch, userRole, id, status]);
-
-
-  console.log(appointments);
-  console.log(doctors);
-  console.log(patients);
 
   const calculateEndTime = (dateTime, duration) => {
     const start = new Date(dateTime);
     const end = new Date(start.getTime() + duration * 60000);
-    console.log(dateTime);
     return end.toISOString();
   };
 
@@ -126,13 +100,6 @@ const Appointments = () => {
       newAppointment.dateTime &&
       newAppointment.duration
     ) {
-      const endTime = calculateEndTime(
-        newAppointment.dateTime,
-        newAppointment.duration
-      );
-
-      console.log(newAppointment);
-
       dispatch(createAppointment(newAppointment));
 
       setNewAppointment({
@@ -156,8 +123,6 @@ const Appointments = () => {
 
   const handleUpdateAppointment = () => {
     if (updatedAppointment) {
-      console.log(updatedAppointment);
-
       dispatch(
         updateAppointment({
           ...updatedAppointment,
@@ -205,16 +170,16 @@ const Appointments = () => {
       <Header title="Appointments" subtitle="Manage your appointments" />
 
       {userRole === "ADMIN" && (
-        <Box display="flex" justifyContent="flex-end" mb={1} >
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={openCreateModal}
-        sx={{ marginBottom: "10px"}}
-      >
-        Create Appointment
-      </Button>
-      </Box>
+        <Box display="flex" justifyContent="flex-end" mb={1}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={openCreateModal}
+            sx={{ marginBottom: "10px" }}
+          >
+            Create Appointment
+          </Button>
+        </Box>
       )}
 
       <Box display="flex" justifyContent="space-between">
@@ -238,43 +203,48 @@ const Appointments = () => {
           <Divider sx={{ mt: 1, backgroundColor: colors.grey[500] }} />
           <List
             sx={{
-              // maxHeight: "400px",
               maxHeight: "70vh",
               overflowY: "auto",
             }}
           >
-            {status === "loading" ? (
-              Array.from(new Array(5)).map((_, index) => (
-                <Skeleton key={index} variant="rectangular" height={60} sx={{ margin: "10px 0", borderRadius: "2px" }} />
-              ))
-            ) : (
-              filteredAppointments?.map((appointment) => (
-              <ListItem
-                key={appointment.id}
-                sx={{
-                  backgroundColor: colors.greenAccent[500],
-                  margin: "10px 0",
-                  borderRadius: "2px",
-                }}
-              >
-                <ListItemText
-                  primary={appointment.title}
-                  secondary={`Duration: ${appointment.duration} mins`}
-                />
-                {userRole === "ADMIN" && (
-                <Box>
-                <IconButton onClick={() => openUpdateModal(appointment)}>
-                  <EditIcon />
-                </IconButton>
-                <IconButton onClick={() => openDeleteModal(appointment)}>
-                  <DeleteIcon />
-                </IconButton>
-                </Box>
-                )}
-                
-              </ListItem>
-            ))
-            )}
+            {status === "loading"
+              ? Array.from(new Array(5)).map((_, index) => (
+                  <Skeleton
+                    key={index}
+                    variant="rectangular"
+                    height={60}
+                    sx={{ margin: "10px 0", borderRadius: "2px" }}
+                  />
+                ))
+              : filteredAppointments?.map((appointment) => (
+                  <ListItem
+                    key={appointment.id}
+                    sx={{
+                      backgroundColor: colors.greenAccent[500],
+                      margin: "10px 0",
+                      borderRadius: "2px",
+                    }}
+                  >
+                    <ListItemText
+                      primary={appointment.title}
+                      secondary={`Duration: ${appointment.duration} mins`}
+                    />
+                    {userRole === "ADMIN" && (
+                      <Box>
+                        <IconButton
+                          onClick={() => openUpdateModal(appointment)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => openDeleteModal(appointment)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                    )}
+                  </ListItem>
+                ))}
           </List>
         </Box>
 
@@ -299,191 +269,222 @@ const Appointments = () => {
 
         {/* Create Appointment Modal */}
         <Dialog open={isCreateModalOpen} onClose={closeCreateModal}>
-        <DialogTitle  variant="h3" sx={{ display: "flex", justifyContent: "center", mt:"5%", mb:"3%" }} >Create New Appointment</DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Title"
-              // placeholder="0"
-              fullWidth
-              margin="dense"
-              value={newAppointment.title}
-              onChange={(e) =>
-                handleNewAppointmentChange("title", e.target.value)
-              }
-            />
-            <Autocomplete
-              // options={mockPatients}
-              options={patients}
-              getOptionLabel={(option) => option.name}
-              onChange={(e, value) =>
-                handleNewAppointmentChange("patientId", value?.id)
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Patient"
-                  margin="dense"
-                  fullWidth
-                />
-              )}
-            />
-            {/* <Autocomplete
-              options={
-                newAppointment.patientId
-                  ? mockDoctors[newAppointment.patientId]
-                  : []
-              }
-              getOptionLabel={(option) => option.name}
-              onChange={(e, value) =>
-                handleNewAppointmentChange("doctorId", value?.id)
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Doctor"
-                  margin="dense"
-                  fullWidth
-                />
-              )}
-              disabled={!newAppointment.patientId}
-            /> */}
-            <Autocomplete
-            options={doctorsForSelectedPatient}
-            getOptionLabel={(option) => option.name}
-            onChange={(e, value) =>
-              handleNewAppointmentChange("doctorId", value?.id)
-            }
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select Doctor"
-                margin="dense"
-                fullWidth
-              />
-            )}
-            disabled={!newAppointment.patientId}
-          />
-            <TextField
-              label="Duration (in minutes)"
-              type="number"
-              fullWidth
-              margin="dense"
-              value={newAppointment.duration}
-              onChange={(e) =>
-                handleNewAppointmentChange("duration", e.target.value)
-              }
-            />
-            <TextField
-              type="datetime-local"
-              fullWidth
-              margin="dense"
-              value={newAppointment.dateTime}
-              onChange={(e) =>
-                handleNewAppointmentChange("dateTime", e.target.value)
-              }
-            />
-          </DialogContent>
-          <DialogActions sx={{ display: "flex", justifyContent: "center", mb:"7%"}}>
-            <Button
-              onClick={handleCreateAppointment}
-              variant="contained"
-              color="secondary"
+          <Box
+            sx={{
+              backgroundColor:
+                theme.palette.mode === "dark" ? colors.primary[400] : "white",
+            }}
+          >
+            <DialogTitle
+              variant="h3"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                mt: "5%",
+                mb: "3%",
+              }}
             >
-              Create
-            </Button>
-            <Button
-              onClick={closeCreateModal}
-              variant="contained"
-              sx={{ backgroundColor: colors.grey[600]}}
-            >
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* Delete Appointment Modal */}
-        <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal} sx={{ }}>
-          <DialogTitle  variant="h4" sx={{ display: "flex", justifyContent: "center", color: colors.redAccent[500], }} >Warning!</DialogTitle>
-           <DialogContent >
-            Are you sure you want to delete this appointment?
-          </DialogContent>
-          <DialogActions sx={{ display: "flex", justifyContent: "center"}}>
-            <Button
-              onClick={handleDeleteAppointment}
-              variant="contained"
-              sx={{ backgroundColor: colors.redAccent[600]}}
-            >
-              Delete
-            </Button>
-            <Button
-              onClick={closeDeleteModal}
-              variant="contained"
-              sx={{ backgroundColor: colors.grey[600]}}
-            >
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* Update Appointment Modal */}
-        {updatedAppointment && (
-          <Dialog open={isUpdateModalOpen} onClose={closeUpdateModal}>
-            <DialogTitle mt={4} mb={2} variant="h4" sx={{ display: "flex", justifyContent: "center" }} >Edit Appointment</DialogTitle>
+              Create New Appointment
+            </DialogTitle>
             <DialogContent>
               <TextField
                 label="Title"
                 fullWidth
                 margin="dense"
-                value={updatedAppointment.title}
+                value={newAppointment.title}
                 onChange={(e) =>
-                  setUpdatedAppointment({
-                    ...updatedAppointment,
-                    title: e.target.value,
-                  })
+                  handleNewAppointmentChange("title", e.target.value)
                 }
+              />
+              <Autocomplete
+                options={patients}
+                getOptionLabel={(option) => option.name}
+                onChange={(e, value) =>
+                  handleNewAppointmentChange("patientId", value?.id)
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select Patient"
+                    margin="dense"
+                    fullWidth
+                  />
+                )}
+              />
+              <Autocomplete
+                options={doctorsForSelectedPatient}
+                getOptionLabel={(option) => option.name}
+                onChange={(e, value) =>
+                  handleNewAppointmentChange("doctorId", value?.id)
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select Doctor"
+                    margin="dense"
+                    fullWidth
+                  />
+                )}
+                disabled={!newAppointment.patientId}
               />
               <TextField
                 label="Duration (in minutes)"
                 type="number"
                 fullWidth
                 margin="dense"
-                value={updatedAppointment.duration}
+                value={newAppointment.duration}
                 onChange={(e) =>
-                  setUpdatedAppointment({
-                    ...updatedAppointment,
-                    duration: e.target.value,
-                  })
+                  handleNewAppointmentChange("duration", e.target.value)
                 }
               />
               <TextField
                 type="datetime-local"
                 fullWidth
                 margin="dense"
-                value={updatedAppointment.dateTime}
+                value={newAppointment.dateTime}
                 onChange={(e) =>
-                  setUpdatedAppointment({
-                    ...updatedAppointment,
-                    dateTime: e.target.value,
-                  })
+                  handleNewAppointmentChange("dateTime", e.target.value)
                 }
               />
             </DialogContent>
-            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+            <DialogActions
+              sx={{ display: "flex", justifyContent: "center", mb: "7%" }}
+            >
               <Button
-                onClick={handleUpdateAppointment}
+                onClick={handleCreateAppointment}
                 variant="contained"
                 color="secondary"
               >
-                Save
+                Create
               </Button>
               <Button
-                onClick={closeUpdateModal}
+                onClick={closeCreateModal}
                 variant="contained"
-                sx={{ backgroundColor: colors.grey[600]}}
+                sx={{ backgroundColor: colors.grey[600] }}
               >
                 Cancel
               </Button>
             </DialogActions>
+          </Box>
+        </Dialog>
+
+        {/* Delete Appointment Modal */}
+        <Dialog open={isDeleteModalOpen} onClose={closeDeleteModal} sx={{}}>
+          <Box
+            sx={{
+              backgroundColor:
+                theme.palette.mode === "dark" ? colors.primary[400] : "white",
+            }}
+          >
+            <DialogTitle
+              variant="h4"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                color: colors.redAccent[500],
+              }}
+            >
+              Warning!
+            </DialogTitle>
+            <DialogContent>
+              Are you sure you want to delete this appointment?
+            </DialogContent>
+            <DialogActions
+              sx={{ display: "flex", justifyContent: "center", mb: 2 }}
+            >
+              <Button
+                onClick={handleDeleteAppointment}
+                variant="contained"
+                sx={{ backgroundColor: colors.redAccent[600] }}
+              >
+                Delete
+              </Button>
+              <Button
+                onClick={closeDeleteModal}
+                variant="contained"
+                sx={{ backgroundColor: colors.grey[600] }}
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </Box>
+        </Dialog>
+
+        {/* Update Appointment Modal */}
+        {updatedAppointment && (
+          <Dialog open={isUpdateModalOpen} onClose={closeUpdateModal}>
+            <Box
+              sx={{
+                backgroundColor:
+                  theme.palette.mode === "dark" ? colors.primary[400] : "white",
+              }}
+            >
+              <DialogTitle
+                mt={4}
+                mb={2}
+                variant="h4"
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
+                Edit Appointment
+              </DialogTitle>
+              <DialogContent>
+                <TextField
+                  label="Title"
+                  fullWidth
+                  margin="dense"
+                  value={updatedAppointment.title}
+                  onChange={(e) =>
+                    setUpdatedAppointment({
+                      ...updatedAppointment,
+                      title: e.target.value,
+                    })
+                  }
+                />
+                <TextField
+                  label="Duration (in minutes)"
+                  type="number"
+                  fullWidth
+                  margin="dense"
+                  value={updatedAppointment.duration}
+                  onChange={(e) =>
+                    setUpdatedAppointment({
+                      ...updatedAppointment,
+                      duration: e.target.value,
+                    })
+                  }
+                />
+                <TextField
+                  type="datetime-local"
+                  fullWidth
+                  margin="dense"
+                  value={updatedAppointment.dateTime}
+                  onChange={(e) =>
+                    setUpdatedAppointment({
+                      ...updatedAppointment,
+                      dateTime: e.target.value,
+                    })
+                  }
+                />
+              </DialogContent>
+              <DialogActions
+                sx={{ display: "flex", justifyContent: "center", mb: 4 }}
+              >
+                <Button
+                  onClick={handleUpdateAppointment}
+                  variant="contained"
+                  color="secondary"
+                >
+                  Save
+                </Button>
+                <Button
+                  onClick={closeUpdateModal}
+                  variant="contained"
+                  sx={{ backgroundColor: colors.grey[600] }}
+                >
+                  Cancel
+                </Button>
+              </DialogActions>
+            </Box>
           </Dialog>
         )}
       </Box>

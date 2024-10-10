@@ -4,12 +4,17 @@ import {
   updatePayment,
 } from "../controllers/payments.controller";
 
-const initialState = { payments: [], selectedPayment: null, isCreating: false, isLoading: false,};
+const initialState = {
+  payments: [],
+  selectedPayment: null,
+  isCreating: false,
+  isLoading: false,
+};
 
 export const fetchPayments = createAsyncThunk(
   "payment/fetchPayments",
-  async ({userRole, id}) => {
-    const response = await getAllPayments({userRole, id});
+  async ({ userRole, id }) => {
+    const response = await getAllPayments({ userRole, id });
     return response.data;
   }
 );
@@ -32,13 +37,15 @@ const paymentSlice = createSlice({
   name: "payment",
   initialState,
   reducers: {
-    setSelectedPayment: (state, action) => { state.selectedPayment = action.payload; },
+    setSelectedPayment: (state, action) => {
+      state.selectedPayment = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
-    .addCase(fetchPayments.pending, (state) => {
-      state.isLoading = true;
-    })
+      .addCase(fetchPayments.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(fetchPayments.fulfilled, (state, action) => {
         state.payments = action.payload;
         state.isLoading = false;
